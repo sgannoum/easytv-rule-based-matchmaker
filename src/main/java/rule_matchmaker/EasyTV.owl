@@ -1,128 +1,721 @@
 <?xml version="1.0"?>
-<rdf:RDF
-    xmlns:xsp="http://www.owl-ontologies.com/2005/08/07/xsp.owl#"
-    xmlns:swrlb="http://www.w3.org/2003/11/swrlb#"
-    xmlns="http://www.owl-ontologies.com/OntologyEasyTV.owl#"
-    xmlns:swrl="http://www.w3.org/2003/11/swrl#"
-    xmlns:protege="http://protege.stanford.edu/plugins/owl/protege#"
-    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
-    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-    xmlns:owl="http://www.w3.org/2002/07/owl#"
-  xml:base="http://www.owl-ontologies.com/OntologyEasyTV.owl">
-  <owl:Ontology rdf:about=""/>
-  <rdfs:Class rdf:ID="User"/>
-  <rdfs:Class rdf:ID="UserPreferences"/>
-  <rdfs:Class rdf:ID="VisualAbility"/>
-  <rdfs:Class rdf:ID="AuditoryAbility"/>
-  <owl:ObjectProperty rdf:ID="hasAuditoryAbility">
-    <rdfs:domain rdf:resource="#User"/>
-    <rdfs:range rdf:resource="#AuditoryAbility"/>
-  </owl:ObjectProperty>
-  <owl:ObjectProperty rdf:ID="hasVisualAbility">
-    <rdfs:range rdf:resource="#VisualAbility"/>
-    <rdfs:domain rdf:resource="#User"/>
-  </owl:ObjectProperty>
-  <owl:ObjectProperty rdf:ID="hasPreferences">
-    <rdfs:domain rdf:resource="#User"/>
-    <rdfs:range rdf:resource="#UserPreferences"/>
-  </owl:ObjectProperty>
-  <owl:DatatypeProperty rdf:ID="hasHalfK">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-    <rdfs:domain rdf:resource="#AuditoryAbility"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="hasFontColor">
-    <rdfs:domain rdf:resource="#UserPreferences"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="hasAudioVolume">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-    <rdfs:domain rdf:resource="#UserPreferences"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="hasFonts">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <rdfs:domain rdf:resource="#UserPreferences"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="hasFourK">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-    <rdfs:domain rdf:resource="#AuditoryAbility"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="hasGender">
-    <rdfs:domain rdf:resource="#User"/>
-    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >Define the gender of a user e.g. male or female</rdfs:comment>
-    <rdfs:range>
-      <owl:DataRange>
-        <owl:oneOf rdf:parseType="Resource">
-          <rdf:rest rdf:parseType="Resource">
-            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-            >Female</rdf:first>
-            <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-          </rdf:rest>
-          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-          >Male</rdf:first>
-        </owl:oneOf>
-      </owl:DataRange>
-    </rdfs:range>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="hasVisualAcuity">
-    <rdfs:domain rdf:resource="#VisualAbility"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="hasTwoK">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-    <rdfs:domain rdf:resource="#AuditoryAbility"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="hasColorBllindness">
-    <rdfs:domain rdf:resource="#VisualAbility"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="hasOneK">
-    <rdfs:domain rdf:resource="#AuditoryAbility"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="hasEightK">
-    <rdfs:domain rdf:resource="#AuditoryAbility"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="hasLanguageAudio">
-    <rdfs:domain rdf:resource="#UserPreferences"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="hasLanguageSubtitles">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <rdfs:domain rdf:resource="#UserPreferences"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="hasAge">
-    <rdfs:domain rdf:resource="#User"/>
-    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >Property that defines the age of a user</rdfs:comment>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="hasBackgroundColor">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <rdfs:domain rdf:resource="#UserPreferences"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="hasQuarterQ">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-    <rdfs:domain rdf:resource="#AuditoryAbility"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="hasLanguageSign">
-    <rdfs:domain rdf:resource="#UserPreferences"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="hasContrastSensitivity">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-    <rdfs:domain rdf:resource="#VisualAbility"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="hasContrast">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-    <rdfs:domain rdf:resource="#UserPreferences"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="hasFontSize">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-    <rdfs:domain rdf:resource="#UserPreferences"/>
-  </owl:DatatypeProperty>
+<rdf:RDF xmlns="http://www.owl-ontologies.com/OntologyEasyTV.owl#"
+     xml:base="http://www.owl-ontologies.com/OntologyEasyTV.owl"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:xsp="http://www.owl-ontologies.com/2005/08/07/xsp.owl#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+     xmlns:swrlb="http://www.w3.org/2003/11/swrlb#"
+     xmlns:protege="http://protege.stanford.edu/plugins/owl/protege#">
+    <owl:Ontology rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasAccessibilityService -->
+
+    <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasAccessibilityService">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#AccessibilityService"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasAuditoryAbility -->
+
+    <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasAuditoryAbility">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#User"/>
+        <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#AuditoryAbility"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConditionalPreferences -->
+
+    <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConditionalPreferences">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#ConditionalPreference"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConditions -->
+
+    <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConditions">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#ConditionalPreference"/>
+        <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#Operand"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasLeftOperand -->
+
+    <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasLeftOperand">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#LogicalOperand"/>
+        <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#Operand"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference -->
+
+    <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#User"/>
+        <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasRightOperand -->
+
+    <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasRightOperand">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#DualOperand"/>
+        <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#Operand"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasVisualAbility -->
+
+    <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasVisualAbility">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#User"/>
+        <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#VisualAbility"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasAudioLanguage -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasAudioLanguage">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasAudioVolume -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasAudioVolume">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasBackground -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasBackground">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasBrightness -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasBrightness">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasColorBllindness -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasColorBllindness">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#VisualAbility"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasColorSet -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasColorSet">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#ColorSubtitles"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConfirmationFeedback -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConfirmationFeedback">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasContrastSensitivity -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasContrastSensitivity">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#VisualAbility"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasCursorColor -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasCursorColor">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasCursorSize -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasCursorSize">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasCursorTrails -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasCursorTrails">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasDictation -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasDictation">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasEnhancmenet -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasEnhancmenet">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#ImageMagnification"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasFontColor -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasFontColor">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasFontContrast -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasFontContrast">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#ColorSubtitles"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasFontSize -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasFontSize">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#ColorSubtitles"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasFontType -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasFontType">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasHearing -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasHearing">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#AuditoryAbility"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasHighlight -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasHighlight">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasLocationLatitude -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasLocationLatitude">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#real"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasLocationLongtitude -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasLocationLongtitude">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#real"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasMagnification -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasMagnification">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasMicrophoneGain -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasMicrophoneGain">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#real"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPitch -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPitch">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#real"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPosition -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPosition">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#ColorSubtitles"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasReaderRate -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasReaderRate">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#real"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasReaderVolume -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasReaderVolume">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasResult -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasResult">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#AP"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#EQ"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#GE"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#GT"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#LE"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#LT"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#NE"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasScreenRaderRate -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasScreenRaderRate">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#real"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSpeechRate -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSpeechRate">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#positiveInteger"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasStyle -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasStyle">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#AP"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#EQ"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#GE"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#GT"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#LE"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#LT"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#NE"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasURI -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasURI">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#AP"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#EQ"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#GE"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#GT"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#LE"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#LT"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#NE"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasValue -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasValue">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#AP"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#EQ"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#GE"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#GT"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#LE"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#LT"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#NE"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasVisualAcuity -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasVisualAcuity">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#VisualAbility"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasVoiceRecognition -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasVoiceRecognition">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#AND"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#AP"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#EQ"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#GE"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#GT"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#LE"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#LT"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#NE"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#NOT"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#OR"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#topDataProperty -->
+
+    <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#topDataProperty">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </rdf:Description>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#AND -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#AND">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#DualOperand"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#AP -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#AP">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#NumericOperand"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#AccessibilityService -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#AccessibilityService"/>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#AuditoryAbility -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#AuditoryAbility"/>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#ColorSubtitles -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#ColorSubtitles">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#AccessibilityService"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#ComparatorOpreand -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#ComparatorOpreand">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#Operand"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#ConditionalPreference -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#ConditionalPreference"/>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#DualOperand -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#DualOperand">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#LogicalOperand"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#EQ -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#EQ">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#EqualityOperand"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#EqualityOperand -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#EqualityOperand">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#ComparatorOpreand"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#FaceDetection -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#FaceDetection">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#AccessibilityService"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#GE -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#GE">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#EqualityOperand"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#GT -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#GT">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#NumericOperand"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#ImageMagnification -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#ImageMagnification">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#AccessibilityService"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#LE -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#LE">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#EqualityOperand"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#LT -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#LT">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#NumericOperand"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#LogicalOperand -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#LogicalOperand">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#Operand"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#MonoOperand -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#MonoOperand">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#LogicalOperand"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#NE -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#NE">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#EqualityOperand"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#NOT -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#NOT">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#MonoOperand"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#NumericOperand -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#NumericOperand">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#ComparatorOpreand"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#OR -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#OR">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#DualOperand"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#Operand -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#Operand"/>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#SignLanguage -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#SignLanguage">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#AccessibilityService"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#TextDetection -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#TextDetection">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#AccessibilityService"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#User -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#User"/>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#VisualAbility -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#VisualAbility"/>
 </rdf:RDF>
 
-<!-- Created with Protege (with OWL Plugin 3.4.4, Build 579)  http://protege.stanford.edu -->
+
+
+<!-- Generated by the OWL API (version 4.5.6.2018-09-06T00:27:41Z) https://github.com/owlcs/owlapi -->
+

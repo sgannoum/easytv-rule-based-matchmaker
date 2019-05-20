@@ -20,6 +20,8 @@ import com.google.gson.Gson;
 @Path("/RBMM")
 public class RBMM_WebService
 {
+	private static final String ONTOLOGY_NAME = "EasyTV.owl";
+	private static final String RULES_FILE = "rules.txt";
 	
     //http://localhost:8080/EasyTV_RBMM_Restful_WS/RBMM/match
     @GET
@@ -52,10 +54,9 @@ public class RBMM_WebService
     @Consumes("application/json")
     public Response postRunEasyTVRules(Object tmpInput) throws IOException, JSONException
     {
-    	RuleReasoner ruleReasoner = new RuleReasoner();
     	Gson gson = new Gson();
     	String json = gson.toJson(tmpInput);
     	System.out.println(json);
-        return Response.status(200).entity(ruleReasoner.infer(json).toString()).build();
+        return Response.status(200).entity(RuleReasoner.infer(ONTOLOGY_NAME, RULES_FILE, json).toString()).build();
     }
 }

@@ -1,32 +1,25 @@
 {
-  "general": {
-    "age": 40,
-    "gender": "male"
-  },
   "visual": {
     "visual_acuity": 8,
     "contrast_sensitivity": 24,
     "color_blindness": "normal"
   },
   "auditory": {
-    "quarterK": 81,
-    "halfK": 35,
-    "oneK": 98,
-    "twoK": 18,
-    "fourK": 57,
-    "eightK": 27
+    "hearing": 81
   },
   "user_preferences": {
-    "default": {
       "preferences": {
-        "https://easytvproject.eu/registry/application/cs/audio/audioDescription": true,
-        "https://easytvproject.eu/registry/application/cs/audio/track": "es",
-        "https://easytvproject.eu/registry/common/audioVolume": 77,
-        "https://easytvproject.eu/registry/application/cs/cc/subtitles/fontColor": "#ffffff",
-        "https://easytvproject.eu/registry/application/cs/cc/subtitles/fontSize": 17,
-        "https://easytvproject.eu/registry/application/cs/cc/subtitles/language": "en",
-        "https://easytvproject.eu/registry/application/cs/audio/volume": 30
+        "http://registry.easytv.eu/common/display/screen/enhancement/font/color": "#ffffff",
+        "http://registry.easytv.eu/common/display/screen/enhancement/font/size": 17,
+        "http://registry.easytv.eu/common/content/audio/language": "en"
+
+      },
+      "conditional_preferences:" {
+      		"type": "gt",
+      		"operand":[
+      		 "http://registry.easytv.eu/common/content/audio/volume",
+      		  77
+      		]
       }
-    }
   }
 }

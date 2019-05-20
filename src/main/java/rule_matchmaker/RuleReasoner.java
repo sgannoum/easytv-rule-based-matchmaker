@@ -4,82 +4,40 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import rule_matchmaker.entities.Auditory;
-import rule_matchmaker.entities.User;
-import rule_matchmaker.entities.Visual;
-
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
-import com.hp.hpl.jena.datatypes.RDFDatatype;
-import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
-import com.hp.hpl.jena.ontology.Individual;
-import com.hp.hpl.jena.ontology.OntClass;
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.query.Query;
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.InfModel;
-import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
-import com.hp.hpl.jena.reasoner.Reasoner;
-import com.hp.hpl.jena.reasoner.rulesys.GenericRuleReasoner;
-import com.hp.hpl.jena.reasoner.rulesys.Rule;
+
+import rule_matchmaker.entities.UserPreferencesMappings;
+
+import org.apache.jena.datatypes.RDFDatatype;
+import org.apache.jena.datatypes.xsd.XSDDatatype;
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.query.Query;
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryExecutionFactory;
+import org.apache.jena.query.QueryFactory;
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSet;
+import org.apache.jena.rdf.model.InfModel;
+import org.apache.jena.rdf.model.Literal;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Statement;
+import org.apache.jena.rdf.model.StmtIterator;
+import org.apache.jena.reasoner.Reasoner;
+import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
+import org.apache.jena.reasoner.rulesys.Rule;
 
 public class RuleReasoner {
 
-	private static final String ONTOLOGY_NAME = "EasyTV.owl";
-	private static final String RULES_FILE = "rules.txt";
-	private static final String INPUT_FILE = "input.txt";
-	private static final HashMap<String, String> map  =  new HashMap<String, String>() {{
-		put("hasAudioVolume", "https://easytvproject.eu/registry/common/audioVolume");
-		put("hasFontSize", "https://easytvproject.eu/registry/common/fontSize");
-		put("hasBackgroundColor", "https://easytvproject.eu/registry/common/backgroundColor");
-		put("hasContrast", "https://easytvproject.eu/registry/common/displayContrast");
-		put("hasFontColor", "https://easytvproject.eu/registry/common/fontColor");
-		put("hasFonts", "https://easytvproject.eu/registry/common/font");
-		put("hasLanguageAudio", "https://easytvproject.eu/registry/common/audioLanguage");
-		put("hasLanguageSign", "https://easytvproject.eu/registry/common/signLanguage");
-		put("hasLanguageSubtitles", "https://easytvproject.eu/registry/common/subtitles");
-    }};
-
 	private OntModel model;
 
-	public static void main(String[] args) throws IOException, JSONException {
-			
- 		RuleReasoner x = new RuleReasoner();
- 		
-		File file = new File(x.getClass().getResource(INPUT_FILE).getFile());
-		byte[] encoded = Files.readAllBytes(Paths.get(file.getCanonicalPath()));
-		String jsonString = new String(encoded, Charset.defaultCharset());
- 		
-		x.loadModel();
-		x.createUserInstance(jsonString);
-		Model infModel = x.runRules();
-		JsonObject pref = x.getUserPreferences(infModel);
-		
-		JSONObject userProfile = new JSONObject(jsonString);
-		System.out.println(updateUserPreferences(userProfile,pref).toString(4));
-	}
-
-	
 	/**
 	 * 
 	 * @param json
@@ -87,12 +45,14 @@ public class RuleReasoner {
 	 * @throws IOException
 	 * @throws JSONException 
 	 */
-	public JSONObject infer(String json) throws IOException, JSONException {
+	public static JSONObject infer(String ontologyFile, String ruleFile, String json) throws IOException, JSONException {
 		JSONObject userProfile = new JSONObject(json);
 		RuleReasoner x = new RuleReasoner();
-		x.loadModel();
-		x.createUserInstance(json);
-		Model infModel = x.runRules();
+		
+		x.loadModel(ontologyFile);
+	//	x.createUserInstance(json);
+		
+		Model infModel = x.runRules(ruleFile);
 	//	return x.getUserPreferences(infModel);
 		return updateUserPreferences(userProfile,x.getUserPreferences(infModel));
 	}
@@ -117,138 +77,32 @@ public class RuleReasoner {
 		return userProfile;
 	}
 	
-	private void loadModel() throws IOException {
-		File file = new File(getClass().getResource(ONTOLOGY_NAME).getFile());
+	public void loadModel(String ontologyFile) throws IOException {
+		File file = new File(getClass().getResource(ontologyFile).getFile());
 		model = ModelFactory.createOntologyModel();
 		InputStream in = new FileInputStream(file);
 		model = (OntModel) model.read(in, null, "");
 		System.out.println("Ontology was loaded");
 	}
-
-	/**
-	 * By using a json input this method creates the corresponding user instance in the ontology
-	 * @throws IOException
-	 */
-	private void createUserInstance(String jsonString) throws IOException{
-		//load json input from file
-/*		
- * 		File file = new File(getClass().getResource(INPUT_FILE).getFile());
-		byte[] encoded = Files.readAllBytes(Paths.get(file.getCanonicalPath()));
-		String jsonString = new String(encoded, Charset.defaultCharset());
-*/
-		
-		//use jackson to parse json and create user instance
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		User user = mapper.readValue(jsonString, User.class);
-		
-		//create the new user in the ontology
-		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
-		Individual userInstance = userClass.createIndividual();
-		if (user.getAge() != null){
-			Property p = model.getProperty(User.AGE_PROP);
-			userInstance.addProperty(p, model.createTypedLiteral(user.getAge()));
-		}
-		if (user.getGender() != null){
-			Property p = model.getProperty(User.GENDER_PROP);
-			userInstance.addProperty(p, user.getGender());
-		}
-		
-		Visual visual = user.getVisual();
-		if (visual != null){
-			OntClass visualClass = model.getOntClass(Visual.ONTOLOGY_CLASS_URI);
-			Individual visualInstance = visualClass.createIndividual();
-			
-			if (visual.getColor_blindness() != null){
-				Property p = model.getProperty(Visual.COLOR_BLINDNESS_PROP);
-				visualInstance.addProperty(p, model.createTypedLiteral(visual.getColor_blindness()));
-			}
-			
-			if (visual.getContrast_sensitivity() != null){
-				Property p = model.getProperty(Visual.CONTRAST_SENSIVITY_PROP);
-				visualInstance.addProperty(p, model.createTypedLiteral(visual.getContrast_sensitivity()));
-			}
-			
-			if (visual.getVisual_acuity() != null){
-				Property p = model.getProperty(Visual.VISUAL_ACUITY_PROP);
-				visualInstance.addProperty(p, model.createTypedLiteral(visual.getVisual_acuity()));
-			}	
-			Property p = model.getProperty(User.VISUAL_PROP);
-			userInstance.addProperty(p, visualInstance);	
-		}		
-		Auditory auditory = user.getAuditory();
-		if (auditory != null){
-			OntClass auditoryClass = model.getOntClass(Auditory.ONTOLOGY_CLASS_URI);
-			Individual auditoryInstance = auditoryClass.createIndividual();
-			
-			if (auditory.getOneK() != null){
-				Property p = model.getProperty(Auditory.ONEK_PROP);
-				auditoryInstance.addProperty(p, model.createTypedLiteral(auditory.getOneK()));
-			}
-			
-			if (auditory.getTwoK() != null){
-				Property p = model.getProperty(Auditory.TWOK_PROP);
-				auditoryInstance.addProperty(p, model.createTypedLiteral(auditory.getTwoK()));
-			}
-			
-			if (auditory.getFourK() != null){
-				Property p = model.getProperty(Auditory.FOURK_PROP);
-				auditoryInstance.addProperty(p, model.createTypedLiteral(auditory.getFourK()));
-			}
-			
-			if (auditory.getEightK() != null){
-				Property p = model.getProperty(Auditory.EIGHTK_PROP);
-				auditoryInstance.addProperty(p, model.createTypedLiteral(auditory.getEightK()));
-			}
-			
-			if (auditory.getHalfK() != null){
-				Property p = model.getProperty(Auditory.HALFK_PROP);
-				auditoryInstance.addProperty(p, model.createTypedLiteral(auditory.getHalfK()));
-			}
-			
-			if (auditory.getQuarterK() != null){
-				Property p = model.getProperty(Auditory.QUARTERK_PROP);
-				auditoryInstance.addProperty(p, model.createTypedLiteral(auditory.getQuarterK()));
-			}
-			Property p = model.getProperty(User.AUDITORY_PROP);
-			userInstance.addProperty(p, auditoryInstance);	
-		}
-	}
-
+	
 	/**
 	 * Loads a rule from a file use the model of the instance and runs the rule
 	 * a new model is created that is used for getting the user preferences
 	 * 
 	 * @throws IOException
 	 */
-	private InfModel runRules() throws IOException {
+	public InfModel runRules(String rulesFile) throws IOException {
 		// load files with rules
-		File file = new File(getClass().getResource(RULES_FILE).getFile());
+		File file = new File(getClass().getResource(rulesFile).getFile());
 		Reasoner reasoner = new GenericRuleReasoner(Rule.rulesFromURL(file
 				.getCanonicalPath()));
 
 		// run the rules
 		InfModel infModel = ModelFactory.createInfModel(reasoner, model);
 
-//		printModel(infModel);
+		printModel(infModel);
 
 		return infModel;
-	}
-
-	/**
-	 * prints one by one all triples of the given ontology
-	 * 
-	 * @param model
-	 */
-	private void printModel(Model model) {
-		StmtIterator it = model.listStatements();
-		while (it.hasNext()) {
-			Statement stmt = it.nextStatement();
-			Resource subject = stmt.getSubject();
-			Property predicate = stmt.getPredicate();
-			RDFNode object = stmt.getObject();
-			System.out.println(subject + "  " + predicate + "  " + object);
-		}
 	}
 
 	/**
@@ -259,7 +113,7 @@ public class RuleReasoner {
 	 *            : the model where the SPARQL queries are made
 	 * @return
 	 */
-	private JsonObject getUserPreferences(Model model) {
+	public JsonObject getUserPreferences(Model model) {
 		JsonObject userPreferences = new JsonObject();
 		userPreferences = updateJson(model, userPreferences, "hasAudioVolume");
 		userPreferences = updateJson(model, userPreferences, "hasFontSize");
@@ -288,7 +142,7 @@ public class RuleReasoner {
 		if (result == null)
 			return json;
 		
-		String pref = map.get(propertyName);
+		String pref = UserPreferencesMappings.dataPropertyToUri.get(propertyName);
 		RDFDatatype datatype = result.getDatatype();
 		if (datatype != null) {			
 			if (datatype.equals(XSDDatatype.XSDboolean)) {
@@ -354,5 +208,21 @@ public class RuleReasoner {
 			return node.asLiteral();
 		}
 		return result;
+	}
+	
+	/**
+	 * prints one by one all triples of the given ontology
+	 * 
+	 * @param model
+	 */
+	public static void printModel(Model model) {
+		StmtIterator it = model.listStatements();
+		while (it.hasNext()) {
+			Statement stmt = it.nextStatement();
+			Resource subject = stmt.getSubject();
+			Property predicate = stmt.getPredicate();
+			RDFNode object = stmt.getObject();
+			System.out.println(subject + "  " + predicate + "  " + object);
+		}
 	}
 }
