@@ -9,6 +9,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import builtin.And;
+import builtin.OR;
 import config.RBMMTestConfig;
 
 import org.apache.jena.ontology.Individual;
@@ -20,6 +22,7 @@ import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.reasoner.Reasoner;
+import org.apache.jena.reasoner.rulesys.BuiltinRegistry;
 import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
 import org.apache.jena.reasoner.rulesys.Rule;
 import rule_matchmaker.entities.ConditionalPreferences;
@@ -29,47 +32,16 @@ import rule_matchmaker.entities.UserPreference;
 public class OrRulesTest {
 	
 	private OntModel model;
-	public final String rules = "[AND_OR_Similar_Inputs:" + 
-		    "(?cond http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#DualOperand)" + 
-		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasLeftOperand ?leftOp)" + 
-		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasRightOperand ?rightOp)" +   
-		//  ",(?leftOp http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#ComparatorOperand)" + 
-		//  ",(?rightOp http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#ComparatorOperand)" + 
-		  	",(?leftOp http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?v1)" +
-		  	",(?rightOp http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?v2)" +
-			",equal(?v1, ?v2)"+
-		    "->" + 
-		    "	print('Equals', ?v1, ?v2)"+
-		    "	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?v1)" +
-		    "]"+
-	
-			"[AND_Different_Inputs:" + 
-			"(?cond http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#AND)" + 
-			",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasLeftOperand ?leftOp)" + 
-			",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasRightOperand ?rightOp)" +
-		//	",(?leftOp http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#ComparatorOperand)" + 
-		//	",(?rightOp http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#ComparatorOperand)" + 	
-			",(?leftOp http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?v1)" +
-			",(?rightOp http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?v2)" +
-			",notEqual(?v1, ?v2)"+
-			"->" + 
-			"	print('AND', ?v1, ?v2, 'false')"+
-			"	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue 'false'^^http://www.w3.org/2001/XMLSchema#boolean)" +
-			"]"+
-
-			
-			"[OR_Different_Inputs:" + 
+	public static final  String rules = "[or_rule:" + 
 			"(?cond http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#OR)" + 
 			",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasLeftOperand ?leftOp)" + 
-			",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasRightOperand ?rightOp)" +
-		//	",(?leftOp http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#ComparatorOperand)" + 
-		//	",(?rightOp http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#ComparatorOperand)" + 	
+			",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasRightOperand ?rightOp)" +	
 			",(?leftOp http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?v1)" +
 			",(?rightOp http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?v2)" +
-			",notEqual(?v1, ?v2)"+
 			"->" + 
-			"	print('OR', ?v1, ?v2, 'true')"+
-			"	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" +
+			"	or(?v1, ?v2, ?v3)"+
+			"	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?v3)" +
+			"	print('OR', ?v1, ?v2, ?v3)"+
 			"]"
 			;
 	
@@ -80,6 +52,7 @@ public class OrRulesTest {
 		model = ModelFactory.createOntologyModel();
 		InputStream in = new FileInputStream(file);
 		model = (OntModel) model.read(in, null, "");
+		BuiltinRegistry.theRegistry.register(new OR());
 		System.out.println("Ontology was loaded");
 		
 		//user
@@ -136,13 +109,6 @@ public class OrRulesTest {
 		while (list.hasNext()) {
 			Assert.assertEquals(list.next().getObject().asLiteral().getBoolean(), true);
 		}
-		
-/*		StmtIterator list = inf.listStatements(orInstance, null, (RDFNode)null);
-		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
-		while (list.hasNext()) {
-			System.out.println(list.next());
-		}
-*/
 		
 	}
 	

@@ -1,4 +1,4 @@
-package comparatorOperand;
+package logicalOperand;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,10 +10,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import builtin.And;
-import builtin.Equals;
+import builtin.NOT;
+import builtin.OR;
 import config.RBMMTestConfig;
 
-import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
@@ -26,27 +26,23 @@ import org.apache.jena.reasoner.Reasoner;
 import org.apache.jena.reasoner.rulesys.BuiltinRegistry;
 import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
 import org.apache.jena.reasoner.rulesys.Rule;
-import org.apache.jena.reasoner.rulesys.builtins.Equal;
-
 import rule_matchmaker.entities.ConditionalPreferences;
 import rule_matchmaker.entities.User;
 import rule_matchmaker.entities.UserPreference;
 
-public class EqualsRulesTest {
+public class NotRulesTest {
 	
 	private OntModel model;
-	public static final String 	rules = "[Equals:" + 
-		    "(?cond http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#EQ)" + 
-		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasValue ?value)" + 
-		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType ?type)" + 
-		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+User.ONTOLOGY_CLASS_URI+")" + 
-		    ",(?user "+User.PREFERENCE_PROP+" ?pref)" + 
-		    ",(?pref ?type ?nodeValue)" + 
-		    "->" + 
-			"	equals(?nodeValue, ?value, ?res)"+
-		    "	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?res)" +
-		    "	print('Equals', ?nodeValue, ?value, ?res)"+
-		    "]";
+	public static final  String rules = "[Not_rule:" + 
+			"(?cond http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#NOT)" + 
+			",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasLeftOperand ?leftOp)" + 
+			",(?leftOp http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?v1)" +
+			"->" + 
+			"	not(?v1, ?v2)"+
+			"	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?v2)" +
+			"	print('NOT', ?v1, ?v2)"+
+			"]"
+			;
 	
 	@BeforeMethod
 	public void beforeMethod() throws FileNotFoundException {
@@ -55,7 +51,7 @@ public class EqualsRulesTest {
 		model = ModelFactory.createOntologyModel();
 		InputStream in = new FileInputStream(file);
 		model = (OntModel) model.read(in, null, "");
-		BuiltinRegistry.theRegistry.register(new Equals());
+		BuiltinRegistry.theRegistry.register(new NOT());
 		System.out.println("Ontology was loaded");
 		
 		//user
@@ -64,6 +60,9 @@ public class EqualsRulesTest {
 		
 		Property hasAudioVolumeProperty = model.getProperty(UserPreference.AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
+		
+		Property cursorSizeProperty = model.getProperty(UserPreference.CURSOR_SIZE_PROP);
+		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
@@ -74,24 +73,56 @@ public class EqualsRulesTest {
 	}
 
 	@Test
-	public void Test_greaterThanIsTrue()  {
+	public void Test_Not_True_input()  {
 		
 		//gt
-		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "EQ");
+		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property hasTypeProperty = model.getProperty(ConditionalPreferences.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
-				
-		Property hasValueProperty = model.getProperty(ConditionalPreferences.HAS_VALUE_PROP);
-		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(6));
+		Property isTrueProperty = model.getProperty(ConditionalPreferences.IS_TURE_PROP);
+		gtInstance.addProperty(isTrueProperty, model.createTypedLiteral(true));
 		 
+		//not
+		OntClass notClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "NOT");
+		Individual notInstance = notClass.createIndividual();
+
+		Property hasLeftOperandProperty = model.getProperty(ConditionalPreferences.LEFT_OPERAND_PROP);
+		notInstance.addProperty(hasLeftOperandProperty, gtInstance);			
 		
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
-				
+			
+			
+  		StmtIterator list = inf.listStatements(notInstance, isTrueProperty, (RDFNode)null);
+		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
+		while (list.hasNext()) {
+			Assert.assertEquals(list.next().getObject().asLiteral().getBoolean(), false);
+		}
+		
+	}
+	
+	@Test
+	public void Test_Not_False_input()  {
+		
+		//gt
+		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "GT");
+		Individual gtInstance = gtClass.createIndividual();
+
 		Property isTrueProperty = model.getProperty(ConditionalPreferences.IS_TURE_PROP);
-		StmtIterator list = inf.listStatements(null, isTrueProperty, (RDFNode)null);
+		gtInstance.addProperty(isTrueProperty, model.createTypedLiteral(false));
+		 
+		//not
+		OntClass notClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "NOT");
+		Individual notInstance = notClass.createIndividual();
+
+		Property hasLeftOperandProperty = model.getProperty(ConditionalPreferences.LEFT_OPERAND_PROP);
+		notInstance.addProperty(hasLeftOperandProperty, gtInstance);			
+		
+		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
+		InfModel inf = ModelFactory.createInfModel(reasoner, model);
+			
+			
+  		StmtIterator list = inf.listStatements(notInstance, isTrueProperty, (RDFNode)null);
 		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
 		while (list.hasNext()) {
 			Assert.assertEquals(list.next().getObject().asLiteral().getBoolean(), true);
@@ -100,29 +131,4 @@ public class EqualsRulesTest {
 	}
 	
 	
-	@Test
-	public void Test_greaterThanIsFalse()  {
-		
-		//gt
-		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "EQ");
-		Individual gtInstance = gtClass.createIndividual();
-
-		Property hasTypeProperty = model.getProperty(ConditionalPreferences.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
-				
-		Property hasValueProperty = model.getProperty(ConditionalPreferences.HAS_VALUE_PROP);
-		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(7));
-		
-		
-		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
-		InfModel inf = ModelFactory.createInfModel(reasoner, model);
-				
-		Property isTrueProperty = model.getProperty(ConditionalPreferences.IS_TURE_PROP);
-		StmtIterator list = inf.listStatements(null, isTrueProperty, (RDFNode)null);
-		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
-		while (list.hasNext()) {
-			Assert.assertEquals(list.next().getObject().asLiteral().getBoolean(), false);
-		}
-		
-	}
 }

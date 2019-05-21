@@ -9,6 +9,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import builtin.And;
+import builtin.GreaterThan;
 import config.RBMMTestConfig;
 
 import org.apache.jena.datatypes.xsd.XSDDatatype;
@@ -21,6 +23,7 @@ import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.reasoner.Reasoner;
+import org.apache.jena.reasoner.rulesys.BuiltinRegistry;
 import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
 import org.apache.jena.reasoner.rulesys.Rule;
 import rule_matchmaker.entities.ConditionalPreferences;
@@ -30,30 +33,17 @@ import rule_matchmaker.entities.UserPreference;
 public class GreaterThanRulesTest {
 	
 	private OntModel model;
-	public static final String 	rules = "[Greater_than_true:" + 
+	public static final String 	rules = "[Greater_than:" + 
 		    "(?cond http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#GT)" + 
 		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasValue ?value)" + 
 		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType ?type)" + 
 		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+User.ONTOLOGY_CLASS_URI+")" + 
 		    ",(?user "+User.PREFERENCE_PROP+" ?pref)" + 
 		    ",(?pref ?type ?nodeValue)" + 
-			",greaterThan(?nodeValue, ?value)"+
 		    "->" + 
-		    "	print('Greater Than', ?nodeValue, ?value)"+
-		    "	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" +
-		    "]"+
-	
-		    "[Greater_than_false:" + 
-		    "(?cond http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#GT)" + 
-		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasValue ?value)" + 
-		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType ?type)" + 
-		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+User.ONTOLOGY_CLASS_URI+")" + 
-		    ",(?user "+User.PREFERENCE_PROP+" ?pref)" + 
-		    ",(?pref ?type ?nodeValue)" + 
-		    ",greaterThan(?value, ?nodeValue)" + 
-		    "->" + 
-		    "	print('Not Greater Than', ?nodeValue, ?value)"+
-		    "	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue 'false'^^http://www.w3.org/2001/XMLSchema#boolean)" +
+			"	greaterThan(?nodeValue, ?value, ?res)"+
+		    "	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?res)" +
+		    "	print('Greater Than', ?nodeValue, ?value, ?res)"+
 		    "]";
 	
 	@BeforeMethod
@@ -63,6 +53,7 @@ public class GreaterThanRulesTest {
 		model = ModelFactory.createOntologyModel();
 		InputStream in = new FileInputStream(file);
 		model = (OntModel) model.read(in, null, "");
+		BuiltinRegistry.theRegistry.register(new GreaterThan());
 		System.out.println("Ontology was loaded");
 		
 		//user

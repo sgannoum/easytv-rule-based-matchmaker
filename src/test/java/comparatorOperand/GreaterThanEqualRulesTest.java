@@ -14,6 +14,8 @@ import org.testng.annotations.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
 
+import builtin.GreaterThanEquals;
+import builtin.OR;
 import config.RBMMTestConfig;
 
 import org.apache.jena.datatypes.xsd.XSDDatatype;
@@ -26,6 +28,7 @@ import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.reasoner.Reasoner;
+import org.apache.jena.reasoner.rulesys.BuiltinRegistry;
 import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
 import org.apache.jena.reasoner.rulesys.Rule;
 import rule_matchmaker.entities.ConditionalPreferences;
@@ -35,46 +38,19 @@ import rule_matchmaker.entities.UserPreference;
 public class GreaterThanEqualRulesTest {
 	
 	private OntModel model;
-	public static final String 	rules = "[Equals_true:" + 
-		    " (?cond http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#EqualityOperand)" + 
+	public static final String 	rules = "[Greater_than_equals:" + 
+		    " (?cond http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#GE)" + 
 		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasValue ?value)" + 
 		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType ?type)" + 
 		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+User.ONTOLOGY_CLASS_URI+")" + 
 		    ",(?user "+User.PREFERENCE_PROP+" ?pref)" + 
 		    ",(?pref ?type ?nodeValue)" + 
-			",equal(?nodeValue, ?value)"+
 		    "->" + 
-		    "	print('Equals', ?nodeValue, ?value)"+
-		    "	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" +
-		    "]"+
-		    
-			"[Greater_than_false:" + 
-			" (?cond http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#EqualityOperand)" + 
-			",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasValue ?value)" + 
-			",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType ?type)" + 
-			",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+User.ONTOLOGY_CLASS_URI+")" + 
-			",(?user "+User.PREFERENCE_PROP+" ?pref)" + 
-		    ",(?pref ?type ?nodeValue)" + 
-			",notEqual(?nodeValue, ?value)"+
-			"->" + 
-		    "	print('Not Equals', ?nodeValue, ?value)"+
-			"	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue 'false'^^http://www.w3.org/2001/XMLSchema#boolean)" +
-			"]"+
-			
-			"[Greater_than_equals_false:" + 
-			" (?cond http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#GT)" + 
-			",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue 'false'^^http://www.w3.org/2001/XMLSchema#boolean)" +
-			",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasValue ?value)" + 
-			",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType ?type)" + 
-			",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+User.ONTOLOGY_CLASS_URI+")" + 
-			",(?user "+User.PREFERENCE_PROP+" ?pref)" + 
-			",(?pref ?type ?nodeValue)" + 
-			",greaterThan(?nodeValue, ?value)"+
-			"->" + 
-		    "	print('Greater Than', ?nodeValue, ?value)"+
-			"	drop(1)"+
-			"	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" +
-			"]";
+		    "	greaterThanEquals(?nodeValue, ?value, ?res)"+
+		    "	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?res)" +
+		    "	print('Greater than equals', ?nodeValue, ?value, ?res)"+
+		    "]"
+		    ;
 		
 	@BeforeMethod
 	public void beforeMethod() throws FileNotFoundException {
@@ -83,6 +59,7 @@ public class GreaterThanEqualRulesTest {
 		model = ModelFactory.createOntologyModel();
 		InputStream in = new FileInputStream(file);
 		model = (OntModel) model.read(in, null, "");
+		BuiltinRegistry.theRegistry.register(new GreaterThanEquals());
 		System.out.println("Ontology was loaded");
 		
 		//user
@@ -104,7 +81,7 @@ public class GreaterThanEqualRulesTest {
 	public void Test_greaterThanEqualsTrue1()  {
 		
 		//gt
-		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "GE");
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(ConditionalPreferences.HAS_TYPE_PROP);
@@ -130,7 +107,7 @@ public class GreaterThanEqualRulesTest {
 	public void Test_greaterThanEqualsTrue2()  {
 		
 		//gt
-		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "GE");
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(ConditionalPreferences.HAS_TYPE_PROP);
@@ -156,7 +133,7 @@ public class GreaterThanEqualRulesTest {
 	public void Test_greaterThanEqualsIsFalse()  {
 		
 		//gt
-		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "GE");
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(ConditionalPreferences.HAS_TYPE_PROP);
