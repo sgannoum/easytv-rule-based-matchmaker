@@ -89,6 +89,12 @@ public class ConditionalPreferences {
 		return conditionalPreferences;
 	}
 	
+	/**
+	 * Create an instance of conditionalPreference 
+	 * 
+	 * @param model RDF model to enriched with RDF triples of the conditional preference
+	 * @return instance of conditional preference
+	 */
 	public Individual createOntologyInstance(final OntModel model){
 		Deque<Object> nodeStack = new ArrayDeque<Object>();
 			
@@ -96,8 +102,7 @@ public class ConditionalPreferences {
 		Individual operandInstance;
 		
 		//Add conditional preferences
-		List<Object> fastList = handleOperands1();
-//		System.out.println(fastList.toString());
+		List<Object> fastList = getFlatOperands();
 		
 		for(int i = fastList.size() - 1; i >= 0; i--) {
 			Object element = fastList.get(i);
@@ -117,10 +122,23 @@ public class ConditionalPreferences {
 			elementStr = elementStr.toUpperCase();
 			
 			//logical gate
-			if(elementStr.equalsIgnoreCase("and") || 
-				elementStr.equalsIgnoreCase("or") || 
-				 elementStr.equalsIgnoreCase("not")) {
+			if(	elementStr.equalsIgnoreCase("not")) {
 					
+					Object operand_1 = nodeStack.pop();
+				
+					operandClass = model.getOntClass(NAMESPACE + elementStr);
+					operandInstance = operandClass.createIndividual();
+					
+					//set left operand
+					Property leftOperandProperty = model.getProperty(LEFT_OPERAND_PROP);
+					operandInstance.addProperty(leftOperandProperty, model.createTypedLiteral(operand_1));
+					
+					//add second operand to the stack
+					nodeStack.push(operandInstance);
+					
+			} else if(elementStr.equalsIgnoreCase("and") || 
+						elementStr.equalsIgnoreCase("or")) {
+				
 					Object operand_1 = nodeStack.pop();
 					Object operand_2 = nodeStack.pop();
 				
@@ -137,7 +155,7 @@ public class ConditionalPreferences {
 					
 					//add second operand to the stack
 					nodeStack.push(operandInstance);
-					
+				
 			} else if(elementStr.equalsIgnoreCase("gt") || type.equalsIgnoreCase("ge") || 
 						elementStr.equalsIgnoreCase("lt") || type.equalsIgnoreCase("le") ||
 						 elementStr.equalsIgnoreCase("eq") || type.equalsIgnoreCase("nq") ) {
@@ -145,6 +163,7 @@ public class ConditionalPreferences {
 					Object value = nodeStack.pop();
 					Object uriObj = nodeStack.pop();
 					
+					System.out.println(value);
 					String uri;
 					if(String.class.isInstance(uriObj)) {
 						uri = (String) uriObj;
@@ -155,11 +174,7 @@ public class ConditionalPreferences {
 					
 					operandClass = model.getOntClass(NAMESPACE + elementStr);
 					operandInstance = operandClass.createIndividual();
-										
-/*					//set result
-					Property hasURIProperty = model.getProperty(HAS_URI_PROP);
-					operandInstance.addProperty(hasURIProperty, model.createTypedLiteral(uri));
-*/		
+														
 					//set type
 					Property hasTypeProperty = model.getProperty(HAS_TYPE_PROP);
 					operandInstance.addProperty(hasTypeProperty, model.createTypedLiteral(UserPreference.getDataProperty(uri)));
@@ -182,24 +197,33 @@ public class ConditionalPreferences {
 		
 		Property hasConditionsProperty = model.getProperty(HAS_CONDITIONS_PROP);
 		conditionalPreferenceInstance.addProperty(hasConditionsProperty,model.createTypedLiteral(nodeStack.pop())) ;
-		
-		System.out.println(conditionalPreferenceInstance.getOntClass().toString());
-		
+				
 		return conditionalPreferenceInstance;
 	}
 	
-	public List<Object> handleOperands1() {
-		List<Object> flatList = new ArrayList<Object>();
+	public  List<Object> getFlatOperands(){
+		List<Object> nestedOperands = new ArrayList<Object>(operand);
+		nestedOperands.add(0, type);
+		return flatOutOperands(nestedOperands);
+	}
+	
+	/**
+	 * Convert the tree of the conditional preferences into a flat list of operands
+	 * 
+	 * @return
+	 */
+	private static List<Object> flatOutOperands(List<Object> nestedOperands) {
+		List<Object> flatOperands = new ArrayList<Object>();
 		
-		flatList.add(type);
+//		flatList.add(type);
 		int index = 0 ;
 				
 		while(true) { 
-			if(index >= operand.size()) {
+			if(index >= nestedOperands.size()) {
 				break;
 			}
 			
-			Object operand1 = operand.get(index++);
+			Object operand1 = nestedOperands.get(index++);
 
 			if(LinkedHashMap.class.isInstance(operand1) || 
 					JSONObject.class.isInstance(operand1)) {
@@ -219,20 +243,20 @@ public class ConditionalPreferences {
 				}
 					
 				//handle first operand					
-				flatList.add(jsonObj.getString("type"));
+				flatOperands.add(jsonObj.getString("type"));
 				
 				//add operand
 				int i = index;
 				Iterator<Object> iteratorOperands = jsonObj.getJSONArray("operand").iterator();
 				while(iteratorOperands.hasNext()) {
-					operand.add(i++, iteratorOperands.next());
+					nestedOperands.add(i++, iteratorOperands.next());
 				}
 				
 			} else {
-				flatList.add(operand1);
+				flatOperands.add(operand1);
 			}
 		}
-		return flatList;
+		return flatOperands;
 	}
 
 }

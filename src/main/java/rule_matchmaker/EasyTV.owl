@@ -45,16 +45,6 @@
     
 
 
-    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConditionalPreferences -->
-
-    <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConditionalPreferences">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
-        <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#ConditionalPreference"/>
-    </owl:ObjectProperty>
-    
-
-
     <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConditions -->
 
     <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConditions">
@@ -78,7 +68,6 @@
     <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference -->
 
     <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#User"/>
         <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
     </owl:ObjectProperty>
@@ -543,7 +532,9 @@
 
     <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#ConditionalPreference -->
 
-    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#ConditionalPreference"/>
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#ConditionalPreference">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+    </owl:Class>
     
 
 
