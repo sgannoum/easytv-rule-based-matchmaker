@@ -25,7 +25,7 @@ import org.apache.jena.reasoner.Reasoner;
 import org.apache.jena.reasoner.rulesys.BuiltinRegistry;
 import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
 import org.apache.jena.reasoner.rulesys.Rule;
-import rule_matchmaker.entities.ConditionalPreferences;
+import rule_matchmaker.entities.Conditions;
 import rule_matchmaker.entities.User;
 import rule_matchmaker.entities.UserPreference;
 
@@ -76,26 +76,26 @@ public class AndRulesTest {
 	public void Test_And_True_True_input()  {
 		
 		//gt
-		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property isTrueProperty = model.getProperty(ConditionalPreferences.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
 		gtInstance.addProperty(isTrueProperty, model.createTypedLiteral(true));
 		
 		//lt
-		OntClass ltClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "LT");
+		OntClass ltClass = model.getOntClass(Conditions.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
 		ltInstance.addProperty(isTrueProperty, model.createTypedLiteral(true));
 		 
 		//and
-		OntClass andClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "AND");
+		OntClass andClass = model.getOntClass(Conditions.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(ConditionalPreferences.LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(Conditions.LEFT_OPERAND_PROP);
 		andInstance.addProperty(hasLeftOperandProperty, gtInstance);
 		
-		Property hasRightOperandProperty = model.getProperty(ConditionalPreferences.RIGHT_OPERAND_PROP);
+		Property hasRightOperandProperty = model.getProperty(Conditions.RIGHT_OPERAND_PROP);
 		andInstance.addProperty(hasRightOperandProperty, ltInstance);
 				
 		
@@ -116,26 +116,26 @@ public class AndRulesTest {
 	public void Test_And_False_True_input()  {
 		
 		//gt
-		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property isTrueProperty = model.getProperty(ConditionalPreferences.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
 		gtInstance.addProperty(isTrueProperty, model.createTypedLiteral(false));
 		
 		//lt
-		OntClass ltClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "LT");
+		OntClass ltClass = model.getOntClass(Conditions.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
 		ltInstance.addProperty(isTrueProperty, model.createTypedLiteral(true));
 		 
 		//and
-		OntClass andClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "AND");
+		OntClass andClass = model.getOntClass(Conditions.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(ConditionalPreferences.LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(Conditions.LEFT_OPERAND_PROP);
 		andInstance.addProperty(hasLeftOperandProperty, gtInstance);
 		
-		Property hasRightOperandProperty = model.getProperty(ConditionalPreferences.RIGHT_OPERAND_PROP);
+		Property hasRightOperandProperty = model.getProperty(Conditions.RIGHT_OPERAND_PROP);
 		andInstance.addProperty(hasRightOperandProperty, ltInstance);
 				
 		
@@ -155,26 +155,26 @@ public class AndRulesTest {
 	public void Test_And_True_False_input()  {
 		
 		//gt
-		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property isTrueProperty = model.getProperty(ConditionalPreferences.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
 		gtInstance.addProperty(isTrueProperty, model.createTypedLiteral(true));
 		
 		//lt
-		OntClass ltClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "LT");
+		OntClass ltClass = model.getOntClass(Conditions.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
 		ltInstance.addProperty(isTrueProperty, model.createTypedLiteral(false));
 		 
 		//and
-		OntClass andClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "AND");
+		OntClass andClass = model.getOntClass(Conditions.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(ConditionalPreferences.LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(Conditions.LEFT_OPERAND_PROP);
 		andInstance.addProperty(hasLeftOperandProperty, gtInstance);
 		
-		Property hasRightOperandProperty = model.getProperty(ConditionalPreferences.RIGHT_OPERAND_PROP);
+		Property hasRightOperandProperty = model.getProperty(Conditions.RIGHT_OPERAND_PROP);
 		andInstance.addProperty(hasRightOperandProperty, ltInstance);
 				
 		
@@ -194,26 +194,26 @@ public class AndRulesTest {
 	public void Test_And_False_False_input()  {
 		
 		//gt
-		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property isTrueProperty = model.getProperty(ConditionalPreferences.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
 		gtInstance.addProperty(isTrueProperty, model.createTypedLiteral(false));
 		
 		//lt
-		OntClass ltClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "LT");
+		OntClass ltClass = model.getOntClass(Conditions.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
 		ltInstance.addProperty(isTrueProperty, model.createTypedLiteral(false));
 		 
 		//and
-		OntClass andClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "AND");
+		OntClass andClass = model.getOntClass(Conditions.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(ConditionalPreferences.LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(Conditions.LEFT_OPERAND_PROP);
 		andInstance.addProperty(hasLeftOperandProperty, gtInstance);
 		
-		Property hasRightOperandProperty = model.getProperty(ConditionalPreferences.RIGHT_OPERAND_PROP);
+		Property hasRightOperandProperty = model.getProperty(Conditions.RIGHT_OPERAND_PROP);
 		andInstance.addProperty(hasRightOperandProperty, ltInstance);
 				
 		

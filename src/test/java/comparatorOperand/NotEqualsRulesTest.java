@@ -26,7 +26,7 @@ import org.apache.jena.reasoner.Reasoner;
 import org.apache.jena.reasoner.rulesys.BuiltinRegistry;
 import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
 import org.apache.jena.reasoner.rulesys.Rule;
-import rule_matchmaker.entities.ConditionalPreferences;
+import rule_matchmaker.entities.Conditions;
 import rule_matchmaker.entities.User;
 import rule_matchmaker.entities.UserPreference;
 
@@ -75,20 +75,20 @@ public class NotEqualsRulesTest {
 	public void Test_NotEqualIsTrue()  {
 		
 		//gt
-		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "NE");
+		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "NE");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property hasTypeProperty = model.getProperty(ConditionalPreferences.HAS_TYPE_PROP);
+		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
 		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
 				
-		Property hasValueProperty = model.getProperty(ConditionalPreferences.HAS_VALUE_PROP);
+		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(7));
 		 
 		
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 				
-		Property isTrueProperty = model.getProperty(ConditionalPreferences.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
 		StmtIterator list = inf.listStatements(null, isTrueProperty, (RDFNode)null);
 		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
 		while (list.hasNext()) {
@@ -102,20 +102,20 @@ public class NotEqualsRulesTest {
 	public void Test_NotEqualIsFalse()  {
 		
 		//gt
-		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "NE");
+		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "NE");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property hasTypeProperty = model.getProperty(ConditionalPreferences.HAS_TYPE_PROP);
+		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
 		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
 				
-		Property hasValueProperty = model.getProperty(ConditionalPreferences.HAS_VALUE_PROP);
+		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(6));
 		
 		
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 				
-		Property isTrueProperty = model.getProperty(ConditionalPreferences.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
 		StmtIterator list = inf.listStatements(null, isTrueProperty, (RDFNode)null);
 		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
 		while (list.hasNext()) {

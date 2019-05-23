@@ -11,9 +11,10 @@
       <class name="comparatorOperand.LessThanRulesTest"/>
       <class name="comparatorOperand.NotEqualsRulesTest"/>
 
+      <class name="entities.UserTest"/>
       <class name="entities.AuditoryTest"/>
-      <class name="entities.ConditionalPreferencesTest"/>
-      <class name="entities.UserPreferenceTest"/>
+      <class name="entities.ConditionsTest"/>
+      <class name="entities.DefaultUserPreferenceTest"/>
       <class name="entities.VisualTest"/>
 
       <class name="logicalOperand.AndRulesTest"/>

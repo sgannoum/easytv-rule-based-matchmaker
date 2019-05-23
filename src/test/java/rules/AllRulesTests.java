@@ -41,11 +41,11 @@ import comparatorOperand.LessThanEqualRulesTest;
 import comparatorOperand.LessThanRulesTest;
 import comparatorOperand.NotEqualsRulesTest;
 import config.RBMMTestConfig;
-import entities.ConditionalPreferencesTest;
+import entities.ConditionsTest;
 import logicalOperand.AndRulesTest;
 import logicalOperand.NotRulesTest;
 import logicalOperand.OrRulesTest;
-import rule_matchmaker.entities.ConditionalPreferences;
+import rule_matchmaker.entities.Conditions;
 import rule_matchmaker.entities.User;
 import rule_matchmaker.entities.UserPreference;
 
@@ -56,7 +56,7 @@ public class AllRulesTests {
 							EqualsRulesTest.rules + NotEqualsRulesTest.rules +
 							GreaterThanRulesTest.rules + GreaterThanEqualRulesTest.rules +
 							LessThanRulesTest.rules + LessThanEqualRulesTest.rules +
-							ConditionalPreferencesTest.rules
+							ConditionsTest.rules
 							;
 	
 	@BeforeMethod
@@ -101,30 +101,30 @@ public class AllRulesTests {
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 		
 		//gt
-		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property hasTypeProperty = model.getProperty(ConditionalPreferences.HAS_TYPE_PROP);
+		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
 		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
 				
-		Property hasValueProperty = model.getProperty(ConditionalPreferences.HAS_VALUE_PROP);
+		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(3));
 		
 		//lt
-		OntClass ltClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "LT");
+		OntClass ltClass = model.getOntClass(Conditions.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
 		ltInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
 		ltInstance.addProperty(hasValueProperty, model.createTypedLiteral(7));
 		
 		//and
-		OntClass andClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "AND");
+		OntClass andClass = model.getOntClass(Conditions.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(ConditionalPreferences.LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(Conditions.LEFT_OPERAND_PROP);
 		andInstance.addProperty(hasLeftOperandProperty, gtInstance);
 		
-		Property hasRightOperandProperty = model.getProperty(ConditionalPreferences.RIGHT_OPERAND_PROP);
+		Property hasRightOperandProperty = model.getProperty(Conditions.RIGHT_OPERAND_PROP);
 		andInstance.addProperty(hasRightOperandProperty, ltInstance);
 				
 		
@@ -132,7 +132,7 @@ public class AllRulesTests {
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 			
 		
-		Property isTrueProperty = model.getProperty(ConditionalPreferences.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
 		StmtIterator list = inf.listStatements(andInstance, isTrueProperty, (RDFNode)null);
 		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
 		Assert.assertEquals(list.next().getObject().asLiteral().getBoolean(), true);
@@ -160,30 +160,30 @@ public class AllRulesTests {
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 		
 		//gt
-		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property hasTypeProperty = model.getProperty(ConditionalPreferences.HAS_TYPE_PROP);
+		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
 		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
 				
-		Property hasValueProperty = model.getProperty(ConditionalPreferences.HAS_VALUE_PROP);
+		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(7));
 		
 		//lt
-		OntClass ltClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "LT");
+		OntClass ltClass = model.getOntClass(Conditions.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
 		ltInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
 		ltInstance.addProperty(hasValueProperty, model.createTypedLiteral(7));
 		
 		//and
-		OntClass andClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "AND");
+		OntClass andClass = model.getOntClass(Conditions.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(ConditionalPreferences.LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(Conditions.LEFT_OPERAND_PROP);
 		andInstance.addProperty(hasLeftOperandProperty, gtInstance);
 		
-		Property hasRightOperandProperty = model.getProperty(ConditionalPreferences.RIGHT_OPERAND_PROP);
+		Property hasRightOperandProperty = model.getProperty(Conditions.RIGHT_OPERAND_PROP);
 		andInstance.addProperty(hasRightOperandProperty, ltInstance);
 				
 		
@@ -191,7 +191,7 @@ public class AllRulesTests {
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 			
 		
-		Property isTrueProperty = model.getProperty(ConditionalPreferences.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
 		StmtIterator list = inf.listStatements(andInstance, isTrueProperty, (RDFNode)null);
 		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
 		Assert.assertEquals(list.next().getObject().asLiteral().getBoolean(), false);
@@ -218,30 +218,30 @@ public class AllRulesTests {
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 		
 		//gt
-		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property hasTypeProperty = model.getProperty(ConditionalPreferences.HAS_TYPE_PROP);
+		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
 		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
 				
-		Property hasValueProperty = model.getProperty(ConditionalPreferences.HAS_VALUE_PROP);
+		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(3));
 		
 		//lt
-		OntClass ltClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "LT");
+		OntClass ltClass = model.getOntClass(Conditions.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
 		ltInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
 		ltInstance.addProperty(hasValueProperty, model.createTypedLiteral(5));
 		
 		//and
-		OntClass andClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "AND");
+		OntClass andClass = model.getOntClass(Conditions.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(ConditionalPreferences.LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(Conditions.LEFT_OPERAND_PROP);
 		andInstance.addProperty(hasLeftOperandProperty, gtInstance);
 		
-		Property hasRightOperandProperty = model.getProperty(ConditionalPreferences.RIGHT_OPERAND_PROP);
+		Property hasRightOperandProperty = model.getProperty(Conditions.RIGHT_OPERAND_PROP);
 		andInstance.addProperty(hasRightOperandProperty, ltInstance);
 				
 		
@@ -249,7 +249,7 @@ public class AllRulesTests {
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 			
 		
-		Property isTrueProperty = model.getProperty(ConditionalPreferences.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
 		StmtIterator list = inf.listStatements(andInstance, isTrueProperty, (RDFNode)null);
 		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
 		Assert.assertEquals(list.next().getObject().asLiteral().getBoolean(), false);
@@ -276,30 +276,30 @@ public class AllRulesTests {
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 		
 		//gt
-		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property hasTypeProperty = model.getProperty(ConditionalPreferences.HAS_TYPE_PROP);
+		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
 		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
 				
-		Property hasValueProperty = model.getProperty(ConditionalPreferences.HAS_VALUE_PROP);
+		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(7));
 		
 		//lt
-		OntClass ltClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "LT");
+		OntClass ltClass = model.getOntClass(Conditions.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
 		ltInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
 		ltInstance.addProperty(hasValueProperty, model.createTypedLiteral(5));
 		
 		//and
-		OntClass andClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "AND");
+		OntClass andClass = model.getOntClass(Conditions.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(ConditionalPreferences.LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(Conditions.LEFT_OPERAND_PROP);
 		andInstance.addProperty(hasLeftOperandProperty, gtInstance);
 		
-		Property hasRightOperandProperty = model.getProperty(ConditionalPreferences.RIGHT_OPERAND_PROP);
+		Property hasRightOperandProperty = model.getProperty(Conditions.RIGHT_OPERAND_PROP);
 		andInstance.addProperty(hasRightOperandProperty, ltInstance);
 				
 		
@@ -307,7 +307,7 @@ public class AllRulesTests {
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 			
 		
-		Property isTrueProperty = model.getProperty(ConditionalPreferences.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
 		StmtIterator list = inf.listStatements(andInstance, isTrueProperty, (RDFNode)null);
 		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
 		Assert.assertEquals(list.next().getObject().asLiteral().getBoolean(), false);
@@ -335,35 +335,35 @@ public class AllRulesTests {
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 		
 		//gt
-		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property hasTypeProperty = model.getProperty(ConditionalPreferences.HAS_TYPE_PROP);
+		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
 		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
 				
-		Property hasValueProperty = model.getProperty(ConditionalPreferences.HAS_VALUE_PROP);
+		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(7));
 		
 		//lt
-		OntClass ltClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "LT");
+		OntClass ltClass = model.getOntClass(Conditions.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
 		ltInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
 		ltInstance.addProperty(hasValueProperty, model.createTypedLiteral(5));
 		
 		//and
-		OntClass andClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "AND");
+		OntClass andClass = model.getOntClass(Conditions.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(ConditionalPreferences.LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(Conditions.LEFT_OPERAND_PROP);
 		andInstance.addProperty(hasLeftOperandProperty, gtInstance);
 		
-		Property hasRightOperandProperty = model.getProperty(ConditionalPreferences.RIGHT_OPERAND_PROP);
+		Property hasRightOperandProperty = model.getProperty(Conditions.RIGHT_OPERAND_PROP);
 		andInstance.addProperty(hasRightOperandProperty, ltInstance);
 		
 		
 		//not
-		OntClass notClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "NOT");
+		OntClass notClass = model.getOntClass(Conditions.NAMESPACE + "NOT");
 		Individual notInstance = notClass.createIndividual();
 
 		notInstance.addProperty(hasLeftOperandProperty, andInstance);
@@ -373,7 +373,7 @@ public class AllRulesTests {
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 			
 		
-		Property isTrueProperty = model.getProperty(ConditionalPreferences.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
 		StmtIterator list = inf.listStatements(notInstance, isTrueProperty, (RDFNode)null);
 		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
 		Assert.assertEquals(list.next().getObject().asLiteral().getBoolean(), true);
@@ -406,38 +406,38 @@ public class AllRulesTests {
 	
 		//Add conditional preferences
 		//gt
-		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property hasTypeProperty = model.getProperty(ConditionalPreferences.HAS_TYPE_PROP);
+		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
 		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
 				
-		Property hasValueProperty = model.getProperty(ConditionalPreferences.HAS_VALUE_PROP);
+		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(1));
 		
 		//lt
-		OntClass ltClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "LT");
+		OntClass ltClass = model.getOntClass(Conditions.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
 		ltInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/common/display/screen/enhancement/font/size")));
 		ltInstance.addProperty(hasValueProperty, model.createTypedLiteral(7));
 		
 		//and
-		OntClass andClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "AND");
+		OntClass andClass = model.getOntClass(Conditions.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(ConditionalPreferences.LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(Conditions.LEFT_OPERAND_PROP);
 		andInstance.addProperty(hasLeftOperandProperty, gtInstance);
 		
-		Property hasRightOperandProperty = model.getProperty(ConditionalPreferences.RIGHT_OPERAND_PROP);
+		Property hasRightOperandProperty = model.getProperty(Conditions.RIGHT_OPERAND_PROP);
 		andInstance.addProperty(hasRightOperandProperty, ltInstance);
 		
 		
 		//conditional
-		OntClass conditionalPreferenceClass = model.getOntClass(ConditionalPreferences.ONTOLOGY_CLASS_URI);
+		OntClass conditionalPreferenceClass = model.getOntClass(Conditions.ONTOLOGY_CLASS_URI);
 		Individual conditionalPreferenceInstance = conditionalPreferenceClass.createIndividual();
 		
-		Property hasConditionsProperty = model.getProperty(ConditionalPreferences.HAS_CONDITIONS_PROP);
+		Property hasConditionsProperty = model.getProperty(Conditions.HAS_CONDITIONS_PROP);
 		conditionalPreferenceInstance.addProperty(hasConditionsProperty, andInstance) ;
 	
 		conditionalPreferenceInstance.addProperty(hasFontSizeProperty, model.createTypedLiteral(500));
@@ -449,7 +449,7 @@ public class AllRulesTests {
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 		
-		Property isTrueProperty = model.getProperty(ConditionalPreferences.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
 		StmtIterator list = inf.listStatements(andInstance, isTrueProperty, (RDFNode)null);
 		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
 		Assert.assertEquals(list.next().getObject().asLiteral().getBoolean(), true);

@@ -7,10 +7,15 @@ import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Property;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Visual {
 	
-	private Integer visual_acuity;
-	private Integer contrast_sensitivity;
+    @JsonProperty("https://easytvproject.eu/registry/functionalLimitations/visual/visualAcuity")
+	private String visual_acuity;
+    @JsonProperty("https://easytvproject.eu/registry/functionalLimitations/visual/contrastSensitivity")
+	private String contrast_sensitivity;
+    @JsonProperty("https://easytvproject.eu/registry/functionalLimitations/visual/colorBlindness")
     private String color_blindness;
     
 	private static final String NAMESPACE = "http://www.owl-ontologies.com/OntologyEasyTV.owl#";
@@ -20,16 +25,16 @@ public class Visual {
 	public static final String COLOR_BLINDNESS_PROP = NAMESPACE + "hasColorBllindness";
 
     
-	public Integer getVisual_acuity() {
+	public String getVisual_acuity() {
 		return visual_acuity;
 	}
-	public void setVisual_acuity(Integer visual_acuity) {
+	public void setVisual_acuity(String visual_acuity) {
 		this.visual_acuity = visual_acuity;
 	}
-	public Integer getContrast_sensitivity() {
+	public String getContrast_sensitivity() {
 		return contrast_sensitivity;
 	}
-	public void setContrast_sensitivity(Integer contrast_sensitivity) {
+	public void setContrast_sensitivity(String contrast_sensitivity) {
 		this.contrast_sensitivity = contrast_sensitivity;
 	}
 	public String getColor_blindness() {

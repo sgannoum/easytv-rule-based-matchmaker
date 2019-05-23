@@ -12,8 +12,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import junit.framework.Assert;
 import rule_matchmaker.entities.UserPreference;
+import rule_matchmaker.entities.DefaultUserPreferences;
 
-public class UserPreferenceTest {
+public class DefaultUserPreferenceTest {
 	
 	JSONObject jsonProfile1 = new JSONObject("{\r\n" + 
 			"      \"preferences\": {\r\n" + 
@@ -38,7 +39,7 @@ public class UserPreferenceTest {
 	 
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		UserPreference userPreference = mapper.readValue(jsonProfile1.toString(), UserPreference.class);
+		DefaultUserPreferences userPreference = mapper.readValue(jsonProfile1.toString(), DefaultUserPreferences.class);
 	 
 		System.out.println(userPreference.toString());
 	    Assert.assertNotNull(userPreference);

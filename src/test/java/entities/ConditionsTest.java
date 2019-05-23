@@ -32,11 +32,81 @@ import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
 import org.apache.jena.reasoner.rulesys.Rule;
 
 import junit.framework.Assert;
-import rule_matchmaker.entities.ConditionalPreferences;
+import rule_matchmaker.entities.Conditions;
 import rule_matchmaker.entities.User;
 import rule_matchmaker.entities.UserPreference;
 
-public class ConditionalPreferencesTest {
+public class ConditionsTest {
+	
+	/*	public static final String rules = "[conditional_preference:" + 
+	" (?condPref http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#ConditionalPreference)" + 
+	",(?condPref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConditions ?cond)" + 
+	",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" +
+    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+User.ONTOLOGY_CLASS_URI+")" + 
+    ",(?user "+User.PREFERENCE_PROP+" ?defPref)" + 
+	"->" + 			
+    
+	" 	[(?defPref "+UserPreference.AUDIO_VOLUME_PROP+" ?audioVolume) <- (?condPref "+UserPreference.AUDIO_VOLUME_PROP+" ?audioVolume)]" +
+	" 	[(?defPref "+UserPreference.AUDIO_LANGUAGE_PROP+" ?audioLanguage) <- (?condPref "+UserPreference.AUDIO_LANGUAGE_PROP+" ?audioLanguage)]" +
+	" 	[(?defPref "+UserPreference.BACKGROUND_PROP+" ?background) <- (?condPref "+UserPreference.BACKGROUND_PROP+" ?background)]" + 
+	
+	" 	[(?defPref "+UserPreference.FONT_CONTRAST_PROP+" ?fontContrast) <- (?condPref "+UserPreference.FONT_CONTRAST_PROP+" ?fontContrast)]" +
+	" 	[(?defPref "+UserPreference.FONT_SIZE_PROP+" ?fontSize) <- (?condPref "+UserPreference.FONT_SIZE_PROP+" ?fontSize)]" + 
+	
+	" 	[(?defPref "+UserPreference.FONT_COLOR_PROP+" ?fontColor) <- (?condPref "+UserPreference.FONT_COLOR_PROP+" ?fontColor)]" + 
+	" 	[(?defPref "+UserPreference.FONT_TYPE_PROP+" ?fontType) <- (?condPref "+UserPreference.FONT_TYPE_PROP+" ?fontType)]" +
+	
+	" 	[(?defPref "+UserPreference.CURSOR_COLOR_PROP+" ?cursorColor) <- (?condPref "+UserPreference.CURSOR_COLOR_PROP+" ?cursorColor)]" +
+	" 	[(?defPref "+UserPreference.CURSOR_SIZE_PROP+" ?cursorSize) <- (?condPref "+UserPreference.CURSOR_SIZE_PROP+" ?cursorSize)]" + 
+	" 	[(?defPref "+UserPreference.CURSOR_TRAILS_PROP+" ?cursorTrails) <- (?condPref "+UserPreference.CURSOR_TRAILS_PROP+" ?cursorTrails)]" + 
+	
+	" 	[(?defPref "+UserPreference.DICTATION_PROP+" ?dictation) <- (?condPref "+UserPreference.DICTATION_PROP+" ?dictation)]" + 
+	" 	[(?defPref "+UserPreference.BRIGHTNESS_PROP+" ?brightness) <- (?condPref "+UserPreference.BRIGHTNESS_PROP+" ?brightness)]" + 
+	" 	[(?defPref "+UserPreference.HIGHLIGHT_PROP+" ?highlight) <- (?condPref "+UserPreference.HIGHLIGHT_PROP+" ?highlight)]" + 
+	" 	[(?defPref "+UserPreference.SPEECH_RATE_PROP+" ?speechRate) <- (?condPref "+UserPreference.SPEECH_RATE_PROP+" ?speechRate)]" + 
+	" 	[(?defPref "+UserPreference.SCREEN_READER_PROP+" ?screenReader) <- (?condPref "+UserPreference.SCREEN_READER_PROP+" ?screenReader)]" + 
+	" 	[(?defPref "+UserPreference.STYLE_PROP+" ?style) <- (?condPref "+UserPreference.STYLE_PROP+" ?style)]" + 
+
+	"]"
+	;
+*/
+
+
+/*	public static final String rules = "[conditional_preference:" + 
+	" (?condPref http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#ConditionalPreference)" + 
+	",(?condPref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConditions ?cond)" + 
+	",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" +
+    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+User.ONTOLOGY_CLASS_URI+")" + 
+    ",(?user "+User.PREFERENCE_PROP+" ?defPref)" + 
+    ",makeSkolem(?X, ?defPref)" + 
+	"->" + 			
+	" 	(?X http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences)" +  
+	
+	" 	[(?X "+UserPreference.AUDIO_VOLUME_PROP+" ?audioVolume) <- (?condPref "+UserPreference.AUDIO_VOLUME_PROP+" ?audioVolume)]" +
+	" 	[(?X "+UserPreference.AUDIO_LANGUAGE_PROP+" ?audioLanguage) <- (?condPref "+UserPreference.AUDIO_LANGUAGE_PROP+" ?audioLanguage)]" +
+	" 	[(?X "+UserPreference.BACKGROUND_PROP+" ?background) <- (?condPref "+UserPreference.BACKGROUND_PROP+" ?background)]" + 
+	
+	" 	[(?X "+UserPreference.FONT_CONTRAST_PROP+" ?fontContrast) <- (?condPref "+UserPreference.FONT_CONTRAST_PROP+" ?fontContrast)]" +
+	" 	[(?X "+UserPreference.FONT_SIZE_PROP+" ?fontSize) <- (?condPref "+UserPreference.FONT_SIZE_PROP+" ?fontSize)]" + 
+	" 	[(?X "+UserPreference.FONT_COLOR_PROP+" ?fontColor) <- (?condPref "+UserPreference.FONT_COLOR_PROP+" ?fontColor)]" + 
+	" 	[(?X "+UserPreference.FONT_TYPE_PROP+" ?fontType) <- (?condPref "+UserPreference.FONT_TYPE_PROP+" ?fontType)]" +
+	
+	" 	[(?X "+UserPreference.CURSOR_COLOR_PROP+" ?cursorColor) <- (?condPref "+UserPreference.CURSOR_COLOR_PROP+" ?cursorColor)]" +
+	" 	[(?X "+UserPreference.CURSOR_SIZE_PROP+" ?cursorSize) <- (?condPref "+UserPreference.CURSOR_SIZE_PROP+" ?cursorSize)]" + 
+	" 	[(?X "+UserPreference.CURSOR_TRAILS_PROP+" ?cursorTrails) <- (?condPref "+UserPreference.CURSOR_TRAILS_PROP+" ?cursorTrails)]" + 
+	
+	" 	[(?X "+UserPreference.DICTATION_PROP+" ?dictation) <- (?condPref "+UserPreference.DICTATION_PROP+" ?dictation)]" + 
+	" 	[(?X "+UserPreference.BRIGHTNESS_PROP+" ?brightness) <- (?condPref "+UserPreference.BRIGHTNESS_PROP+" ?brightness)]" + 
+	" 	[(?X "+UserPreference.HIGHLIGHT_PROP+" ?highlight) <- (?condPref "+UserPreference.HIGHLIGHT_PROP+" ?highlight)]" + 
+	" 	[(?X "+UserPreference.SPEECH_RATE_PROP+" ?speechRate) <- (?condPref "+UserPreference.SPEECH_RATE_PROP+" ?speechRate)]" + 
+	" 	[(?X "+UserPreference.SCREEN_READER_PROP+" ?screenReader) <- (?condPref "+UserPreference.SCREEN_READER_PROP+" ?screenReader)]" + 
+	" 	[(?X "+UserPreference.STYLE_PROP+" ?style) <- (?condPref "+UserPreference.STYLE_PROP+" ?style)]" + 
+	
+    "	drop(4)" + 
+    "	(?user "+User.PREFERENCE_PROP+" ?X)" + 
+	"]"
+	;
+*/
 	
 	public static final String rules = "[conditional_preference:" + 
 			" (?condPref http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#ConditionalPreference)" + 
@@ -118,7 +188,7 @@ public class ConditionalPreferencesTest {
 	 
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		ConditionalPreferences conditionalPreferences = mapper.readValue(jsonProfile1.toString(), ConditionalPreferences.class);
+		Conditions conditionalPreferences = mapper.readValue(jsonProfile1.toString(), Conditions.class);
 	 
 		System.out.println(conditionalPreferences.toString());
 	    Assert.assertNotNull(conditionalPreferences);
@@ -130,7 +200,7 @@ public class ConditionalPreferencesTest {
 	 
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		ConditionalPreferences conditionalPreferences = mapper.readValue(jsonProfile2.toString(), ConditionalPreferences.class);
+		Conditions conditionalPreferences = mapper.readValue(jsonProfile2.toString(), Conditions.class);
 	 
 		System.out.println(conditionalPreferences.toString());
 	    Assert.assertNotNull(conditionalPreferences);
@@ -165,49 +235,49 @@ public class ConditionalPreferencesTest {
 		
 		//Add conditional preferences
 		//gt
-		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property hasTypeProperty = model.getProperty(ConditionalPreferences.HAS_TYPE_PROP);
+		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
 		gtInstance.addProperty(hasTypeProperty, model.createTypedLiteral(UserPreference.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
 				
-		Property hasValueProperty = model.getProperty(ConditionalPreferences.HAS_VALUE_PROP);
+		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(5));
 		
-		Property isTrue = model.getProperty(ConditionalPreferences.IS_TURE_PROP);
+		Property isTrue = model.getProperty(Conditions.IS_TURE_PROP);
 		gtInstance.addProperty(isTrue, model.createTypedLiteral(true));
 		
 		//lt
-		OntClass ltClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "LT");
+		OntClass ltClass = model.getOntClass(Conditions.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 
-		hasTypeProperty = model.getProperty(ConditionalPreferences.HAS_TYPE_PROP);
+		hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
 		ltInstance.addProperty(hasTypeProperty, model.createTypedLiteral(UserPreference.getDataProperty("http://registry.easytv.eu/common/display/screen/enhancement/font/size")));
 		
-		hasValueProperty = model.getProperty(ConditionalPreferences.HAS_VALUE_PROP);
+		hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
 		ltInstance.addProperty(hasValueProperty, model.createTypedLiteral(5));
 		
 		ltInstance.addProperty(isTrue, model.createTypedLiteral(true));
 
 		
 		//and
-		OntClass andClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "AND");
+		OntClass andClass = model.getOntClass(Conditions.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 		
-		Property leftOperandProperty = model.getProperty(ConditionalPreferences.LEFT_OPERAND_PROP);
+		Property leftOperandProperty = model.getProperty(Conditions.LEFT_OPERAND_PROP);
 		andInstance.addProperty(leftOperandProperty, ltInstance);
 		
-		Property rightOperandProperty = model.getProperty(ConditionalPreferences.RIGHT_OPERAND_PROP);
+		Property rightOperandProperty = model.getProperty(Conditions.RIGHT_OPERAND_PROP);
 		andInstance.addProperty(rightOperandProperty, gtInstance);		
 		
 		andInstance.addProperty(isTrue, model.createTypedLiteral(true));
 
 		
 		//conditional
-		OntClass conditionalPreferenceClass = model.getOntClass(ConditionalPreferences.ONTOLOGY_CLASS_URI);
+		OntClass conditionalPreferenceClass = model.getOntClass(Conditions.ONTOLOGY_CLASS_URI);
 		Individual conditionalPreferenceInstance = conditionalPreferenceClass.createIndividual();
 		
-		Property hasConditionsProperty = model.getProperty(ConditionalPreferences.HAS_CONDITIONS_PROP);
+		Property hasConditionsProperty = model.getProperty(Conditions.HAS_CONDITIONS_PROP);
 		conditionalPreferenceInstance.addProperty(hasConditionsProperty, andInstance) ;
 	
 		Property hasFontSizeProperty = model.getProperty(UserPreference.FONT_SIZE_PROP);
@@ -260,49 +330,49 @@ public class ConditionalPreferencesTest {
 		
 		//Add conditional preferences
 		//gt
-		OntClass gtClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property hasTypeProperty = model.getProperty(ConditionalPreferences.HAS_TYPE_PROP);
+		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
 		gtInstance.addProperty(hasTypeProperty, model.createTypedLiteral(UserPreference.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
 				
-		Property hasValueProperty = model.getProperty(ConditionalPreferences.HAS_VALUE_PROP);
+		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(5));
 		
-		Property isTrue = model.getProperty(ConditionalPreferences.IS_TURE_PROP);
+		Property isTrue = model.getProperty(Conditions.IS_TURE_PROP);
 		gtInstance.addProperty(isTrue, model.createTypedLiteral(true));
 		
 		//lt
-		OntClass ltClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "LT");
+		OntClass ltClass = model.getOntClass(Conditions.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 
-		hasTypeProperty = model.getProperty(ConditionalPreferences.HAS_TYPE_PROP);
+		hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
 		ltInstance.addProperty(hasTypeProperty, model.createTypedLiteral(UserPreference.getDataProperty("http://registry.easytv.eu/common/display/screen/enhancement/font/size")));
 		
-		hasValueProperty = model.getProperty(ConditionalPreferences.HAS_VALUE_PROP);
+		hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
 		ltInstance.addProperty(hasValueProperty, model.createTypedLiteral(5));
 		
 		ltInstance.addProperty(isTrue, model.createTypedLiteral(true));
 
 		
 		//and
-		OntClass andClass = model.getOntClass(ConditionalPreferences.NAMESPACE + "AND");
+		OntClass andClass = model.getOntClass(Conditions.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 		
-		Property leftOperandProperty = model.getProperty(ConditionalPreferences.LEFT_OPERAND_PROP);
+		Property leftOperandProperty = model.getProperty(Conditions.LEFT_OPERAND_PROP);
 		andInstance.addProperty(leftOperandProperty, ltInstance);
 		
-		Property rightOperandProperty = model.getProperty(ConditionalPreferences.RIGHT_OPERAND_PROP);
+		Property rightOperandProperty = model.getProperty(Conditions.RIGHT_OPERAND_PROP);
 		andInstance.addProperty(rightOperandProperty, gtInstance);		
 		
 		andInstance.addProperty(isTrue, model.createTypedLiteral(false));
 
 		
 		//conditional
-		OntClass conditionalPreferenceClass = model.getOntClass(ConditionalPreferences.ONTOLOGY_CLASS_URI);
+		OntClass conditionalPreferenceClass = model.getOntClass(Conditions.ONTOLOGY_CLASS_URI);
 		Individual conditionalPreferenceInstance = conditionalPreferenceClass.createIndividual();
 		
-		Property hasConditionsProperty = model.getProperty(ConditionalPreferences.HAS_CONDITIONS_PROP);
+		Property hasConditionsProperty = model.getProperty(Conditions.HAS_CONDITIONS_PROP);
 		conditionalPreferenceInstance.addProperty(hasConditionsProperty, andInstance) ;
 	
 		Property hasFontSizeProperty = model.getProperty(UserPreference.FONT_SIZE_PROP);

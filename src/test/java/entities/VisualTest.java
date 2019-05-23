@@ -21,6 +21,12 @@ public class VisualTest {
 			"    \"color_blindness\": \"normal\"\r\n" + 
 			"  }");
 	
+	JSONObject jsonProfile2 = new JSONObject("{\r\n" + 
+			"    \"https://easytvproject.eu/registry/functionalLimitations/visual/visualAcuity\": \"20/400\",\r\n" + 
+			"    \"https://easytvproject.eu/registry/functionalLimitations/visual/contrastSensitivity\": \"21:1\",\r\n" + 
+			"    \"https://easytvproject.eu/registry/functionalLimitations/visual/colorBlindness\": \"normal\"\r\n" + 
+			"  }");
+	
 	@BeforeTest
 	public void beforeTests() {
 	    Assert.assertNotNull(jsonProfile1);
@@ -32,7 +38,7 @@ public class VisualTest {
 	 
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		Visual visual = mapper.readValue(jsonProfile1.toString(), Visual.class);
+		Visual visual = mapper.readValue(jsonProfile2.toString(), Visual.class);
 	 
 		System.out.println(visual.toString());
 	    Assert.assertNotNull(visual);

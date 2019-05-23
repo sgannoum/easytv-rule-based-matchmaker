@@ -18,7 +18,7 @@ import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Property;
 
-public class ConditionalPreferences {
+public class Conditions {
 	
 	private String type;
 	private List<Object> operand;
@@ -70,7 +70,7 @@ public class ConditionalPreferences {
 	
 	@Override
 	public String toString() {
-		String conditionalPreferences = "conditional_preferences : [\"type\" : \"" + type + "\", \"operand\": "  ;
+		String conditionalPreferences = "conditions : [\"type\" : \"" + type + "\", \"operand\": "  ;
 		Iterator<Object> iterator = operand.iterator();
 		
 		conditionalPreferences +=  "[\\n";
@@ -96,6 +96,21 @@ public class ConditionalPreferences {
 	 * @return instance of conditional preference
 	 */
 	public Individual createOntologyInstance(final OntModel model){
+		OntClass conditionalPreferenceClass = model.getOntClass(ONTOLOGY_CLASS_URI);
+		Individual conditionalPreferenceInstance = conditionalPreferenceClass.createIndividual();
+		
+		return createOntologyInstance(model, conditionalPreferenceInstance);
+	}
+	
+
+	/**
+	 * Create an instance of conditionalPreference 
+	 * 
+	 * @param model 
+	 * @param conditionalPreferenceInstance an instance of conditional preference class
+	 * @return
+	 */
+	public Individual createOntologyInstance(final OntModel model, Individual conditionalPreferenceInstance){
 		Deque<Object> nodeStack = new ArrayDeque<Object>();
 			
 		OntClass operandClass;
@@ -192,9 +207,7 @@ public class ConditionalPreferences {
 			return null;
 		}
 		
-		OntClass conditionalPreferenceClass = model.getOntClass(ONTOLOGY_CLASS_URI);
-		Individual conditionalPreferenceInstance = conditionalPreferenceClass.createIndividual();
-		
+
 		Property hasConditionsProperty = model.getProperty(HAS_CONDITIONS_PROP);
 		conditionalPreferenceInstance.addProperty(hasConditionsProperty,model.createTypedLiteral(nodeStack.pop())) ;
 				

@@ -1,19 +1,22 @@
 package rule_matchmaker.entities;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.apache.jena.ontology.Individual;
-import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Property;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class UserPreference {
 	
-	private Map<String, Object> preferences;
-	private ConditionalPreferences conditional_preferences;
+    @JsonProperty("default")
+	private DefaultUserPreferences defaultPreferences;
+    
+    @JsonProperty("conditional")
+	List<ConditionalPreference> conditional;
 	
 	private static final String NAMESPACE = "http://www.owl-ontologies.com/OntologyEasyTV.owl#";
 	private static final String DOMAIN_NAME = "https://easytvproject.eu/registry/";
@@ -51,39 +54,30 @@ public class UserPreference {
 	public static final String STYLE_PROP = NAMESPACE + "hasStyle";
 	public static final String VOICE_RECOGNITION_PROP = NAMESPACE + "hasVoiceRecognition";
 
-	
-	
-	public Map<String, Object> getPreferences() {
-		return preferences;
-	}
-	public void setPreferences(Map<String, Object> preferences) {
-		this.preferences = preferences;
+	public DefaultUserPreferences getDefaultUserPreferences() {
+		return defaultPreferences;
 	}
 	
-	public ConditionalPreferences getConditional_preferences() {
-		return conditional_preferences;
+	public void setDefaultUserPreferences(DefaultUserPreferences defaultPreferences) {
+		this.defaultPreferences = defaultPreferences;
 	}
-	public void setConditional_preferences(ConditionalPreferences conditional_preferences) {
-		this.conditional_preferences = conditional_preferences;
+	
+	public List<ConditionalPreference> getConditional(){
+		return conditional;
+	}
+	
+	public void setConditional(List<ConditionalPreference> conditional){
+		this.conditional = conditional;
 	}
 	
 	@Override
 	public String toString() {
 		String userPreferences = "user_preferences [\n";
-		Iterator<Entry<String, Object>> iterator = preferences.entrySet().iterator();
 		
-		while(iterator.hasNext()) {
-			Entry<String, Object> entry = iterator.next();
-			userPreferences += entry.getKey();
-			userPreferences += ": ";
-			userPreferences += entry.getValue().toString();
-			userPreferences += ",\n";
-		}
-		userPreferences += "]";
-		
-		if(conditional_preferences != null)
-		userPreferences += conditional_preferences.toString();
-		
+		userPreferences += defaultPreferences.toString();
+		if(conditional != null)
+			userPreferences +=  "\"conditional\": {\r\n"+conditional.toString()+"\r\n}";
+
 		return userPreferences;
 	}
 
@@ -97,22 +91,35 @@ public class UserPreference {
 	
 	public Individual createOntologyInstance(final OntModel model){
 		
-		OntClass preferenceClass = model.getOntClass(ONTOLOGY_CLASS_URI);
-		Individual preferenceInstance = preferenceClass.createIndividual();
-		
-		//Add user preferences
-		Iterator<Entry<String, Object>> iterator = preferences.entrySet().iterator();
-		while(iterator.hasNext()) {
-			Entry<String, Object> entry = iterator.next();
-			Property p = model.getProperty(getDataProperty(entry.getKey()));
-			
-			preferenceInstance.addProperty(p, model.createTypedLiteral(entry.getValue()));
-		}
+		Individual preferenceInstance = defaultPreferences.createOntologyInstance(model);
 		
 		//Add conditional preferences
 		Property hasConditionalPreferences = model.getProperty(CONDITIONAL_PREFERENCE_PROP);
-		preferenceInstance.addProperty(hasConditionalPreferences, conditional_preferences.createOntologyInstance(model));	
+				
+		for(int i = 0; i < conditional.size();i++) {
+			Individual conditionalPreference = conditional.get(i).createOntologyInstance(model);
+			preferenceInstance.addProperty(hasConditionalPreferences, conditionalPreference);	
+		}
 		
 		return preferenceInstance;
 	}
+	
+	
+    @SuppressWarnings("unchecked")
+    @JsonProperty("conditional")
+    private void unpackNested(List<Object> conditionals) {
+    	
+    	conditional = new ArrayList<ConditionalPreference>();
+    	
+    	for(int i = 0; i < conditionals.size(); i++) {	
+    		LinkedHashMap<String, Object> inst = (LinkedHashMap<String, Object>) conditionals.get(i);
+    		
+			ConditionalPreference conditionalPreference = new ConditionalPreference();
+    		conditionalPreference.setName((String) inst.get("name"));
+    		conditionalPreference.setPreferences((LinkedHashMap<String, Object>) inst.get("preferences"));
+    		conditionalPreference.setConditions((List<Object>) inst.get("conditions"));
+    		conditional.add(conditionalPreference);	
+    	}
+
+    }
 }

@@ -5,8 +5,11 @@ import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Property;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Auditory {
 	
+    @JsonProperty("https://easytvproject.eu/registry/functionalLimitations/auditory/hearingThresholdAt250Hz")
 	private Integer hearing;
 	
 	private static final String NAMESPACE = "http://www.owl-ontologies.com/OntologyEasyTV.owl#";

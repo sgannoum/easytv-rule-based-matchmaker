@@ -5,10 +5,17 @@ import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Property;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class User {
 	
+    @JsonProperty("visual")
 	private Visual visual;
+    
+    @JsonProperty("auditory")
 	private Auditory auditory;
+    
+    @JsonProperty("user_preferences")
 	private UserPreference user_preferences;
 	
 	private static final String NAMESPACE = "http://www.owl-ontologies.com/OntologyEasyTV.owl#";
@@ -48,12 +55,10 @@ public class User {
 	
 	@Override
 	public String toString() {
-		return "User [visual=" + visual
-				+ ", auditory=" + auditory + ", "
-						+ "UserPreference= "+user_preferences+"]";
+		return "User [" + visual
+				+ ", " + auditory + ", "
+						+ " "+user_preferences+"]";
 	}
-	
-
 	
 	public Individual createOntologyInstance(final OntModel model){
 		

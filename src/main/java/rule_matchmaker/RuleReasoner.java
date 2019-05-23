@@ -8,8 +8,13 @@ import java.util.HashMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
 
+import rule_matchmaker.entities.User;
 import rule_matchmaker.entities.UserPreferencesMappings;
 
 import org.apache.jena.datatypes.RDFDatatype;
@@ -50,31 +55,22 @@ public class RuleReasoner {
 		RuleReasoner x = new RuleReasoner();
 		
 		x.loadModel(ontologyFile);
-	//	x.createUserInstance(json);
+		x.loadUser(json);
 		
+		//run rules and get inferred model
 		Model infModel = x.runRules(ruleFile);
-	//	return x.getUserPreferences(infModel);
+		
+		//add the inferred preferences to the user model
 		return updateUserPreferences(userProfile,x.getUserPreferences(infModel));
 	}
 	
-	/**
-	 * 
-	 * @param json
-	 * @return
-	 * @throws IOException
-	 * @throws JSONException 
-	 */
-	public static JSONObject updateUserPreferences(JSONObject userProfile, JsonObject inferedPref) throws IOException, JSONException {
-		JSONObject jsonPreference = userProfile.getJSONObject("user_preferences").getJSONObject("default").getJSONObject("preferences");
-		JSONObject pref = new JSONObject(inferedPref.toString());
-		String[] fields = JSONObject.getNames(pref);
-
-		for(int i = 0 ; i < fields.length; i++) 
-			if(!jsonPreference.has(fields[i])) {
-				jsonPreference.put(fields[i], pref.get(fields[i]));
-			}
+	public void loadUser(String userProfile) throws JsonParseException, JsonMappingException, IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		User user = mapper.readValue(userProfile.toString(), User.class);
 		
-		return userProfile;
+		//load user into ontology
+		user.createOntologyInstance(model);
 	}
 	
 	public void loadModel(String ontologyFile) throws IOException {
@@ -100,11 +96,34 @@ public class RuleReasoner {
 		// run the rules
 		InfModel infModel = ModelFactory.createInfModel(reasoner, model);
 
-		printModel(infModel);
+		//printModel(infModel);
 
 		return infModel;
 	}
 
+	/**
+	 * 
+	 * @param json
+	 * @return
+	 * @throws IOException
+	 * @throws JSONException 
+	 */
+	public static JSONObject updateUserPreferences(JSONObject userProfile, JsonObject inferedPref) throws IOException, JSONException {
+		JSONObject jsonPreference = userProfile.getJSONObject("user_preferences")
+											   .getJSONObject("default")
+											   .getJSONObject("preferences");
+		
+		JSONObject pref = new JSONObject(inferedPref.toString());
+		String[] fields = JSONObject.getNames(pref);
+
+		for(int i = 0 ; i < fields.length; i++) 
+			if(!jsonPreference.has(fields[i])) {
+				jsonPreference.put(fields[i], pref.get(fields[i]));
+			}
+		
+		return userProfile;
+	}
+	
 	/**
 	 * Makes SPARQL queries to retrieve one by one all properties related to
 	 * user preferences The results are added in a JSON object
