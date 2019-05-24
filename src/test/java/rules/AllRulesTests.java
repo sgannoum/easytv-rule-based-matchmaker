@@ -437,6 +437,9 @@ public class AllRulesTests {
 		OntClass conditionalPreferenceClass = model.getOntClass(Conditions.ONTOLOGY_CLASS_URI);
 		Individual conditionalPreferenceInstance = conditionalPreferenceClass.createIndividual();
 		
+		Property hasNameProperty = model.getProperty(UserPreference.HAS_NAME_PROP);
+		conditionalPreferenceInstance.addProperty(hasNameProperty,model.createTypedLiteral("condition_1"));
+		
 		Property hasConditionsProperty = model.getProperty(Conditions.HAS_CONDITIONS_PROP);
 		conditionalPreferenceInstance.addProperty(hasConditionsProperty, andInstance) ;
 	
@@ -512,13 +515,15 @@ public class AllRulesTests {
 		OntClass conditionalPreferenceClass = model.getOntClass(Conditions.ONTOLOGY_CLASS_URI);
 		Individual conditionalPreferenceInstance = conditionalPreferenceClass.createIndividual();
 		
+		Property hasNameProperty = model.getProperty(UserPreference.HAS_NAME_PROP);
+		conditionalPreferenceInstance.addProperty(hasNameProperty,model.createTypedLiteral("condition_1"));
+		
 		Property hasConditionsProperty = model.getProperty(Conditions.HAS_CONDITIONS_PROP);
 		conditionalPreferenceInstance.addProperty(hasConditionsProperty, gtInstance) ;
 	
 		conditionalPreferenceInstance.addProperty(hasFontSizeProperty, model.createTypedLiteral(500));
 
 		conditionalPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(600));
-		
 		
 		
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));

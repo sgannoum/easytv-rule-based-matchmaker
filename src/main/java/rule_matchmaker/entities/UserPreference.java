@@ -28,6 +28,7 @@ public class UserPreference {
 	public static final String CONDITIONAL_PREFERENCE_PROP = NAMESPACE + "hasConditionalPreferences";
 	
 	// Data Properties
+	public static final String HAS_NAME_PROP = NAMESPACE + "hasName";
 	public static final String AUDIO_LANGUAGE_PROP = NAMESPACE + "hasAudioLanguage";
 	public static final String AUDIO_VOLUME_PROP = NAMESPACE + "hasAudioVolume";
 	public static final String BACKGROUND_PROP = NAMESPACE + "hasBackground";

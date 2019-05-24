@@ -34,9 +34,6 @@ public class ConditionalPreference {
 	// Data Properties
 	public static final String ACCESSIBILITY_SERVICE_PROP = NAMESPACE + "hasAccessibilityService";
 	public static final String PREFERENCE_PROP = NAMESPACE + "hasPreference";
-	
-	// Data Properties
-	public static final String HAS_NAME_PROP = NAMESPACE + "hasName";
 
 
 	public String getName() {
@@ -86,7 +83,7 @@ public class ConditionalPreference {
 		OntClass conditionalPrefClass = model.getOntClass(ONTOLOGY_CLASS_URI);
 		Individual conditionalPrefInstance = conditionalPrefClass.createIndividual();		
 		
-		Property hasNameProperty = model.getProperty(HAS_NAME_PROP);
+		Property hasNameProperty = model.getProperty(UserPreference.HAS_NAME_PROP);
 		conditionalPrefInstance.addProperty(hasNameProperty,model.createTypedLiteral(name));
 		
 		//add the preference properties 

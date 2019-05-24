@@ -238,12 +238,6 @@ public class ConditionsTest {
 		//gt
 		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
-
-		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createTypedLiteral(UserPreference.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
-				
-		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
-		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(5));
 		
 		Property isTrue = model.getProperty(Conditions.IS_TURE_PROP);
 		gtInstance.addProperty(isTrue, model.createTypedLiteral(true));
@@ -251,12 +245,6 @@ public class ConditionsTest {
 		//lt
 		OntClass ltClass = model.getOntClass(Conditions.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
-
-		hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
-		ltInstance.addProperty(hasTypeProperty, model.createTypedLiteral(UserPreference.getDataProperty("http://registry.easytv.eu/common/display/screen/enhancement/font/size")));
-		
-		hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
-		ltInstance.addProperty(hasValueProperty, model.createTypedLiteral(5));
 		
 		ltInstance.addProperty(isTrue, model.createTypedLiteral(true));
 
@@ -280,6 +268,9 @@ public class ConditionsTest {
 		
 		Property hasConditionsProperty = model.getProperty(Conditions.HAS_CONDITIONS_PROP);
 		conditionalPreferenceInstance.addProperty(hasConditionsProperty, andInstance) ;
+		
+		Property hasNameProperty = model.getProperty(UserPreference.HAS_NAME_PROP);
+		conditionalPreferenceInstance.addProperty(hasNameProperty, "condition_1") ;
 	
 		Property hasFontSizeProperty = model.getProperty(UserPreference.FONT_SIZE_PROP);
 		conditionalPreferenceInstance.addProperty(hasFontSizeProperty, model.createTypedLiteral(500)) ;
@@ -333,12 +324,6 @@ public class ConditionsTest {
 		//gt
 		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
-
-		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createTypedLiteral(UserPreference.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
-				
-		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
-		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(5));
 		
 		Property isTrue = model.getProperty(Conditions.IS_TURE_PROP);
 		gtInstance.addProperty(isTrue, model.createTypedLiteral(true));
@@ -346,12 +331,6 @@ public class ConditionsTest {
 		//lt
 		OntClass ltClass = model.getOntClass(Conditions.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
-
-		hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
-		ltInstance.addProperty(hasTypeProperty, model.createTypedLiteral(UserPreference.getDataProperty("http://registry.easytv.eu/common/display/screen/enhancement/font/size")));
-		
-		hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
-		ltInstance.addProperty(hasValueProperty, model.createTypedLiteral(5));
 		
 		ltInstance.addProperty(isTrue, model.createTypedLiteral(true));
 
@@ -375,6 +354,9 @@ public class ConditionsTest {
 		
 		Property hasConditionsProperty = model.getProperty(Conditions.HAS_CONDITIONS_PROP);
 		conditionalPreferenceInstance.addProperty(hasConditionsProperty, andInstance) ;
+		
+		Property hasNameProperty = model.getProperty(UserPreference.HAS_NAME_PROP);
+		conditionalPreferenceInstance.addProperty(hasNameProperty, "condition_1") ;
 	
 		Property hasFontSizeProperty = model.getProperty(UserPreference.FONT_SIZE_PROP);
 		conditionalPreferenceInstance.addProperty(hasFontSizeProperty, model.createTypedLiteral(500)) ;

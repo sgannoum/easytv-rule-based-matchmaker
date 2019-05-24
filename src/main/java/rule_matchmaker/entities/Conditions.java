@@ -49,10 +49,8 @@ public class Conditions {
 
     
 	// Data Properties
-	public static final String HAS_RESULT_PROP = NAMESPACE + "hasResult";
 	public static final String HAS_TYPE_PROP = NAMESPACE + "hasType";
 	public static final String HAS_VALUE_PROP = NAMESPACE + "hasValue";
-	public static final String HAS_URI_PROP = NAMESPACE + "hasURI";
 	public static final String IS_TURE_PROP = NAMESPACE + "isTrue";
 	
 	public String getType() {

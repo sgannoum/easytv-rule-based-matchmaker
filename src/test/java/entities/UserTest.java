@@ -47,8 +47,6 @@ import junit.framework.Assert;
 import logicalOperand.AndRulesTest;
 import logicalOperand.NotRulesTest;
 import logicalOperand.OrRulesTest;
-import rule_matchmaker.entities.ConditionalPreference;
-import rule_matchmaker.entities.Conditions;
 import rule_matchmaker.entities.User;
 import rule_matchmaker.entities.UserPreference;
 

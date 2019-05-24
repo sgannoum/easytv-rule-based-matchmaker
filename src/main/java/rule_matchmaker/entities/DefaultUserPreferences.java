@@ -38,6 +38,9 @@ public class DefaultUserPreferences {
 		OntClass preferenceClass = model.getOntClass(ONTOLOGY_CLASS_URI);
 		Individual preferenceInstance = preferenceClass.createIndividual();
 		
+		Property hasNameProperty = model.getProperty(UserPreference.HAS_NAME_PROP);
+		preferenceInstance.addProperty(hasNameProperty, "default") ;
+		
 		//Add user preferences
 		Iterator<Entry<String, Object>> iterator = preferences.entrySet().iterator();
 		while(iterator.hasNext()) {
