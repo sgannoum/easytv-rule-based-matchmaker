@@ -91,11 +91,11 @@ public class UserPreference {
 	
 	public Individual createOntologyInstance(final OntModel model){
 		
+		//Default preferences
 		Individual preferenceInstance = defaultPreferences.createOntologyInstance(model);
 		
 		//Add conditional preferences
 		Property hasConditionalPreferences = model.getProperty(CONDITIONAL_PREFERENCE_PROP);
-				
 		for(int i = 0; i < conditional.size();i++) {
 			Individual conditionalPreference = conditional.get(i).createOntologyInstance(model);
 			preferenceInstance.addProperty(hasConditionalPreferences, conditionalPreference);	

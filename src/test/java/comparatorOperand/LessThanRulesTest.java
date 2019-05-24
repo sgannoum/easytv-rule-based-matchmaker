@@ -38,7 +38,7 @@ public class LessThanRulesTest {
 		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasValue ?value)" + 
 		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType ?type)" + 
 		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+User.ONTOLOGY_CLASS_URI+")" + 
-		    ",(?user "+User.PREFERENCE_PROP+" ?pref)" + 
+		    ",(?user "+User.HAS_PREFERENCE_PROP+" ?pref)" + 
 		    ",(?pref ?type ?nodeValue)" + 
 		    "->" + 
 			"	lessThan(?nodeValue, ?value, ?res)"+
@@ -66,7 +66,7 @@ public class LessThanRulesTest {
 		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
-		Property hasPreferenceProperty = model.getProperty(User.PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 		
 	}

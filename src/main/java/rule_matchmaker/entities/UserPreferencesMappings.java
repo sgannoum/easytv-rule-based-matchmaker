@@ -51,7 +51,7 @@ public class UserPreferencesMappings {
 	public static final HashMap<String, String> dataPropertyToUri  =  new HashMap<String, String>() {{
 		
 		//Display
-		put(NAMESPACE + "hasBackground", COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"backgroundColor");
+		put(NAMESPACE + "hasBackground", COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"background");
 		put(NAMESPACE + "hasHighlight", COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"highlight");
 		put(NAMESPACE + "hasCursorSize", COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"cursor/size");
 		put(NAMESPACE + "hasCursorColour", COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"cursor/colour");
@@ -84,7 +84,7 @@ public class UserPreferencesMappings {
 		put(COMMON_NS +"language", "hasLanguage");
 		
 		//Display
-		put(COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"backgroundColor", NAMESPACE + "hasBackground");
+		put(COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"background", NAMESPACE + "hasBackground");
 		put(COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"highlight", NAMESPACE + "hasHighlight");
 		put(COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"cursor/size", NAMESPACE + "hasCursorSize");
 		put(COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"cursor/colour", NAMESPACE + "hasCursorColour");

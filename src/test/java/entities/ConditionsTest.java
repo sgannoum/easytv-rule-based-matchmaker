@@ -111,11 +111,12 @@ public class ConditionsTest {
 	public static final String rules = "[conditional_preference:" + 
 			" (?condPref http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#ConditionalPreference)" + 
 			",(?condPref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConditions ?cond)" + 
+			",(?condPref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasName ?name)" + 
 			",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" +
 		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+User.ONTOLOGY_CLASS_URI+")" + 
-		    ",(?user "+User.PREFERENCE_PROP+" ?defPref)" + 
+		    ",(?user "+User.HAS_PREFERENCE_PROP+" ?defPref)" +
 			"->" + 			
-		    "	print('A conditional preference has benn satisfied')" + 
+		    "	print('Conditional preference', ?name,'is true')" + 
 		    "	mergePref(?defPref, ?condPref)" + 
 			"]"
 			;
@@ -229,7 +230,7 @@ public class ConditionsTest {
 		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
-		Property hasPreferenceProperty = model.getProperty(User.PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 		
 		
@@ -324,7 +325,7 @@ public class ConditionsTest {
 		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
-		Property hasPreferenceProperty = model.getProperty(User.PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 		
 		

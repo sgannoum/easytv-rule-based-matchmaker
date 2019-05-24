@@ -118,7 +118,7 @@ public class Conditions {
 		
 		//Add conditional preferences
 		List<Object> fastList = getFlatOperands();
-		
+				
 		for(int i = fastList.size() - 1; i >= 0; i--) {
 			Object element = fastList.get(i);
 
@@ -128,25 +128,18 @@ public class Conditions {
 			}
 					
 			String elementStr = (String) element;
-			
-			if(elementStr.contains("http")) {
-				nodeStack.push(elementStr);	
-				continue;
-			}
-			
-			elementStr = elementStr.toUpperCase();
-			
+						
 			//logical gate
 			if(	elementStr.equalsIgnoreCase("not")) {
 					
-					Object operand_1 = nodeStack.pop();
+					Individual operand_1 = (Individual) nodeStack.pop();
 				
-					operandClass = model.getOntClass(NAMESPACE + elementStr);
+					operandClass = model.getOntClass(NAMESPACE + elementStr.toUpperCase());
 					operandInstance = operandClass.createIndividual();
 					
 					//set left operand
 					Property leftOperandProperty = model.getProperty(LEFT_OPERAND_PROP);
-					operandInstance.addProperty(leftOperandProperty, model.createTypedLiteral(operand_1));
+					operandInstance.addProperty(leftOperandProperty, operand_1);
 					
 					//add second operand to the stack
 					nodeStack.push(operandInstance);
@@ -154,52 +147,48 @@ public class Conditions {
 			} else if(elementStr.equalsIgnoreCase("and") || 
 						elementStr.equalsIgnoreCase("or")) {
 				
-					Object operand_1 = nodeStack.pop();
-					Object operand_2 = nodeStack.pop();
+					Individual operand_1 = (Individual) nodeStack.pop();
+					Individual operand_2 = (Individual) nodeStack.pop();
 				
-					operandClass = model.getOntClass(NAMESPACE + elementStr);
+					operandClass = model.getOntClass(NAMESPACE + elementStr.toUpperCase());
 					operandInstance = operandClass.createIndividual();
 					
 					//set left operand
 					Property leftOperandProperty = model.getProperty(LEFT_OPERAND_PROP);
-					operandInstance.addProperty(leftOperandProperty, model.createTypedLiteral(operand_1));
+					operandInstance.addProperty(leftOperandProperty, operand_1);
 					
 					//set right operand
 					Property rightOperandProperty = model.getProperty(RIGHT_OPERAND_PROP);
-					operandInstance.addProperty(rightOperandProperty, model.createTypedLiteral(operand_2));		
+					operandInstance.addProperty(rightOperandProperty, operand_2);		
 					
 					//add second operand to the stack
 					nodeStack.push(operandInstance);
 				
-			} else if(elementStr.equalsIgnoreCase("gt") || type.equalsIgnoreCase("ge") || 
-						elementStr.equalsIgnoreCase("lt") || type.equalsIgnoreCase("le") ||
-						 elementStr.equalsIgnoreCase("eq") || type.equalsIgnoreCase("nq") ) {
+			} else if(elementStr.equalsIgnoreCase("gt") || elementStr.equalsIgnoreCase("ge") || 
+						elementStr.equalsIgnoreCase("lt") || elementStr.equalsIgnoreCase("le") ||
+						 elementStr.equalsIgnoreCase("eq") || elementStr.equalsIgnoreCase("ne") ) {
 				
-					Object value = nodeStack.pop();
+					
 					Object uriObj = nodeStack.pop();
-					
-					System.out.println(value);
-					String uri;
-					if(String.class.isInstance(uriObj)) {
-						uri = (String) uriObj;
-					} else {
-						uri = (String) value;
-						value = uriObj;
-					}
-					
-					operandClass = model.getOntClass(NAMESPACE + elementStr);
+					Object value = nodeStack.pop();
+
+					String uri = (String) uriObj;
+										
+					operandClass = model.getOntClass(NAMESPACE + elementStr.toUpperCase());
 					operandInstance = operandClass.createIndividual();
-														
+																			
 					//set type
 					Property hasTypeProperty = model.getProperty(HAS_TYPE_PROP);
-					operandInstance.addProperty(hasTypeProperty, model.createTypedLiteral(UserPreference.getDataProperty(uri)));
+					operandInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty(uri)));
 					
 					//set value
 					Property hasValueProperty = model.getProperty(HAS_VALUE_PROP);
 					operandInstance.addProperty(hasValueProperty, model.createTypedLiteral(value));
 					
 					nodeStack.push(operandInstance);	
-			} 
+			} else {
+					nodeStack.push(elementStr);	
+			}
 		}
 
 		//check that only on operand remains
@@ -209,7 +198,7 @@ public class Conditions {
 		
 
 		Property hasConditionsProperty = model.getProperty(HAS_CONDITIONS_PROP);
-		conditionalPreferenceInstance.addProperty(hasConditionsProperty,model.createTypedLiteral(nodeStack.pop())) ;
+		conditionalPreferenceInstance.addProperty(hasConditionsProperty, (Individual) nodeStack.pop()) ;
 				
 		return conditionalPreferenceInstance;
 	}
@@ -260,7 +249,7 @@ public class Conditions {
 				
 				//add operand
 				int i = index;
-				Iterator<Object> iteratorOperands = jsonObj.getJSONArray("operand").iterator();
+				Iterator<Object> iteratorOperands = jsonObj.getJSONArray("operands").iterator();
 				while(iteratorOperands.hasNext()) {
 					nestedOperands.add(i++, iteratorOperands.next());
 				}

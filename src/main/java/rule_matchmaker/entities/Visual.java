@@ -11,11 +11,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Visual {
 	
-    @JsonProperty("https://easytvproject.eu/registry/functionalLimitations/visual/visualAcuity")
+    @JsonProperty("http://registry.easytv.eu/functionalLimitations/visual/visualAcuity")
 	private String visual_acuity;
-    @JsonProperty("https://easytvproject.eu/registry/functionalLimitations/visual/contrastSensitivity")
+    @JsonProperty("http://registry.easytv.eu/functionalLimitations/visual/contrastSensitivity")
 	private String contrast_sensitivity;
-    @JsonProperty("https://easytvproject.eu/registry/functionalLimitations/visual/colorBlindness")
+    @JsonProperty("http://registry.easytv.eu/functionalLimitations/visual/colorBlindness")
     private String color_blindness;
     
 	private static final String NAMESPACE = "http://www.owl-ontologies.com/OntologyEasyTV.owl#";

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Auditory {
 	
-    @JsonProperty("https://easytvproject.eu/registry/functionalLimitations/auditory/hearingThresholdAt250Hz")
+    @JsonProperty("http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt250Hz")
 	private Integer hearing;
 	
 	private static final String NAMESPACE = "http://www.owl-ontologies.com/OntologyEasyTV.owl#";

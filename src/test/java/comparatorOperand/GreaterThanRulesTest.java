@@ -34,11 +34,11 @@ public class GreaterThanRulesTest {
 	
 	private OntModel model;
 	public static final String 	rules = "[Greater_than:" + 
-		    "(?cond http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#GT)" + 
+		    "(?cond http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#GT)" +
 		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasValue ?value)" + 
 		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType ?type)" + 
 		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+User.ONTOLOGY_CLASS_URI+")" + 
-		    ",(?user "+User.PREFERENCE_PROP+" ?pref)" + 
+		    ",(?user "+User.HAS_PREFERENCE_PROP+" ?pref)" + 
 		    ",(?pref ?type ?nodeValue)" + 
 		    "->" + 
 			"	greaterThan(?nodeValue, ?value, ?res)"+
@@ -66,7 +66,7 @@ public class GreaterThanRulesTest {
 		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
-		Property hasPreferenceProperty = model.getProperty(User.PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 		
 	}

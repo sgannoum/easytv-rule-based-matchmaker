@@ -20,9 +20,9 @@ public class User {
 	
 	private static final String NAMESPACE = "http://www.owl-ontologies.com/OntologyEasyTV.owl#";
 	public static final String ONTOLOGY_CLASS_URI = NAMESPACE + "User";
-	public static final String VISUAL_PROP = NAMESPACE + "hasVisualAbility";
-	public static final String AUDITORY_PROP = NAMESPACE + "hasAuditoryAbility";
-	public static final String PREFERENCE_PROP = NAMESPACE + "hasPreference";
+	public static final String HAS_VISUAL_PROP = NAMESPACE + "hasVisualAbility";
+	public static final String HAS_AUDITORY_PROP = NAMESPACE + "hasAuditoryAbility";
+	public static final String HAS_PREFERENCE_PROP = NAMESPACE + "hasPreference";
 
 	public Visual getVisual() {
 		return visual;
@@ -67,15 +67,15 @@ public class User {
 		Individual userInstance = userClass.createIndividual();
 		
 		//Add visual acuity
-		Property hasVisualAbility = model.getProperty(VISUAL_PROP);
+		Property hasVisualAbility = model.getProperty(HAS_VISUAL_PROP);
 		userInstance.addProperty(hasVisualAbility, visual.createOntologyInstance(model));	
 		
 		//Add Auditory ability
-		Property hasAuditoryAbility = model.getProperty(AUDITORY_PROP);
+		Property hasAuditoryAbility = model.getProperty(HAS_AUDITORY_PROP);
 		userInstance.addProperty(hasAuditoryAbility, auditory.createOntologyInstance(model));	
 		
 		//Add user preferences
-		Property hasPreferences = model.getProperty(PREFERENCE_PROP);
+		Property hasPreferences = model.getProperty(HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferences, user_preferences.createOntologyInstance(model));	
 		
 		return userInstance;

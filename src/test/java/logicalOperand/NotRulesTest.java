@@ -67,7 +67,7 @@ public class NotRulesTest {
 		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
-		Property hasPreferenceProperty = model.getProperty(User.PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 		
 	}

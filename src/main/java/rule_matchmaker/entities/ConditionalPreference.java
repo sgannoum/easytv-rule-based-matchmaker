@@ -79,7 +79,6 @@ public class ConditionalPreference {
 		LinkedHashMap<String, Object> inst = (LinkedHashMap<String, Object>) conditions.remove(0);
 		this.conditions.setType((String) inst.get("type"));
 		this.conditions.setOperand((List<Object>) inst.get("operands"));
-		
 	}
 	
 	public Individual createOntologyInstance(final OntModel model){

@@ -97,7 +97,7 @@ public class AllRulesTests {
 		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
-		Property hasPreferenceProperty = model.getProperty(User.PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 		
 		//gt
@@ -156,7 +156,7 @@ public class AllRulesTests {
 		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
-		Property hasPreferenceProperty = model.getProperty(User.PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 		
 		//gt
@@ -214,7 +214,7 @@ public class AllRulesTests {
 		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
-		Property hasPreferenceProperty = model.getProperty(User.PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 		
 		//gt
@@ -272,7 +272,7 @@ public class AllRulesTests {
 		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
-		Property hasPreferenceProperty = model.getProperty(User.PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 		
 		//gt
@@ -331,7 +331,7 @@ public class AllRulesTests {
 		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
-		Property hasPreferenceProperty = model.getProperty(User.PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 		
 		//gt
@@ -400,7 +400,7 @@ public class AllRulesTests {
 		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
-		Property hasPreferenceProperty = model.getProperty(User.PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 		
 	
@@ -470,4 +470,80 @@ public class AllRulesTests {
 		Assert.assertEquals(list.next().getObject().asLiteral().getInt(), 10);
 		Assert.assertFalse(list.hasNext());
 	}
+	
+	
+	@Test
+	public void Test_simple_conditional_Preferences_true() 
+	  throws JsonParseException, IOException {
+		
+		//user
+		OntClass userPreferenceClass = model.getOntClass(UserPreference.ONTOLOGY_CLASS_URI);
+		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
+		
+		Property hasAudioVolumeProperty = model.getProperty(UserPreference.AUDIO_VOLUME_PROP);
+		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
+		
+		Property hasFontSizeProperty = model.getProperty(UserPreference.FONT_SIZE_PROP);
+		userPreferenceInstance.addProperty(hasFontSizeProperty, model.createTypedLiteral(3));
+		
+		Property cursorSizeProperty = model.getProperty(UserPreference.CURSOR_SIZE_PROP);
+		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
+		
+		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
+		Individual userInstance = userClass.createIndividual();
+		
+		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
+		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
+		
+	
+		//Add conditional preferences
+		//gt
+		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "GT");
+		Individual gtInstance = gtClass.createIndividual();
+
+		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
+				
+		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
+		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(1));
+		
+		
+		//conditional
+		OntClass conditionalPreferenceClass = model.getOntClass(Conditions.ONTOLOGY_CLASS_URI);
+		Individual conditionalPreferenceInstance = conditionalPreferenceClass.createIndividual();
+		
+		Property hasConditionsProperty = model.getProperty(Conditions.HAS_CONDITIONS_PROP);
+		conditionalPreferenceInstance.addProperty(hasConditionsProperty, gtInstance) ;
+	
+		conditionalPreferenceInstance.addProperty(hasFontSizeProperty, model.createTypedLiteral(500));
+
+		conditionalPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(600));
+		
+		
+		
+		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
+		InfModel inf = ModelFactory.createInfModel(reasoner, model);
+		
+		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
+		StmtIterator list = inf.listStatements(gtInstance, isTrueProperty, (RDFNode)null);
+		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
+		Assert.assertEquals(list.next().getObject().asLiteral().getBoolean(), true);
+		Assert.assertFalse(list.hasNext());
+
+			
+		list = inf.listStatements(userPreferenceInstance, hasAudioVolumeProperty, (RDFNode)null);
+		Assert.assertEquals(list.next().getObject().asLiteral().getInt(), 600);
+		Assert.assertFalse(list.hasNext());
+
+		//check font size
+		list = inf.listStatements(userPreferenceInstance, hasFontSizeProperty, (RDFNode)null);
+		Assert.assertEquals(list.next().getObject().asLiteral().getInt(), 500);
+		Assert.assertFalse(list.hasNext());
+		
+		//check font size
+		list = inf.listStatements(userPreferenceInstance, cursorSizeProperty, (RDFNode)null);
+		Assert.assertEquals(list.next().getObject().asLiteral().getInt(), 10);
+		Assert.assertFalse(list.hasNext());
+	}
+	
 }

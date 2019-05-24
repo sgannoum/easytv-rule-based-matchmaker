@@ -22,9 +22,9 @@ public class VisualTest {
 			"  }");
 	
 	JSONObject jsonProfile2 = new JSONObject("{\r\n" + 
-			"    \"https://easytvproject.eu/registry/functionalLimitations/visual/visualAcuity\": \"20/400\",\r\n" + 
-			"    \"https://easytvproject.eu/registry/functionalLimitations/visual/contrastSensitivity\": \"21:1\",\r\n" + 
-			"    \"https://easytvproject.eu/registry/functionalLimitations/visual/colorBlindness\": \"normal\"\r\n" + 
+			"    \"http://registry.easytv.eu/functionalLimitations/visual/visualAcuity\": \"20/400\",\r\n" + 
+			"    \"http://registry.easytv.eu/functionalLimitations/visual/contrastSensitivity\": \"21:1\",\r\n" + 
+			"    \"http://registry.easytv.eu/functionalLimitations/visual/colorBlindness\": \"normal\"\r\n" + 
 			"  }");
 	
 	@BeforeTest
