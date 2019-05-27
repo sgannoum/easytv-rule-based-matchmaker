@@ -55,6 +55,17 @@
     
 
 
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasContext -->
+
+    <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasContext">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#User"/>
+        <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserContext"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasLeftOperand -->
 
     <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasLeftOperand">
@@ -297,6 +308,16 @@
     
 
 
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasLocation -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasLocation">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserContext"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasLocationLatitude -->
 
     <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasLocationLatitude">
@@ -411,6 +432,16 @@
     <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasStyle">
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasTime -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasTime">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserContext"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     </owl:DatatypeProperty>
     
@@ -676,6 +707,12 @@
     <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#User -->
 
     <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#User"/>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#UserContext -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserContext"/>
     
 
 

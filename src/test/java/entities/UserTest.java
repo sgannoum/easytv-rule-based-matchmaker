@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.util.Date;
 
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntModel;
@@ -66,7 +68,11 @@ public class UserTest {
 			"    \"http://registry.easytv.eu/functionalLimitations/visual/visualAcuity\": \"20/400\",\r\n" + 
 			"    \"http://registry.easytv.eu/functionalLimitations/visual/contrastSensitivity\": \"21:1\",\r\n" + 
 			"    \"http://registry.easytv.eu/functionalLimitations/visual/colorBlindness\": \"normal\"\r\n" + 
-			"  },\r\n" + 
+			"	},\r\n" + 
+			" \"context\":{\r\n" + 
+			"    \"http://registry.easytv.eu/context/time\": \"1558700176286\" ,\r\n" + 
+			"    \"http://registry.easytv.eu/context/location\": \"fr\"\r\n" + 
+			"	},\r\n"	+
 			"  \"auditory\": {\r\n" + 
 			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt250Hz\": 0,\r\n" + 
 			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt500Hz\": 0,\r\n" + 
@@ -124,6 +130,10 @@ public class UserTest {
 			"    \"http://registry.easytv.eu/functionalLimitations/visual/contrastSensitivity\": \"21:1\",\r\n" + 
 			"    \"http://registry.easytv.eu/functionalLimitations/visual/colorBlindness\": \"normal\"\r\n" + 
 			"  },\r\n" + 
+			" \"context\":{\r\n" + 
+			"    \"http://registry.easytv.eu/context/time\": \"1558700176286\" ,\r\n" + 
+			"    \"http://registry.easytv.eu/context/location\": \"fr\"\r\n" + 
+			"	},\r\n"	+
 			"  \"auditory\": {\r\n" + 
 			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt250Hz\": 0,\r\n" + 
 			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt500Hz\": 0,\r\n" + 
@@ -163,13 +173,16 @@ public class UserTest {
 			"  }\r\n" + 
 			"}");
 	
-	
 	public static final JSONObject jsonProfile3 = new JSONObject("{\r\n" + 
 			"  \"visual\": {\r\n" + 
 			"    \"http://registry.easytv.eu/functionalLimitations/visual/visualAcuity\": \"20/400\",\r\n" + 
 			"    \"http://registry.easytv.eu/functionalLimitations/visual/contrastSensitivity\": \"21:1\",\r\n" + 
 			"    \"http://registry.easytv.eu/functionalLimitations/visual/colorBlindness\": \"normal\"\r\n" + 
 			"  },\r\n" + 
+			" \"context\":{\r\n" + 
+			"    \"http://registry.easytv.eu/context/time\": \"1558700176286\" ,\r\n" + 
+			"    \"http://registry.easytv.eu/context/location\": \"fr\"\r\n" + 
+			"	},\r\n"	+
 			"  \"auditory\": {\r\n" + 
 			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt250Hz\": 0,\r\n" + 
 			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt500Hz\": 0,\r\n" + 
@@ -229,8 +242,8 @@ public class UserTest {
 			"			  {\r\n" + 
 			"				\"type\": \"eq\",\r\n" + 
 			"				\"operands\": [\r\n" + 
-			"				  \"http://registry.easytv.eu/common/display/screen/enhancement/font/color\",\r\n" + 
-			"				  \"#000000\"\r\n" + 
+			"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
+			"				  \"1558700176286\"\r\n" + 
 			"				]\r\n" + 
 			"			  },\r\n" + 
 			"				{\r\n" + 
@@ -351,8 +364,7 @@ public class UserTest {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		User user = mapper.readValue(jsonProfile3.toString(), User.class);
-		
-		
+				
 		Individual userInstance = user.createOntologyInstance(model);
 				
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
@@ -372,7 +384,6 @@ public class UserTest {
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasBackgroundProperty, (RDFNode)null);
 		Assert.assertEquals("#222222", userPreferenceList.next().getObject().asLiteral().getString());
 		Assert.assertFalse(userPreferenceList.hasNext());
-
 	}
 
 }

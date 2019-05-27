@@ -44,7 +44,20 @@ public class LessThanRulesTest {
 			"	lessThan(?nodeValue, ?value, ?res)"+
 		    "	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?res)" +
 		    "	print('Less than', ?nodeValue, ?value, ?res)"+
-		    "]";
+		    "]" + 
+		    "[Less_than_context:" + 
+		    "(?cond http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#LT)" + 
+		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasValue ?value)" + 
+		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType ?type)" + 
+		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+User.ONTOLOGY_CLASS_URI+")" + 
+		    ",(?user "+User.HAS_CONTEXT_PROP+" ?context)" + 
+		    ",(?context ?type ?nodeValue)" + 
+		    "->" + 
+			"	lessThan(?nodeValue, ?value, ?res)"+
+		    "	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?res)" +
+		    "	print('Less than', ?nodeValue, ?value, ?res)"+
+		    "]"
+		    ;
 	
 	@BeforeMethod
 	public void beforeMethod() throws FileNotFoundException {

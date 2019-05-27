@@ -177,6 +177,7 @@ public class Conditions {
 																			
 					//set type
 					Property hasTypeProperty = model.getProperty(HAS_TYPE_PROP);
+					System.out.println(UserPreference.getDataProperty(uri));
 					operandInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty(uri)));
 					
 					//set value

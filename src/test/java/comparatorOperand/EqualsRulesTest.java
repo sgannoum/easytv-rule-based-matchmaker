@@ -35,7 +35,7 @@ import rule_matchmaker.entities.UserPreference;
 public class EqualsRulesTest {
 	
 	private OntModel model;
-	public static final String 	rules = "[Equals:" + 
+	public static final String 	rules = "[Equals_pref:" + 
 		    "(?cond http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#EQ)" + 
 		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasValue ?value)" + 
 		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType ?type)" + 
@@ -46,7 +46,20 @@ public class EqualsRulesTest {
 			"	equals(?nodeValue, ?value, ?res)"+
 		    "	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?res)" +
 		    "	print('Equals', ?nodeValue, ?value, ?res)"+
-		    "]";
+		    "]" + 
+		    "[Equals_context:" + 
+		    "(?cond http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#EQ)" + 
+		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasValue ?value)" + 
+		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType ?type)" + 
+		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+User.ONTOLOGY_CLASS_URI+")" + 
+		    ",(?user "+User.HAS_CONTEXT_PROP+" ?context)" + 
+		    ",(?context ?type ?nodeValue)" + 
+		    "->" + 
+			"	equals(?nodeValue, ?value, ?res)"+
+		    "	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?res)" +
+		    "	print('Equals', ?type, ?nodeValue, ?value, ?res)"+
+		    "]"
+		    ;
 	
 	@BeforeMethod
 	public void beforeMethod() throws FileNotFoundException {

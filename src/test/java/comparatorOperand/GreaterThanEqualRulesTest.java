@@ -3,22 +3,15 @@ package comparatorOperand;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import com.fasterxml.jackson.core.JsonParseException;
-
 import builtin.GreaterThanEquals;
-import builtin.OR;
 import config.RBMMTestConfig;
 
-import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
@@ -45,6 +38,18 @@ public class GreaterThanEqualRulesTest {
 		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+User.ONTOLOGY_CLASS_URI+")" + 
 		    ",(?user "+User.HAS_PREFERENCE_PROP+" ?pref)" + 
 		    ",(?pref ?type ?nodeValue)" + 
+		    "->" + 
+		    "	greaterThanEquals(?nodeValue, ?value, ?res)"+
+		    "	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?res)" +
+		    "	print('Greater than equals', ?nodeValue, ?value, ?res)"+
+		    "]" +
+		    "[Greater_than_equals_context:" + 
+		    " (?cond http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#GE)" + 
+		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasValue ?value)" + 
+		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType ?type)" + 
+		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+User.ONTOLOGY_CLASS_URI+")" + 
+		    ",(?user "+User.HAS_CONTEXT_PROP+" ?context)" + 
+		    ",(?context ?type ?nodeValue)" + 
 		    "->" + 
 		    "	greaterThanEquals(?nodeValue, ?value, ?res)"+
 		    "	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?res)" +

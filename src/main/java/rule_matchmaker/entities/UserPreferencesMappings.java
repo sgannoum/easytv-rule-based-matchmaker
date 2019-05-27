@@ -2,6 +2,9 @@ package rule_matchmaker.entities;
 
 import java.util.HashMap;
 
+import org.apache.jena.datatypes.RDFDatatype;
+import org.apache.jena.datatypes.xsd.XSDDatatype;
+
 public class UserPreferencesMappings {
 
 	/*
@@ -35,12 +38,13 @@ public class UserPreferencesMappings {
 	 */
 	
 	private static final String NAMESPACE = "http://www.owl-ontologies.com/OntologyEasyTV.owl#";
-	private static final String DOMAIN_NAME = "https://easytvproject.eu/registry/";
+	private static final String DOMAIN_NAME = "http://registry.easytv.eu/";
 	
 	private static final String COMMON_NS = "http://registry.easytv.eu/common/";
 	private static final String DISPLAY_NS = "display/";
 	private static final String CONTROL_NS = "control/";
 	private static final String CONTENT_NS = "content/";
+	private static final String CONTEXT_NS = "context/";
 
 	
 	private static final String SCREEN_ENHANCEMENT_NS = "screen/enhancement/";
@@ -50,13 +54,14 @@ public class UserPreferencesMappings {
 	
 	public static final HashMap<String, String> dataPropertyToUri  =  new HashMap<String, String>() {{
 		
+		put("hasLanguage", COMMON_NS +"language");
+		
 		//Display
 		put(NAMESPACE + "hasBackground", COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"background");
 		put(NAMESPACE + "hasHighlight", COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"highlight");
 		put(NAMESPACE + "hasCursorSize", COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"cursor/size");
 		put(NAMESPACE + "hasCursorColour", COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"cursor/colour");
 		put(NAMESPACE + "hasCursorTrails", COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"cursor/trails");
-		put(NAMESPACE + "hasMagnification", COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"magnification");
 		put(NAMESPACE + "hasMagnification", COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"magnification");
 		put(NAMESPACE + "hasFontSize", COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"font/size");
 		put(NAMESPACE + "hasFontType", COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"font/type");
@@ -77,6 +82,10 @@ public class UserPreferencesMappings {
 		put(NAMESPACE + "hasAudioVolume", COMMON_NS + CONTENT_NS + "audio/volume");
 		put(NAMESPACE + "hasAudioLanguage", COMMON_NS + CONTENT_NS + "audio/language");
 		
+		//context
+		put(NAMESPACE + "hasTime", DOMAIN_NAME + CONTEXT_NS + "time");
+		put(NAMESPACE + "hasLocation", DOMAIN_NAME + CONTEXT_NS + "location");
+		
     }};
     
     public static final HashMap<String, String> uriToDataProperty  =  new HashMap<String, String>() {{
@@ -89,7 +98,6 @@ public class UserPreferencesMappings {
 		put(COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"cursor/size", NAMESPACE + "hasCursorSize");
 		put(COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"cursor/colour", NAMESPACE + "hasCursorColour");
 		put(COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"cursor/trails", NAMESPACE + "hasCursorTrails");
-		put(COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"magnification", NAMESPACE + "hasMagnification");
 		put(COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"magnification", NAMESPACE + "hasMagnification");
 		put(COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"font/size", NAMESPACE + "hasFontSize");
 		put(COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"font/type", NAMESPACE + "hasFontType");
@@ -109,6 +117,46 @@ public class UserPreferencesMappings {
 		//Content
 		put(COMMON_NS + CONTENT_NS + "audio/volume", NAMESPACE + "hasAudioVolume");
 		put(COMMON_NS + CONTENT_NS + "audio/language", NAMESPACE + "hasAudioLanguage");
+		
+		//context
+		put(DOMAIN_NAME + CONTEXT_NS + "time", NAMESPACE + "hasTime");
+		put(DOMAIN_NAME + CONTEXT_NS + "location", NAMESPACE + "hasLocation");
+		
+    }};
+    
+    
+    public static final HashMap<String, XSDDatatype> uriToRDFDataType  =  new HashMap<String, XSDDatatype>() {{
+				
+		//Display
+		put(COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"background", XSDDatatype.XSDstring);
+		put(COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"highlight", XSDDatatype.XSDstring);
+		put(COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"cursor/size", XSDDatatype.XSDinteger);
+		put(COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"cursor/colour", XSDDatatype.XSDstring);
+		put(COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"cursor/trails", XSDDatatype.XSDinteger);
+		put(COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"magnification", XSDDatatype.XSDinteger);
+		put(COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"font/size", XSDDatatype.XSDinteger);
+		put(COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"font/type", XSDDatatype.XSDstring);
+		put(COMMON_NS+ DISPLAY_NS + SCREEN_ENHANCEMENT_NS+"font/color", XSDDatatype.XSDstring);
+
+		put(COMMON_NS+ DISPLAY_NS + SCREEN_READER_NS+"speech_rate", XSDDatatype.XSDinteger);
+		put(COMMON_NS+ DISPLAY_NS + SCREEN_READER_NS+"pitch", XSDDatatype.XSDinteger);
+		put(COMMON_NS+ DISPLAY_NS + SCREEN_READER_NS+"volume", XSDDatatype.XSDinteger);
+		
+		//Control
+		put(COMMON_NS+ CONTROL_NS + VOICE_RECOGNITION_NS+"voice_profile", XSDDatatype.XSDboolean);
+		put(COMMON_NS+ CONTROL_NS + VOICE_RECOGNITION_NS+"microphone_gain", XSDDatatype.XSDinteger);
+		put(COMMON_NS+ CONTROL_NS + VOICE_RECOGNITION_NS+"dictation", XSDDatatype.XSDinteger);
+		
+		put(COMMON_NS+ CONTROL_NS + COMMAND_CONTROL_NS+"confirmation_feedback", XSDDatatype.XSDboolean);
+
+		//Content
+		put(COMMON_NS + CONTENT_NS + "audio/volume", XSDDatatype.XSDinteger);
+		put(COMMON_NS + CONTENT_NS + "audio/language", XSDDatatype.XSDstring);
+		
+		//context
+		put(DOMAIN_NAME + CONTEXT_NS + "time", XSDDatatype.XSDdateTimeStamp);
+		put(DOMAIN_NAME + CONTEXT_NS + "location", XSDDatatype.XSDstring);
+		
     }};
     
 

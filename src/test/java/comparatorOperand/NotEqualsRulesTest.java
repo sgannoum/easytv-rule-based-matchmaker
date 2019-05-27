@@ -44,7 +44,20 @@ public class NotEqualsRulesTest {
 			"	notEquals(?nodeValue, ?value, ?res)"+
 		    "	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?res)" +
 		    "	print('Not equals', ?nodeValue, ?value, ?res)"+
-		    "]";
+		    "]" +
+		    "[Not_equals_true:" + 
+		    "(?cond http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#NE)" + 
+		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasValue ?value)" + 
+		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType ?type)" + 
+		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+User.ONTOLOGY_CLASS_URI+")" + 
+		    ",(?user "+User.HAS_CONTEXT_PROP+" ?context)" + 
+		    ",(?context ?type ?nodeValue)" + 
+		    "->" + 
+			"	notEquals(?nodeValue, ?value, ?res)"+
+		    "	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?res)" +
+		    "	print('Not equals', ?nodeValue, ?value, ?res)"+
+		    "]"
+		    ;
 	
 	@BeforeMethod
 	public void beforeMethod() throws FileNotFoundException {

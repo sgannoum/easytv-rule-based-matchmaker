@@ -17,13 +17,29 @@ public class User {
     
     @JsonProperty("user_preferences")
 	private UserPreference user_preferences;
+    
+    @JsonProperty("context")
+	private UserContext context;
 	
 	private static final String NAMESPACE = "http://www.owl-ontologies.com/OntologyEasyTV.owl#";
 	public static final String ONTOLOGY_CLASS_URI = NAMESPACE + "User";
+	
+	//Object properties
 	public static final String HAS_VISUAL_PROP = NAMESPACE + "hasVisualAbility";
 	public static final String HAS_AUDITORY_PROP = NAMESPACE + "hasAuditoryAbility";
 	public static final String HAS_PREFERENCE_PROP = NAMESPACE + "hasPreference";
+	public static final String HAS_CONTEXT_PROP = NAMESPACE + "hasContext";
 
+	
+	public UserContext getContext() {
+		return context;
+	}
+
+
+	public void setContext(UserContext context) {
+		this.context = context;
+	}
+	
 	public Visual getVisual() {
 		return visual;
 	}
@@ -55,9 +71,10 @@ public class User {
 	
 	@Override
 	public String toString() {
-		return "User [" + visual
-				+ ", " + auditory + ", "
-						+ " "+user_preferences+"]";
+		return "User [" + visual + ", " +
+							auditory + ", " +
+								context + ", " +
+									user_preferences+"]";
 	}
 	
 	public Individual createOntologyInstance(final OntModel model){
@@ -73,6 +90,10 @@ public class User {
 		//Add Auditory ability
 		Property hasAuditoryAbility = model.getProperty(HAS_AUDITORY_PROP);
 		userInstance.addProperty(hasAuditoryAbility, auditory.createOntologyInstance(model));	
+		
+		//Add Auditory ability
+		Property hasContextAbility = model.getProperty(HAS_CONTEXT_PROP);
+		userInstance.addProperty(hasContextAbility, context.createOntologyInstance(model));	
 		
 		//Add user preferences
 		Property hasPreferences = model.getProperty(HAS_PREFERENCE_PROP);

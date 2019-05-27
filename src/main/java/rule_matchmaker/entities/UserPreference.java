@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Property;
@@ -88,6 +89,10 @@ public class UserPreference {
 	
 	public static String getURI(String dataProperty) {
 		return UserPreferencesMappings.dataPropertyToUri.get(dataProperty);
+	}
+	
+	public static XSDDatatype getXSDDatatype(String dataProperty) {
+		return UserPreferencesMappings.uriToRDFDataType.get(dataProperty);
 	}
 	
 	public Individual createOntologyInstance(final OntModel model){

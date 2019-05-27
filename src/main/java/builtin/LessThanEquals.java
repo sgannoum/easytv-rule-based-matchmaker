@@ -9,8 +9,9 @@ import org.apache.jena.reasoner.rulesys.Builtin;
 import org.apache.jena.reasoner.rulesys.Node_RuleVariable;
 import org.apache.jena.reasoner.rulesys.RuleContext;
 
-public class LessThanEquals implements Builtin {
+public class LessThanEquals extends ComparatorBuiltin {
 
+	@Override
 	public String getName() {
 		return "lessThanEquals";
 	}
@@ -19,18 +20,20 @@ public class LessThanEquals implements Builtin {
 		return null;
 	}
 
+	@Override
 	public int getArgLength() {
 		return 3;
 	}
 
+	@Override
 	public boolean bodyCall(Node[] args, int length, RuleContext context) {
-		Integer v1 = (Integer) ((Node_Literal) args[0]).getLiteralValue();
-		Integer v2 = (Integer) ((Node_Literal) args[1]).getLiteralValue();
+		Node_Literal v1 = (Node_Literal) args[0];
+		Node_Literal v2 = (Node_Literal) args[1];
 		Node_RuleVariable v3 = (Node_RuleVariable) args[2];
 		
 		BindingEnvironment env = context.getEnv();	
 
-		if(v1 <= v2) {
+		if(compareTo(v1, v2) <= 0) {
 			env.bind(v3,NodeFactory.createLiteralByValue(true, XSDDatatype.XSDboolean));
 			return true;
 		} else {		
@@ -39,28 +42,19 @@ public class LessThanEquals implements Builtin {
 		}	
 	}
 
+	@Override
 	public void headAction(Node[] args, int length, RuleContext context) {
-		Integer v1 = (Integer) ((Node_Literal) args[0]).getLiteralValue();
-		Integer v2 = (Integer) ((Node_Literal) args[1]).getLiteralValue();
+		Node_Literal v1 = (Node_Literal) args[0];
+		Node_Literal v2 = (Node_Literal) args[1];
 		Node_RuleVariable v3 = (Node_RuleVariable) args[2];
 		
 		BindingEnvironment env = context.getEnv();	
 
-		
-		if(v1 <= v2) {
+		if(compareTo(v1, v2) <= 0) {
 			env.bind(v3,NodeFactory.createLiteralByValue(true, XSDDatatype.XSDboolean));
 		} else {		
 			env.bind(v3,NodeFactory.createLiteralByValue(false, XSDDatatype.XSDboolean));
 		}	
 	}
-
-	public boolean isSafe() {
-		return false;
-	}
-
-	public boolean isMonotonic() {
-		return false;
-	}
-	
 
 }
