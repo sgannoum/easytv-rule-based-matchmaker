@@ -4,6 +4,7 @@ package rule_matchmaker;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -53,15 +54,10 @@ public class RBMM_WebService
     @Consumes("application/json")
     public Response postRunEasyTVRules(Object tmpInput) throws IOException, JSONException
     {
-/*    	Gson gson = new Gson();
-    	String json = gson.toJson(tmpInput);
-*/
-    	
-    	JSONObject json = new JSONObject(tmpInput);
-    	System.out.println(json.toString());
-    	
+
+    	JSONObject json = new JSONObject((Map)tmpInput);	
     	RuleReasoner ruleReasoner = new RuleReasoner(ONTOLOGY_NAME, RULES_FILE);
     	
-       return Response.status(200).entity(ruleReasoner.infer(json).toString()).build();
+       return Response.status(200).entity(ruleReasoner.infer(json).toString(4)).build();
     }
 }
