@@ -22,7 +22,7 @@ public class Visual {
 	public static final String ONTOLOGY_CLASS_URI = NAMESPACE + "VisualAbility";
 	public static final String CONTRAST_SENSIVITY_PROP = NAMESPACE + "hasContrastSensitivity";
 	public static final String VISUAL_ACUITY_PROP = NAMESPACE + "hasVisualAcuity";
-	public static final String COLOR_BLINDNESS_PROP = NAMESPACE + "hasColorBllindness";
+	public static final String COLOR_BLINDNESS_PROP = NAMESPACE + "hasColorBlindness";
 
     
 	public String getVisual_acuity() {

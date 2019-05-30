@@ -95,6 +95,15 @@
     
 
 
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences -->
+
+    <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#User"/>
+        <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#SuggestedPreferences"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasVisualAbility -->
 
     <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasVisualAbility">
@@ -156,10 +165,9 @@
     
 
 
-    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasColorBllindness -->
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasColorBlindness -->
 
-    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasColorBllindness">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasColorBlindness">
         <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#VisualAbility"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     </owl:DatatypeProperty>
@@ -692,6 +700,14 @@
 
     <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#SignLanguage">
         <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#AccessibilityService"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#SuggestedPreferences -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#SuggestedPreferences">
+        <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
     </owl:Class>
     
 

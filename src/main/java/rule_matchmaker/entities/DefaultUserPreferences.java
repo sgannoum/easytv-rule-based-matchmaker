@@ -45,9 +45,13 @@ public class DefaultUserPreferences {
 		Iterator<Entry<String, Object>> iterator = preferences.entrySet().iterator();
 		while(iterator.hasNext()) {
 			Entry<String, Object> entry = iterator.next();
-			Property p = model.getProperty(getDataProperty(entry.getKey()));
+			String propertyUri = null;
 			
-			preferenceInstance.addProperty(p, model.createTypedLiteral(entry.getValue()));
+			//only add known properties
+			if((propertyUri = getDataProperty(entry.getKey())) != null){
+				Property p = model.getProperty(propertyUri);
+				preferenceInstance.addProperty(p, model.createTypedLiteral(entry.getValue()));
+			}
 		}
 		
 		return preferenceInstance;

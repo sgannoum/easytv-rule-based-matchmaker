@@ -39,7 +39,7 @@ public class UserPreference {
 	public static final String CURSOR_SIZE_PROP = NAMESPACE + "hasCursorSize";
 	public static final String CURSOR_TRAILS_PROP = NAMESPACE + "hasCursorTails";
 	public static final String DICTATION_PROP = NAMESPACE + "hasDictation";
-	public static final String FONT_COLOR_PROP = NAMESPACE + "hasFontContrast";
+	public static final String FONT_COLOR_PROP = NAMESPACE + "hasFontColor";
 	public static final String FONT_CONTRAST_PROP = NAMESPACE + "hasFontContrast";
 	public static final String FONT_TYPE_PROP = NAMESPACE + "hasFontType";
 	public static final String FONT_SIZE_PROP = NAMESPACE + "hasFontSize";

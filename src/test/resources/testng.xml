@@ -16,7 +16,8 @@
       <class name="entities.ConditionsTest"/>
       <class name="entities.DefaultUserPreferenceTest"/>
       <class name="entities.VisualTest"/>
-
+      <class name="entities.UserContextTest"/>
+      
       <class name="logicalOperand.AndRulesTest"/>
       <class name="logicalOperand.OrRulesTest"/>
       <class name="logicalOperand.NotRulesTest"/>

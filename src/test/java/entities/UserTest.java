@@ -200,6 +200,7 @@ public class UserTest {
 			"        \"http://registry.easytv.eu/common/display/screen/enhancement/background\": \"#ffffff\",\r\n" + 
 			"        \"http://registry.easytv.eu/common/content/audio/volume\": 6,\r\n" + 
 			"        \"http://registry.easytv.eu/common/content/audio/language\": \"en\",\r\n" + 
+			" 		 \"https://easytvproject.eu/registry/common/audiolanguage\": \"en\","+
 			"      }\r\n" + 
 			"    },\r\n" + 
 			"    \"conditional\": [\r\n" + 
@@ -339,7 +340,6 @@ public class UserTest {
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		User user = mapper.readValue(jsonProfile2.toString(), User.class);
 		
-		
 		Individual userInstance = user.createOntologyInstance(model);
 				
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
@@ -360,11 +360,8 @@ public class UserTest {
 	@Test
 	public void TestUserInference3() 
 	  throws JsonParseException, IOException {
-	 
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		User user = mapper.readValue(jsonProfile3.toString(), User.class);
-				
+			
+		User user = User.read(jsonProfile3.toString());
 		Individual userInstance = user.createOntologyInstance(model);
 				
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));

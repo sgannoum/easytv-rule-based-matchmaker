@@ -1,0 +1,188 @@
+@prefix easyTV: <http://www.owl-ontologies.com/OntologyEasyTV.owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns> .
+
+
+[and_rule:(?cond rdf:#type easyTV:AND)
+,(?cond easyTV:hasLeftOperand ?leftOp)
+,(?cond easyTV:hasRightOperand ?rightOp)
+,(?leftOp easyTV:isTrue ?v1)
+,(?rightOp easyTV:isTrue ?v2)
+->
+	and(?v1, ?v2, ?v3)	
+	(?cond easyTV:isTrue ?v3)	
+	print('AND', ?v1, ?v2, ?v3)]
+
+[or_rule:(?cond rdf:#type easyTV:OR)
+,(?cond easyTV:hasLeftOperand ?leftOp)
+,(?cond easyTV:hasRightOperand ?rightOp)
+,(?leftOp easyTV:isTrue ?v1)
+,(?rightOp easyTV:isTrue ?v2)
+->
+	or(?v1, ?v2, ?v3)	
+	(?cond easyTV:isTrue ?v3)	
+	print('OR', ?v1, ?v2, ?v3)]
+
+[Not_rule:(?cond rdf:#type easyTV:NOT)
+,(?cond easyTV:hasLeftOperand ?leftOp)
+,(?leftOp easyTV:isTrue ?v1)
+->
+	not(?v1, ?v2)	
+	(?cond easyTV:isTrue ?v2)	
+	print('NOT', ?v1, ?v2)]
+	
+[Equals_pref:(?cond rdf:#type easyTV:EQ)
+,(?cond easyTV:hasValue ?value)
+,(?cond easyTV:hasType ?type)
+,(?user rdf:#type easyTV:User)
+,(?user easyTV:hasPreference ?pref)
+,(?pref ?type ?nodeValue)
+->
+	equals(?nodeValue, ?value, ?res)	
+	(?cond easyTV:isTrue ?res)	
+	print('Equals', ?nodeValue, ?value, ?res)]
+	
+[Equals_context:(?cond rdf:#type easyTV:EQ)
+,(?cond easyTV:hasValue ?value)
+,(?cond easyTV:hasType ?type)
+,(?user rdf:#type easyTV:User)
+,(?user easyTV:hasContext ?context)
+,(?context ?type ?nodeValue)
+->
+	equals(?nodeValue, ?value, ?res)	
+	(?cond easyTV:isTrue ?res)	
+	print('Equals', ?type, ?nodeValue, ?value, ?res)]
+	
+[Not_equals_true:(?cond rdf:#type easyTV:NE)
+,(?cond easyTV:hasValue ?value)
+,(?cond easyTV:hasType ?type)
+,(?user rdf:#type easyTV:User)
+,(?user easyTV:hasPreference ?pref)
+,(?pref ?type ?nodeValue)
+->
+	notEquals(?nodeValue, ?value, ?res)	
+	(?cond easyTV:isTrue ?res)	
+	print('Not equals', ?nodeValue, ?value, ?res)]
+	
+[Not_equals_true:(?cond rdf:#type easyTV:NE)
+,(?cond easyTV:hasValue ?value)
+,(?cond easyTV:hasType ?type)
+,(?user rdf:#type easyTV:User)
+,(?user easyTV:hasContext ?context)
+,(?context ?type ?nodeValue)
+->
+	notEquals(?nodeValue, ?value, ?res)	
+	(?cond easyTV:isTrue ?res)	
+	print('Not equals', ?nodeValue, ?value, ?res)]
+	
+[Greater_than:(?cond rdf:#type easyTV:GT)
+,(?cond easyTV:hasValue ?value)
+,(?cond easyTV:hasType ?type)
+,(?user rdf:#type easyTV:User)
+,(?user easyTV:hasPreference ?pref)
+,(?pref ?type ?nodeValue)
+->
+	greaterThan(?nodeValue, ?value, ?res)	
+	(?cond easyTV:isTrue ?res)	
+	print('Greater Than', ?nodeValue, ?value, ?res)]
+	
+[Greater_than_context:(?cond rdf:#type easyTV:GT)
+,(?cond easyTV:hasValue ?value)
+,(?cond easyTV:hasType ?type)
+,(?user rdf:#type easyTV:User)
+,(?user easyTV:hasContext ?context)
+,(?context ?type ?nodeValue)
+->
+	greaterThan(?nodeValue, ?value, ?res)	
+	(?cond easyTV:isTrue ?res)	
+	print('Greater Than', ?nodeValue, ?value, ?res)]
+	
+[Greater_than_equals: (?cond rdf:#type easyTV:GE)
+,(?cond easyTV:hasValue ?value)
+,(?cond easyTV:hasType ?type)
+,(?user rdf:#type easyTV:User)
+,(?user easyTV:hasPreference ?pref)
+,(?pref ?type ?nodeValue)
+->
+	greaterThanEquals(?nodeValue, ?value, ?res)	
+	(?cond easyTV:isTrue ?res)	
+	print('Greater than equals', ?nodeValue, ?value, ?res)]
+	
+[Greater_than_equals_context: (?cond rdf:#type easyTV:GE)
+,(?cond easyTV:hasValue ?value)
+,(?cond easyTV:hasType ?type)
+,(?user rdf:#type easyTV:User)
+,(?user easyTV:hasContext ?context)
+,(?context ?type ?nodeValue)
+->
+	greaterThanEquals(?nodeValue, ?value, ?res)	
+	(?cond easyTV:isTrue ?res)	
+	print('Greater than equals', ?nodeValue, ?value, ?res)]
+	
+[Less_than:(?cond rdf:#type easyTV:LT)
+,(?cond easyTV:hasValue ?value)
+,(?cond easyTV:hasType ?type)
+,(?user rdf:#type easyTV:User)
+,(?user easyTV:hasPreference ?pref)
+,(?pref ?type ?nodeValue)
+->
+	lessThan(?nodeValue, ?value, ?res)	
+	(?cond easyTV:isTrue ?res)	
+	print('Less than', ?nodeValue, ?value, ?res)]
+	
+[Less_than_context:(?cond rdf:#type easyTV:LT)
+,(?cond easyTV:hasValue ?value)
+,(?cond easyTV:hasType ?type)
+,(?user rdf:#type easyTV:User)
+,(?user easyTV:hasContext ?context)
+,(?context ?type ?nodeValue)
+->
+	lessThan(?nodeValue, ?value, ?res)	
+	(?cond easyTV:isTrue ?res)	
+	print('Less than', ?nodeValue, ?value, ?res)]
+	
+[Less_than_equals: (?cond rdf:#type easyTV:LE)
+,(?cond easyTV:hasValue ?value)
+,(?cond easyTV:hasType ?type)
+,(?user rdf:#type easyTV:User)
+,(?user easyTV:hasPreference ?pref)
+,(?pref ?type ?nodeValue)
+->
+	lessThanEquals(?nodeValue, ?value, ?res)	
+	(?cond easyTV:isTrue ?res)	
+	print('Less than equals', ?nodeValue, ?value, ?res)]
+	
+[Less_than_equals_context: (?cond rdf:#type easyTV:LE)
+,(?cond easyTV:hasValue ?value)
+,(?cond easyTV:hasType ?type)
+,(?user rdf:#type easyTV:User)
+,(?user easyTV:hasContext ?context)
+,(?context ?type ?nodeValue)
+->
+	lessThanEquals(?nodeValue, ?value, ?res)	
+	(?cond easyTV:isTrue ?res)	
+	print('Less than equals', ?nodeValue, ?value, ?res)]
+	
+[conditional_preference: (?condPref rdf:#type easyTV:ConditionalPreference)
+,(?condPref easyTV:hasConditions ?cond)
+,(?condPref easyTV:hasName ?name)
+,(?cond easyTV:isTrue 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
+,(?user rdf:#type easyTV:User)
+,(?user easyTV:hasPreference ?defPref)
+->
+	print('Conditional preference', ?name,'is true')	
+	mergePref(?defPref, ?condPref)]
+
+	
+	
+
+
+	
+[protanopia_rule_1:(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)
+,(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)
+,(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasVisualAbility ?visual)
+,(?visual http://www.owl-ontologies.com/OntologyEasyTV.owl#hasColorBlindness ?blindness)
+,equals(?blindness, 'protanopia'^^http://www.w3.org/2001/XMLSchema#string, ?res)
+->
+	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasBackground '#ffffff'^^http://www.w3.org/2001/XMLSchema#string)	
+	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasFontColor '#ffff28'^^http://www.w3.org/2001/XMLSchema#string)	
+	print('Suggested preferences')]	

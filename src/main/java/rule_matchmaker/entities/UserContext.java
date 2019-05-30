@@ -56,5 +56,4 @@ public class UserContext {
 		return "userContext [ time: " + time + " location: "+ location + " ]";
 	}
 	
-
 }

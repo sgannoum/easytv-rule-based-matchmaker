@@ -1,10 +1,11 @@
 package rule_matchmaker;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,8 +13,16 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonObject;
-
+import builtin.And;
+import builtin.Equals;
+import builtin.GreaterThan;
+import builtin.GreaterThanEquals;
+import builtin.LessThan;
+import builtin.LessThanEquals;
+import builtin.MergePreferences;
+import builtin.NOT;
+import builtin.NotEquals;
+import builtin.OR;
 import rule_matchmaker.entities.User;
 import rule_matchmaker.entities.UserPreferencesMappings;
 
@@ -36,13 +45,29 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.reasoner.Reasoner;
+import org.apache.jena.reasoner.rulesys.BuiltinRegistry;
 import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
 import org.apache.jena.reasoner.rulesys.Rule;
 
 public class RuleReasoner {
 
 	private OntModel model;
-
+	private Reasoner reasoner;
+	
+	private String ontologyFile;
+	private String rulesFile;
+	
+	public RuleReasoner(String ontologyFile, String rulesFile) throws IOException {
+		this.ontologyFile = ontologyFile;
+		this.rulesFile = rulesFile;
+		
+		//load model
+		model = loadModel(ontologyFile);
+		
+		//load rules
+		reasoner = loadRules(rulesFile);
+	}
+	
 	/**
 	 * 
 	 * @param json
@@ -50,55 +75,102 @@ public class RuleReasoner {
 	 * @throws IOException
 	 * @throws JSONException 
 	 */
-	public static JSONObject infer(String ontologyFile, String ruleFile, String json) throws IOException, JSONException {
-		JSONObject userProfile = new JSONObject(json);
-		RuleReasoner x = new RuleReasoner();
+	public JSONObject infer(String userFile) throws IOException, JSONException {
 		
-		x.loadModel(ontologyFile);
-		x.loadUser(json);
+	    String result = "";
+	    try {
+	        BufferedReader br = new BufferedReader(new FileReader(new File(getClass().getClassLoader().getResource(userFile).getFile())));
+	        StringBuilder sb = new StringBuilder();
+	        String line = br.readLine();
+	        while (line != null) {
+	            sb.append(line);
+	            line = br.readLine();
+	        }
+	        result = sb.toString();
+	    } catch(Exception e) {
+	        e.printStackTrace();
+	    }
 		
-		//run rules and get inferred model
-		Model infModel = x.runRules(ruleFile);
+	    JSONObject userProfile = new JSONObject(result);
 		
-		//add the inferred preferences to the user model
-		return updateUserPreferences(userProfile,x.getUserPreferences(infModel));
-	}
-	
-	public void loadUser(String userProfile) throws JsonParseException, JsonMappingException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		User user = mapper.readValue(userProfile.toString(), User.class);
+		//load user file
+		User user = User.read(userProfile);
 		
 		//load user into ontology
 		user.createOntologyInstance(model);
-	}
-	
-	public void loadModel(String ontologyFile) throws IOException {
-		File file = new File(getClass().getResource(ontologyFile).getFile());
-		model = ModelFactory.createOntologyModel();
-		InputStream in = new FileInputStream(file);
-		model = (OntModel) model.read(in, null, "");
-		System.out.println("Ontology was loaded");
+		
+		//run rules and get inferred model
+		InfModel infModel = ModelFactory.createInfModel(reasoner, model);
+		
+		//update user preferences
+		JSONObject newUserprofile = updateUserPreferences(userProfile, getUserPreferences(infModel));
+		
+		//update user suggested preferences
+		newUserprofile = updateSuggestedUserPreferences(newUserprofile,  getSuggestedUserPreferences(infModel));
+		
+		//add the inferred preferences to the user model
+		return newUserprofile;
 	}
 	
 	/**
-	 * Loads a rule from a file use the model of the instance and runs the rule
-	 * a new model is created that is used for getting the user preferences
 	 * 
+	 * @param json
+	 * @return
 	 * @throws IOException
+	 * @throws JSONException 
 	 */
-	public InfModel runRules(String rulesFile) throws IOException {
+	public JSONObject infer(JSONObject userProfile) throws IOException, JSONException {
+		
+		//load user file
+		User user = User.read(userProfile);
+		
+		//load user into ontology
+		user.createOntologyInstance(model);
+		
+		//run rules and get inferred model
+		InfModel infModel = ModelFactory.createInfModel(reasoner, model);
+		
+		//update user preferences
+		JSONObject newUserprofile = updateUserPreferences(userProfile, getUserPreferences(infModel));
+		
+		//update user suggested preferences
+		newUserprofile = updateSuggestedUserPreferences(newUserprofile,  getSuggestedUserPreferences(infModel));
+		
+		//add the inferred preferences to the user model
+		return newUserprofile;
+	}
+	
+	public OntModel loadModel(String ontologyFile) throws IOException {
+		
+		File file = new File(getClass().getClassLoader().getResource(ontologyFile).getFile());
+		OntModel model = ModelFactory.createOntologyModel();
+		InputStream in = new FileInputStream(file);
+		model = (OntModel) model.read(in, null, "");
+		BuiltinRegistry.theRegistry.register(new NotEquals());
+		BuiltinRegistry.theRegistry.register(new Equals());
+		BuiltinRegistry.theRegistry.register(new GreaterThan());
+		BuiltinRegistry.theRegistry.register(new GreaterThanEquals());
+		BuiltinRegistry.theRegistry.register(new LessThan());
+		BuiltinRegistry.theRegistry.register(new LessThanEquals());
+		BuiltinRegistry.theRegistry.register(new And());
+		BuiltinRegistry.theRegistry.register(new OR());
+		BuiltinRegistry.theRegistry.register(new NOT());
+		BuiltinRegistry.theRegistry.register(new MergePreferences());
+		
+		System.out.println("Ontology was loaded");
+		
+		return model;
+	}
+	
+	public Reasoner loadRules(String rulesFile) throws IOException {
 		// load files with rules
-		File file = new File(getClass().getResource(rulesFile).getFile());
+		File file = new File(getClass().getClassLoader().getResource(rulesFile).getFile());
 		Reasoner reasoner = new GenericRuleReasoner(Rule.rulesFromURL(file
 				.getCanonicalPath()));
 
-		// run the rules
-		InfModel infModel = ModelFactory.createInfModel(reasoner, model);
+		System.out.println("Rules was loaded");
 
-		//printModel(infModel);
-
-		return infModel;
+		return reasoner;
 	}
 
 	/**
@@ -108,7 +180,7 @@ public class RuleReasoner {
 	 * @throws IOException
 	 * @throws JSONException 
 	 */
-	public static JSONObject updateUserPreferences(JSONObject userProfile, JsonObject inferedPref) throws IOException, JSONException {
+	public static JSONObject updateUserPreferences(JSONObject userProfile, JSONObject inferedPref) throws IOException, JSONException {
 		JSONObject jsonPreference = userProfile.getJSONObject("user_preferences")
 											   .getJSONObject("default")
 											   .getJSONObject("preferences");
@@ -117,9 +189,29 @@ public class RuleReasoner {
 		String[] fields = JSONObject.getNames(pref);
 
 		for(int i = 0 ; i < fields.length; i++) 
-			if(!jsonPreference.has(fields[i])) {
-				jsonPreference.put(fields[i], pref.get(fields[i]));
-			}
+			jsonPreference.put(fields[i], pref.get(fields[i]));
+		
+		return userProfile;
+	}
+	
+	/**
+	 * 
+	 * @param json
+	 * @return
+	 * @throws IOException
+	 * @throws JSONException 
+	 */
+	public static JSONObject updateSuggestedUserPreferences(JSONObject userProfile, JSONObject inferedSuggestedPref) throws IOException, JSONException {		
+		JSONObject userSuggestedPref =  new JSONObject();
+		JSONObject pref = new JSONObject(inferedSuggestedPref.toString());
+		String[] fields = JSONObject.getNames(pref);
+
+		if(fields != null) {
+			for(int i = 0 ; i < fields.length; i++) 
+				userSuggestedPref.put(fields[i], pref.get(fields[i]));
+			
+			userProfile.put("recommanded_preferences", userSuggestedPref);
+		}
 		
 		return userProfile;
 	}
@@ -132,20 +224,64 @@ public class RuleReasoner {
 	 *            : the model where the SPARQL queries are made
 	 * @return
 	 */
-	public JsonObject getUserPreferences(Model model) {
-		JsonObject userPreferences = new JsonObject();
-		userPreferences = updateJson(model, userPreferences, "hasAudioVolume");
+	public JSONObject getUserPreferences(Model model) {
+		JSONObject userPreferences = new JSONObject();
+		userPreferences = updateJson(model, userPreferences, "hasBackground");
+		userPreferences = updateJson(model, userPreferences, "hasHighlight");
+		userPreferences = updateJson(model, userPreferences, "hasCursorSize");
+		userPreferences = updateJson(model, userPreferences, "hasCursorColour");
+		userPreferences = updateJson(model, userPreferences, "hasCursorTrails");
+		userPreferences = updateJson(model, userPreferences, "hasMagnification");
 		userPreferences = updateJson(model, userPreferences, "hasFontSize");
-		userPreferences = updateJson(model, userPreferences, "hasBackgroundColor");
-		userPreferences = updateJson(model, userPreferences, "hasContrast");
+		userPreferences = updateJson(model, userPreferences, "hasFontType");
 		userPreferences = updateJson(model, userPreferences, "hasFontColor");
-		userPreferences = updateJson(model, userPreferences, "hasFonts");
-		userPreferences = updateJson(model, userPreferences, "hasLanguageAudio");
-		userPreferences = updateJson(model, userPreferences, "hasLanguageSign");
-		userPreferences = updateJson(model, userPreferences, "hasLanguageSubtitles");
+		userPreferences = updateJson(model, userPreferences, "hasSpeechRate");
+		userPreferences = updateJson(model, userPreferences, "hasPitch");
+		userPreferences = updateJson(model, userPreferences, "hasVolume");
+		userPreferences = updateJson(model, userPreferences, "hasVoiceProfile");
+		userPreferences = updateJson(model, userPreferences, "hasMicrophoneGain");
+		userPreferences = updateJson(model, userPreferences, "hasDictation");
+		userPreferences = updateJson(model, userPreferences, "hasConfirmationFeedBack");
+		userPreferences = updateJson(model, userPreferences, "hasAudioVolume");
+		userPreferences = updateJson(model, userPreferences, "hasAudioLanguage");
+
 		System.out.println(userPreferences);
 		return userPreferences;
 	}
+	
+	/**
+	 * Makes SPARQL queries to retrieve one by one all properties related to
+	 * user preferences The results are added in a JSON object
+	 * 
+	 * @param model
+	 *            : the model where the SPARQL queries are made
+	 * @return
+	 */
+	public JSONObject getSuggestedUserPreferences(Model model) {
+		JSONObject userPreferences = new JSONObject();
+		userPreferences = updateSuggestedJson(model, userPreferences, "hasBackground");
+		userPreferences = updateSuggestedJson(model, userPreferences, "hasHighlight");
+		userPreferences = updateSuggestedJson(model, userPreferences, "hasCursorSize");
+		userPreferences = updateSuggestedJson(model, userPreferences, "hasCursorColour");
+		userPreferences = updateSuggestedJson(model, userPreferences, "hasCursorTrails");
+		userPreferences = updateSuggestedJson(model, userPreferences, "hasMagnification");
+		userPreferences = updateSuggestedJson(model, userPreferences, "hasFontSize");
+		userPreferences = updateSuggestedJson(model, userPreferences, "hasFontType");
+		userPreferences = updateSuggestedJson(model, userPreferences, "hasFontColor");
+		userPreferences = updateSuggestedJson(model, userPreferences, "hasSpeechRate");
+		userPreferences = updateSuggestedJson(model, userPreferences, "hasPitch");
+		userPreferences = updateSuggestedJson(model, userPreferences, "hasVolume");
+		userPreferences = updateSuggestedJson(model, userPreferences, "hasVoiceProfile");
+		userPreferences = updateSuggestedJson(model, userPreferences, "hasMicrophoneGain");
+		userPreferences = updateSuggestedJson(model, userPreferences, "hasDictation");
+		userPreferences = updateSuggestedJson(model, userPreferences, "hasConfirmationFeedBack");
+		userPreferences = updateSuggestedJson(model, userPreferences, "hasAudioVolume");
+		userPreferences = updateSuggestedJson(model, userPreferences, "hasAudioLanguage");
+
+		System.out.println(userPreferences);
+		return userPreferences;
+	}
+
 
 	/**
 	 * Gets a specific property from the ontology, makes a SPARQL query and adds
@@ -156,30 +292,69 @@ public class RuleReasoner {
 	 * @param propertyName
 	 * @return
 	 */
-	private JsonObject updateJson(Model model, JsonObject json, String propertyName) {
+	private JSONObject updateJson(Model model, JSONObject json, String propertyName) {
 		Literal result = getUserPreference(model, propertyName);
 		if (result == null)
 			return json;
 		
-		String pref = UserPreferencesMappings.dataPropertyToUri.get(propertyName);
+		String pref = UserPreferencesMappings.dataPropertyToUri.get(User.NAMESPACE + propertyName);
 		RDFDatatype datatype = result.getDatatype();
 		if (datatype != null) {			
 			if (datatype.equals(XSDDatatype.XSDboolean)) {
-				json.addProperty(pref, result.getBoolean());
+				json.put(pref, result.getBoolean());
 			} else if (datatype.equals(XSDDatatype.XSDint)
 					|| datatype.equals(XSDDatatype.XSDinteger)) {
-				json.addProperty(pref, result.getInt());
+				json.put(pref, result.getInt());
 			} else if (datatype.equals(XSDDatatype.XSDlong)) {
-				json.addProperty(pref, result.getLong());
+				json.put(pref, result.getLong());
 			} else if (datatype.equals(XSDDatatype.XSDfloat)) {
-				json.addProperty(pref, result.getFloat());
+				json.put(pref, result.getFloat());
 			} else if (datatype.equals(XSDDatatype.XSDdouble)) {
-				json.addProperty(pref, result.getDouble());
+				json.put(pref, result.getDouble());
 			} else {
-				json.addProperty(pref, result.getString());
+				json.put(pref, result.getString());
 			}
 		} else {
-			json.addProperty(pref, result.getValue().toString());
+			json.put(pref, result.getValue().toString());
+		}
+		return json;
+	}
+	
+	/**
+	 * Gets a specific property from the ontology, makes a SPARQL query and adds
+	 * the result to a JSON according to the datatype
+	 * 
+	 * @param model
+	 * @param json
+	 * @param propertyName
+	 * @return
+	 */
+	private JSONObject updateSuggestedJson(Model model, JSONObject json, String propertyName) {
+		Literal result = getSuggestedUserPreference(model, propertyName);
+		if (result == null)
+			return json;
+		
+		
+		String pref = UserPreferencesMappings.dataPropertyToUri.get(User.NAMESPACE + propertyName);
+		
+		RDFDatatype datatype = result.getDatatype();
+		if (datatype != null) {			
+			if (datatype.equals(XSDDatatype.XSDboolean)) {
+				json.put(pref, result.getBoolean());
+			} else if (datatype.equals(XSDDatatype.XSDint)
+					|| datatype.equals(XSDDatatype.XSDinteger)) {
+				json.put(pref, result.getInt());
+			} else if (datatype.equals(XSDDatatype.XSDlong)) {
+				json.put(pref, result.getLong());
+			} else if (datatype.equals(XSDDatatype.XSDfloat)) {
+				json.put(pref, result.getFloat());
+			} else if (datatype.equals(XSDDatatype.XSDdouble)) {
+				json.put(pref, result.getDouble());
+			} else {
+				json.put(pref, result.getString());
+			}
+		} else {
+			json.put(pref, result.getValue().toString());
 		}
 		return json;
 	}
@@ -194,11 +369,33 @@ public class RuleReasoner {
 	 */
 	private Literal getUserPreference(Model model, String property) {
 		String query = ""
-				+ "PREFIX : <http://www.owl-ontologies.com/OntologyEasyTV.owl#>"
+				+ "PREFIX easyTV: <http://www.owl-ontologies.com/OntologyEasyTV.owl#>"
 				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "SELECT ?result " + "WHERE{"
-				+ "?pref  rdf:type :UserPreferences ." + "?pref  :" + property
-				+ " ?result." + "}";
+				+ "SELECT ?result " 
+				+ "WHERE {"
+				+ "?pref  rdf:type easyTV:UserPreferences ." 
+				+ "?pref  easyTV:" + property+ " ?result ." 
+				+ "}";
+		return executeSparqlQuerytSparqlResult(query, model);
+	}
+	
+	/**
+	 * Makes a query to the data model and retrieve the given property from the
+	 * UserPreferences class
+	 * 
+	 * @param model
+	 * @param property
+	 * @return
+	 */
+	private Literal getSuggestedUserPreference(Model model, String property) {
+		String query = ""
+				+ "PREFIX easyTV: <http://www.owl-ontologies.com/OntologyEasyTV.owl#>"
+				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+				+ "SELECT ?result " 
+				+ "WHERE {"
+				+ "?pref  rdf:type easyTV:SuggestedPreferences ." 
+				+ "?pref  easyTV:" + property+ " ?result ." 
+				+ "}";
 		return executeSparqlQuerytSparqlResult(query, model);
 	}
 

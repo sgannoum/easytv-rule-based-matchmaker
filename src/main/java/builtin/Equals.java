@@ -34,7 +34,6 @@ public class Equals extends ComparatorBuiltin {
 		Node_RuleVariable v3 = (Node_RuleVariable) args[2];
 		
 		BindingEnvironment env = context.getEnv();	
-		
 		if(compareTo(v1, v2) == 0) {
 			env.bind(v3,NodeFactory.createLiteralByValue(true, XSDDatatype.XSDboolean));
 			return true;
