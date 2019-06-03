@@ -1,6 +1,8 @@
 package builtin;
 
-import java.sql.Date;
+import java.time.Instant;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
 
 import org.apache.jena.graph.Node_Literal;
 import org.apache.jena.reasoner.rulesys.builtins.BaseBuiltin;
@@ -10,7 +12,7 @@ abstract public class ComparatorBuiltin extends BaseBuiltin {
 	protected int compareTo(Node_Literal v1, Node_Literal v2) {
 		
 		Object obj1 = v1.getLiteralValue();
-		
+				
 		if(Integer.class.isInstance(obj1)) {
 			Integer d1 = (Integer) obj1;
 			Integer d2 = (Integer) v2.getLiteralValue();
@@ -44,6 +46,12 @@ abstract public class ComparatorBuiltin extends BaseBuiltin {
 		} else if(String.class.isInstance(obj1)) {
 			String d1 = (String) obj1;
 			String d2 = (String) v2.getLiteralValue();
+			
+			try {
+				Date date1 =  Date.from( Instant.parse(d1));
+				Date date2 =  Date.from( Instant.parse(d2));
+				return date1.compareTo(date2);
+			} catch(DateTimeParseException e) {}
 
 			return d1.compareTo(d2);
 		}

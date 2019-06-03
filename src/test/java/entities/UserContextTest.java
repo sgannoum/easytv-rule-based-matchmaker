@@ -38,7 +38,7 @@ public class UserContextTest {
 	
 	private OntModel model;
 	JSONObject jsonProfile1 = new JSONObject("{\r\n" + 
-			"    \"http://registry.easytv.eu/context/time\": \"1558700176286\" ,\r\n" + 
+			"    \"http://registry.easytv.eu/context/time\": \"2019-05-30T09:47:47.619Z\" ,\r\n" + 
 			"    \"http://registry.easytv.eu/context/location\": \"fr\"\r\n" + 
 			"}");
 	
@@ -66,9 +66,6 @@ public class UserContextTest {
 		BuiltinRegistry.theRegistry.register(new Equals());
 		System.out.println("Ontology was loaded");
 		
-		System.out.println(rules);
-
-				
 	}
 	
 	@Test

@@ -32,6 +32,11 @@ public class GreaterThanEquals extends ComparatorBuiltin {
 		Node_RuleVariable v3 = (Node_RuleVariable) args[2];
 		
 		BindingEnvironment env = context.getEnv();	
+		
+		System.out.print(v1.toString());
+		System.out.print(v2.toString());
+
+		System.out.print(compareTo(v1, v2));
 			
 		if(compareTo(v1, v2) >= 0) {
 			env.bind(v3,NodeFactory.createLiteralByValue(true, XSDDatatype.XSDboolean));

@@ -154,7 +154,7 @@ public class UserPreferencesMappings {
 		put(COMMON_NS + CONTENT_NS + "audio/language", XSDDatatype.XSDstring);
 		
 		//context
-		put(DOMAIN_NAME + CONTEXT_NS + "time", XSDDatatype.XSDdateTimeStamp);
+		put(DOMAIN_NAME + CONTEXT_NS + "time", XSDDatatype.XSDdateTime);
 		put(DOMAIN_NAME + CONTEXT_NS + "location", XSDDatatype.XSDstring);
 		
     }};

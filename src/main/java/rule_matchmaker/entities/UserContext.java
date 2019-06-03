@@ -1,5 +1,7 @@
 package rule_matchmaker.entities;
 
+import java.util.Date;
+
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
@@ -10,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class UserContext {
 	
     @JsonProperty("http://registry.easytv.eu/context/time")
-	private long time;
+	private String time;
     
     @JsonProperty("http://registry.easytv.eu/context/location")
 	private String location;
@@ -22,10 +24,10 @@ public class UserContext {
 	public static final String HAS_TIME_PROP = NAMESPACE + "hasTime";
 	public static final String HAS_LOCATION_PROP = NAMESPACE + "hasLocation";
 	
-	public long getTime() {
+	public String getTime() {
 		return time;
 	}
-	public void setTime(long time) {
+	public void setTime(String time) {
 		this.time = time;
 	}
 	public String getLocation() {

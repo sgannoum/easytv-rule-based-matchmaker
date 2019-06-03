@@ -70,7 +70,7 @@ public class UserTest {
 			"    \"http://registry.easytv.eu/functionalLimitations/visual/colorBlindness\": \"normal\"\r\n" + 
 			"	},\r\n" + 
 			" \"context\":{\r\n" + 
-			"    \"http://registry.easytv.eu/context/time\": \"1558700176286\" ,\r\n" + 
+			"    \"http://registry.easytv.eu/context/time\": \"2019-05-30T09:47:47.619Z\" ,\r\n" + 
 			"    \"http://registry.easytv.eu/context/location\": \"fr\"\r\n" + 
 			"	},\r\n"	+
 			"  \"auditory\": {\r\n" + 
@@ -131,7 +131,7 @@ public class UserTest {
 			"    \"http://registry.easytv.eu/functionalLimitations/visual/colorBlindness\": \"normal\"\r\n" + 
 			"  },\r\n" + 
 			" \"context\":{\r\n" + 
-			"    \"http://registry.easytv.eu/context/time\": \"1558700176286\" ,\r\n" + 
+			"    \"http://registry.easytv.eu/context/time\": \"2019-05-30T09:47:47.619Z\" ,\r\n" + 
 			"    \"http://registry.easytv.eu/context/location\": \"fr\"\r\n" + 
 			"	},\r\n"	+
 			"  \"auditory\": {\r\n" + 
@@ -180,7 +180,7 @@ public class UserTest {
 			"    \"http://registry.easytv.eu/functionalLimitations/visual/colorBlindness\": \"normal\"\r\n" + 
 			"  },\r\n" + 
 			" \"context\":{\r\n" + 
-			"    \"http://registry.easytv.eu/context/time\": \"1558700176286\" ,\r\n" + 
+			"    \"http://registry.easytv.eu/context/time\": \"2019-05-30T09:47:47.619Z\" ,\r\n" + 
 			"    \"http://registry.easytv.eu/context/location\": \"fr\"\r\n" + 
 			"	},\r\n"	+
 			"  \"auditory\": {\r\n" + 
@@ -244,7 +244,7 @@ public class UserTest {
 			"				\"type\": \"eq\",\r\n" + 
 			"				\"operands\": [\r\n" + 
 			"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
-			"				  \"1558700176286\"\r\n" + 
+			"				  \"2019-05-30T09:47:47.619Z\"\r\n" + 
 			"				]\r\n" + 
 			"			  },\r\n" + 
 			"				{\r\n" + 

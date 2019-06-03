@@ -32,6 +32,7 @@ import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
 import org.apache.jena.reasoner.rulesys.Rule;
 import rule_matchmaker.entities.Conditions;
 import rule_matchmaker.entities.User;
+import rule_matchmaker.entities.UserContext;
 import rule_matchmaker.entities.UserPreference;
 
 public class LessThanEqualRulesTest {
@@ -73,6 +74,14 @@ public class LessThanEqualRulesTest {
 		BuiltinRegistry.theRegistry.register(new LessThanEquals());
 		System.out.println("Ontology was loaded");
 		
+		//user context
+		OntClass userContextClass = model.getOntClass(UserContext.ONTOLOGY_CLASS_URI);
+		Individual  userContextInstance = userContextClass.createIndividual();
+		
+		Property hasTimeProperty = model.getProperty(UserContext.HAS_TIME_PROP);
+		userContextInstance.addProperty(hasTimeProperty, model.createTypedLiteral("2019-05-30T09:47:47.619Z"));
+		
+		
 		//user
 		OntClass userPreferenceClass = model.getOntClass(UserPreference.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
@@ -85,6 +94,9 @@ public class LessThanEqualRulesTest {
 		
 		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
+		
+		Property hasContextProperty = model.getProperty(User.HAS_CONTEXT_PROP);
+		userInstance.addProperty(hasContextProperty, userContextInstance);
 		
 	}
 
@@ -152,6 +164,85 @@ public class LessThanEqualRulesTest {
 				
 		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(3));
+		
+		
+		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
+		InfModel inf = ModelFactory.createInfModel(reasoner, model);
+				
+		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
+		StmtIterator list = inf.listStatements(null, isTrueProperty, (RDFNode)null);
+		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
+		while (list.hasNext()) {
+			Assert.assertEquals(list.next().getObject().asLiteral().getBoolean(), false);
+		}
+		
+	}
+	
+
+	@Test
+	public void Test_lessThanEqua_Date_true1()  {
+		
+		//lt
+		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "LE");
+		Individual gtInstance = gtClass.createIndividual();
+
+		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/context/time")));
+				
+		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
+		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral("2019-05-30T09:47:47.619Z" ));
+		 
+		
+		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
+		InfModel inf = ModelFactory.createInfModel(reasoner, model);
+				
+		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
+		StmtIterator list = inf.listStatements(null, isTrueProperty, (RDFNode)null);
+		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
+		while (list.hasNext()) {
+			Assert.assertEquals(list.next().getObject().asLiteral().getBoolean(), true);
+		}
+		
+	}
+	
+	@Test
+	public void Test_lessThanEqua_Date_true2()  {
+		
+		//lt
+		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "LE");
+		Individual gtInstance = gtClass.createIndividual();
+
+		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/context/time")));
+				
+		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
+		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral("2019-06-30T09:47:47.619Z" ));
+		 
+		
+		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
+		InfModel inf = ModelFactory.createInfModel(reasoner, model);
+				
+		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
+		StmtIterator list = inf.listStatements(null, isTrueProperty, (RDFNode)null);
+		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
+		while (list.hasNext()) {
+			Assert.assertEquals(list.next().getObject().asLiteral().getBoolean(), true);
+		}
+		
+	}
+	
+	@Test
+	public void Test_lessThanEquals_Date_False()  {
+		
+		//lt
+		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "LE");
+		Individual gtInstance = gtClass.createIndividual();
+
+		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/context/time")));
+				
+		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
+		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral("2019-03-30T09:47:47.619Z" ));
 		
 		
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));

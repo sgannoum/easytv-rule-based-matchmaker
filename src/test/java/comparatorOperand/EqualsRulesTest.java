@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.time.Instant;
+import java.util.Date;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -30,6 +32,7 @@ import org.apache.jena.reasoner.rulesys.builtins.Equal;
 
 import rule_matchmaker.entities.Conditions;
 import rule_matchmaker.entities.User;
+import rule_matchmaker.entities.UserContext;
 import rule_matchmaker.entities.UserPreference;
 
 public class EqualsRulesTest {
@@ -71,6 +74,15 @@ public class EqualsRulesTest {
 		BuiltinRegistry.theRegistry.register(new Equals());
 		System.out.println("Ontology was loaded");
 		
+		
+		//user context
+		OntClass userContextClass = model.getOntClass(UserContext.ONTOLOGY_CLASS_URI);
+		Individual  userContextInstance = userContextClass.createIndividual();
+		
+		Property hasTimeProperty = model.getProperty(UserContext.HAS_TIME_PROP);
+		userContextInstance.addProperty(hasTimeProperty, model.createTypedLiteral("2019-05-30T09:47:47.619Z"));
+		
+		
 		//user
 		OntClass userPreferenceClass = model.getOntClass(UserPreference.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
@@ -83,6 +95,9 @@ public class EqualsRulesTest {
 		
 		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
+		
+		Property hasContextProperty = model.getProperty(User.HAS_CONTEXT_PROP);
+		userInstance.addProperty(hasContextProperty, userContextInstance);
 		
 	}
 
@@ -109,7 +124,6 @@ public class EqualsRulesTest {
 		while (list.hasNext()) {
 			Assert.assertEquals(list.next().getObject().asLiteral().getBoolean(), true);
 		}
-		
 	}
 	
 	
@@ -126,6 +140,57 @@ public class EqualsRulesTest {
 		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(7));
 		
+		
+		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
+		InfModel inf = ModelFactory.createInfModel(reasoner, model);
+				
+		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
+		StmtIterator list = inf.listStatements(null, isTrueProperty, (RDFNode)null);
+		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
+		while (list.hasNext()) {
+			Assert.assertEquals(list.next().getObject().asLiteral().getBoolean(), false);
+		}
+	}
+	
+	@Test
+	public void Test_greaterThan_UserContext_Date_IsTrue()  {
+		
+		//gt
+		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "EQ");
+		Individual gtInstance = gtClass.createIndividual();
+
+		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/context/time")));
+				
+		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
+		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral("2019-05-30T09:47:47.619Z" ));
+		 
+		
+		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
+		InfModel inf = ModelFactory.createInfModel(reasoner, model);
+				
+		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
+		StmtIterator list = inf.listStatements(null, isTrueProperty, (RDFNode)null);
+		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
+		while (list.hasNext()) {
+			Assert.assertEquals(list.next().getObject().asLiteral().getBoolean(), true);
+		}
+		
+	}
+	
+	@Test
+	public void Test_greaterThan_UserContext_Date_IsFalse()  {
+		
+		//gt
+		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "EQ");
+		Individual gtInstance = gtClass.createIndividual();
+
+		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty("http://registry.easytv.eu/context/time")));
+				
+		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
+		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral("2014-12-12T10:39:40Z" ));
+		 
 		
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
