@@ -1,4 +1,4 @@
-package rule_matchmaker.entities;
+package com.certh.iti.easytv.rbmm.user;
 
 import java.util.Date;
 

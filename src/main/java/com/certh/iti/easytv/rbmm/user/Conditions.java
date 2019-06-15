@@ -1,4 +1,4 @@
-package rule_matchmaker.entities;
+package com.certh.iti.easytv.rbmm.user;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -178,7 +178,7 @@ public class Conditions {
 																			
 					//set type
 					Property hasTypeProperty = model.getProperty(HAS_TYPE_PROP);
-					operandInstance.addProperty(hasTypeProperty, model.createProperty(UserPreference.getDataProperty(uri)));
+					operandInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty(uri)));
 					//set value
 					Property hasValueProperty = model.getProperty(HAS_VALUE_PROP);
 					operandInstance.addProperty(hasValueProperty, model.createTypedLiteral(value));

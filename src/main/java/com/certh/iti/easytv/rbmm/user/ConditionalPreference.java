@@ -1,4 +1,4 @@
-package rule_matchmaker.entities;
+package com.certh.iti.easytv.rbmm.user;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,20 +9,15 @@ import org.apache.jena.rdf.model.Property;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "name", "preferences", "conditions" })
-public class ConditionalPreference {
+public class ConditionalPreference extends Preferences{
 	
     @JsonProperty("name")
 	private String name;
     
-    @JsonProperty("preferences")
-    @JsonDeserialize(as=DefaultUserPreferences.class)
-	private DefaultUserPreferences preferences;
     
     @JsonProperty("conditions")
     @JsonDeserialize(as=Conditions.class)
@@ -30,10 +25,6 @@ public class ConditionalPreference {
 	
 	public static final String NAMESPACE = "http://www.owl-ontologies.com/OntologyEasyTV.owl#";
 	public static final String ONTOLOGY_CLASS_URI = NAMESPACE + "ConditionalPreference";
-
-	// Data Properties
-	public static final String ACCESSIBILITY_SERVICE_PROP = NAMESPACE + "hasAccessibilityService";
-	public static final String PREFERENCE_PROP = NAMESPACE + "hasPreference";
 
 
 	public String getName() {
@@ -44,22 +35,6 @@ public class ConditionalPreference {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-
-	public DefaultUserPreferences getPreferences() {
-		return preferences;
-	}
-
-
-	public void setPreferences(DefaultUserPreferences preferences) {
-		this.preferences = preferences;
-	}
-	
-	public void setPreferences(LinkedHashMap<String, Object> preferences) {
-		this.preferences = new DefaultUserPreferences();
-		this.preferences.setPreferences(preferences);
-	}
-
 
 
 	public Conditions getConditions() {
@@ -83,11 +58,11 @@ public class ConditionalPreference {
 		OntClass conditionalPrefClass = model.getOntClass(ONTOLOGY_CLASS_URI);
 		Individual conditionalPrefInstance = conditionalPrefClass.createIndividual();		
 		
-		Property hasNameProperty = model.getProperty(UserPreference.HAS_NAME_PROP);
+		Property hasNameProperty = model.getProperty(HAS_NAME_PROP);
 		conditionalPrefInstance.addProperty(hasNameProperty,model.createTypedLiteral(name));
 		
 		//add the preference properties 
-		preferences.createOntologyInstance(model, conditionalPrefInstance);
+		super.createOntologyInstance(model, conditionalPrefInstance);
 		
 		//add conditional preferences properties
 		conditions.createOntologyInstance(model, conditionalPrefInstance);

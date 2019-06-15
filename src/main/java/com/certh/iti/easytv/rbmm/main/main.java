@@ -1,10 +1,12 @@
-package rule_matchmaker;
+package com.certh.iti.easytv.rbmm.main;
 
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Date;
 
 import org.json.JSONException;
+
+import com.certh.iti.easytv.rbmm.reasoner.RuleReasoner;
 
 
 public class main {

@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
@@ -21,18 +22,18 @@ import org.json.JSONObject;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.certh.iti.easytv.rbmm.builtin.Equals;
+import com.certh.iti.easytv.rbmm.user.Preferences;
+import com.certh.iti.easytv.rbmm.user.SuggestedPreferences;
+import com.certh.iti.easytv.rbmm.user.User;
+import com.certh.iti.easytv.rbmm.user.UserContext;
+import com.certh.iti.easytv.rbmm.user.Visual;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import builtin.Equals;
 import config.RBMMTestConfig;
 import junit.framework.Assert;
-import rule_matchmaker.entities.SuggestedPreferences;
-import rule_matchmaker.entities.User;
-import rule_matchmaker.entities.UserContext;
-import rule_matchmaker.entities.UserPreference;
-import rule_matchmaker.entities.Visual;
 
 public class UserContextTest {
 	
@@ -50,8 +51,8 @@ public class UserContextTest {
 			",(?visual http://www.owl-ontologies.com/OntologyEasyTV.owl#hasColorBlindness ?blindness)" +	
 			",equals(?blindness, 'protanopia'^^http://www.w3.org/2001/XMLSchema#string, ?res)" +
 			"->" + 
-			"	(?sugPref "+UserPreference.BACKGROUND_PROP+" '#ffffff'^^http://www.w3.org/2001/XMLSchema#string)" + 
-			"	(?sugPref "+UserPreference.FONT_COLOR_PROP+" '#000000'^^http://www.w3.org/2001/XMLSchema#string)" + 
+			"	(?sugPref "+Preferences.BACKGROUND_PROP+" '#ffffff'^^http://www.w3.org/2001/XMLSchema#string)" + 
+			"	(?sugPref "+Preferences.FONT_COLOR_PROP+" '#000000'^^http://www.w3.org/2001/XMLSchema#string)" + 
 			"	print('Suggested preferences')"+
 			"]"
 			;
@@ -109,8 +110,8 @@ public class UserContextTest {
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 			
 		
-		Property hasBackgroundColorProperty = model.getProperty(UserPreference.BACKGROUND_PROP);
-		Property hasFontColorProperty = model.getProperty(UserPreference.FONT_COLOR_PROP);
+		Property hasBackgroundColorProperty = model.getProperty(Preferences.BACKGROUND_PROP);
+		Property hasFontColorProperty = model.getProperty(Preferences.FONT_COLOR_PROP);
 
 		StmtIterator list = inf.listStatements(suggestedPreferencesnstance, hasBackgroundColorProperty, (RDFNode)null);
 		Assert.assertEquals(list.next().getObject().asLiteral().getString(), "#ffffff");

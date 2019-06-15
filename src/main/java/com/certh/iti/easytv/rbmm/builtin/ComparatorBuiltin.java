@@ -1,4 +1,4 @@
-package builtin;
+package com.certh.iti.easytv.rbmm.builtin;
 
 import java.time.Instant;
 import java.time.format.DateTimeParseException;

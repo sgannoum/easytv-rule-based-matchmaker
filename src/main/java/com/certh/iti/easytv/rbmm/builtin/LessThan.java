@@ -1,4 +1,4 @@
-package builtin;
+package com.certh.iti.easytv.rbmm.builtin;
 
 import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.graph.Node;

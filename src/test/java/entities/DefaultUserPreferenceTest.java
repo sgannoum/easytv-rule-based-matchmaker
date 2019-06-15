@@ -6,13 +6,13 @@ import org.json.JSONObject;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import com.certh.iti.easytv.rbmm.user.Preferences;
+import com.certh.iti.easytv.rbmm.user.UserPreference;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import junit.framework.Assert;
-import rule_matchmaker.entities.UserPreference;
-import rule_matchmaker.entities.DefaultUserPreferences;
 
 public class DefaultUserPreferenceTest {
 	
@@ -39,7 +39,7 @@ public class DefaultUserPreferenceTest {
 	 
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		DefaultUserPreferences userPreference = mapper.readValue(jsonProfile1.toString(), DefaultUserPreferences.class);
+		Preferences userPreference = mapper.readValue(jsonProfile1.toString(), Preferences.class);
 	 
 		System.out.println(userPreference.toString());
 	    Assert.assertNotNull(userPreference);

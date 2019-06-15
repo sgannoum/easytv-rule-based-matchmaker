@@ -6,12 +6,12 @@ import org.json.JSONObject;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import com.certh.iti.easytv.rbmm.user.Auditory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import junit.framework.Assert;
-import rule_matchmaker.entities.Auditory;
 
 public class AuditoryTest {
 	

@@ -1,4 +1,4 @@
-package rule_matchmaker.entities;
+package com.certh.iti.easytv.rbmm.user;
 
 import java.util.HashMap;
 
@@ -158,6 +158,19 @@ public class UserPreferencesMappings {
 		put(DOMAIN_NAME + CONTEXT_NS + "location", XSDDatatype.XSDstring);
 		
     }};
+    
+    
+	public static String getDataProperty(String uri) {
+		return UserPreferencesMappings.uriToDataProperty.get(uri);
+	}
+	
+	public static String getURI(String dataProperty) {
+		return UserPreferencesMappings.dataPropertyToUri.get(dataProperty);
+	}
+	
+	public static XSDDatatype getXSDDatatype(String dataProperty) {
+		return UserPreferencesMappings.uriToRDFDataType.get(dataProperty);
+	}
     
 
 }

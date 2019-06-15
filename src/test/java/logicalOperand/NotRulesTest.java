@@ -9,9 +9,12 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import builtin.And;
-import builtin.NOT;
-import builtin.OR;
+import com.certh.iti.easytv.rbmm.builtin.NOT;
+import com.certh.iti.easytv.rbmm.user.Conditions;
+import com.certh.iti.easytv.rbmm.user.Preferences;
+import com.certh.iti.easytv.rbmm.user.User;
+import com.certh.iti.easytv.rbmm.user.UserPreference;
+
 import config.RBMMTestConfig;
 
 import org.apache.jena.ontology.Individual;
@@ -26,9 +29,6 @@ import org.apache.jena.reasoner.Reasoner;
 import org.apache.jena.reasoner.rulesys.BuiltinRegistry;
 import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
 import org.apache.jena.reasoner.rulesys.Rule;
-import rule_matchmaker.entities.Conditions;
-import rule_matchmaker.entities.User;
-import rule_matchmaker.entities.UserPreference;
 
 public class NotRulesTest {
 	
@@ -58,10 +58,10 @@ public class NotRulesTest {
 		OntClass userPreferenceClass = model.getOntClass(UserPreference.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(UserPreference.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preferences.AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property cursorSizeProperty = model.getProperty(UserPreference.CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preferences.CURSOR_SIZE_PROP);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);

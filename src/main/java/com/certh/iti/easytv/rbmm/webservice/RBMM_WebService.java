@@ -1,4 +1,4 @@
-package rule_matchmaker;
+package com.certh.iti.easytv.rbmm.webservice;
 
 
 import java.io.File;
@@ -14,6 +14,8 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.certh.iti.easytv.rbmm.reasoner.RuleReasoner;
 
 
 

@@ -4,18 +4,18 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
-
 import org.json.JSONObject;
 import org.testng.annotations.Test;
 
+import com.certh.iti.easytv.rbmm.builtin.MergePreferences;
+import com.certh.iti.easytv.rbmm.user.Conditions;
+import com.certh.iti.easytv.rbmm.user.Preferences;
+import com.certh.iti.easytv.rbmm.user.User;
+import com.certh.iti.easytv.rbmm.user.UserPreference;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import builtin.LessThan;
-import builtin.MergePreferences;
 import config.RBMMTestConfig;
 
 import org.apache.jena.ontology.Individual;
@@ -32,9 +32,6 @@ import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
 import org.apache.jena.reasoner.rulesys.Rule;
 
 import junit.framework.Assert;
-import rule_matchmaker.entities.Conditions;
-import rule_matchmaker.entities.User;
-import rule_matchmaker.entities.UserPreference;
 
 public class ConditionsTest {
 	
@@ -224,7 +221,7 @@ public class ConditionsTest {
 		OntClass userPreferenceClass = model.getOntClass(UserPreference.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(UserPreference.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preferences.AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
 		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
@@ -269,10 +266,10 @@ public class ConditionsTest {
 		Property hasConditionsProperty = model.getProperty(Conditions.HAS_CONDITIONS_PROP);
 		conditionalPreferenceInstance.addProperty(hasConditionsProperty, andInstance) ;
 		
-		Property hasNameProperty = model.getProperty(UserPreference.HAS_NAME_PROP);
+		Property hasNameProperty = model.getProperty(Preferences.HAS_NAME_PROP);
 		conditionalPreferenceInstance.addProperty(hasNameProperty, "condition_1") ;
 	
-		Property hasFontSizeProperty = model.getProperty(UserPreference.FONT_SIZE_PROP);
+		Property hasFontSizeProperty = model.getProperty(Preferences.FONT_SIZE_PROP);
 		conditionalPreferenceInstance.addProperty(hasFontSizeProperty, model.createTypedLiteral(500)) ;
 
 		conditionalPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(600));
@@ -310,7 +307,7 @@ public class ConditionsTest {
 		OntClass userPreferenceClass = model.getOntClass(UserPreference.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(UserPreference.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preferences.AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
 		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
@@ -355,10 +352,10 @@ public class ConditionsTest {
 		Property hasConditionsProperty = model.getProperty(Conditions.HAS_CONDITIONS_PROP);
 		conditionalPreferenceInstance.addProperty(hasConditionsProperty, andInstance) ;
 		
-		Property hasNameProperty = model.getProperty(UserPreference.HAS_NAME_PROP);
+		Property hasNameProperty = model.getProperty(Preferences.HAS_NAME_PROP);
 		conditionalPreferenceInstance.addProperty(hasNameProperty, "condition_1") ;
 	
-		Property hasFontSizeProperty = model.getProperty(UserPreference.FONT_SIZE_PROP);
+		Property hasFontSizeProperty = model.getProperty(Preferences.FONT_SIZE_PROP);
 		conditionalPreferenceInstance.addProperty(hasFontSizeProperty, model.createTypedLiteral(500)) ;
 
 		conditionalPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(600));

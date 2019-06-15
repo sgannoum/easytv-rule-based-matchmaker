@@ -1,4 +1,4 @@
-package rule_matchmaker;
+package com.certh.iti.easytv.rbmm.reasoner;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,23 +9,18 @@ import java.io.InputStream;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import builtin.And;
-import builtin.Equals;
-import builtin.GreaterThan;
-import builtin.GreaterThanEquals;
-import builtin.LessThan;
-import builtin.LessThanEquals;
-import builtin.MergePreferences;
-import builtin.NOT;
-import builtin.NotEquals;
-import builtin.OR;
-import rule_matchmaker.entities.User;
-import rule_matchmaker.entities.UserPreferencesMappings;
-
+import com.certh.iti.easytv.rbmm.builtin.And;
+import com.certh.iti.easytv.rbmm.builtin.Equals;
+import com.certh.iti.easytv.rbmm.builtin.GreaterThan;
+import com.certh.iti.easytv.rbmm.builtin.GreaterThanEquals;
+import com.certh.iti.easytv.rbmm.builtin.LessThan;
+import com.certh.iti.easytv.rbmm.builtin.LessThanEquals;
+import com.certh.iti.easytv.rbmm.builtin.MergePreferences;
+import com.certh.iti.easytv.rbmm.builtin.NOT;
+import com.certh.iti.easytv.rbmm.builtin.NotEquals;
+import com.certh.iti.easytv.rbmm.builtin.OR;
+import com.certh.iti.easytv.rbmm.user.User;
+import com.certh.iti.easytv.rbmm.user.UserPreferencesMappings;
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.ontology.OntModel;

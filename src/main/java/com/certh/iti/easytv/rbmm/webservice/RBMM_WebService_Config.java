@@ -1,4 +1,4 @@
-package rule_matchmaker;
+package com.certh.iti.easytv.rbmm.webservice;
 
 import java.util.Collections;
 import java.util.HashSet;
