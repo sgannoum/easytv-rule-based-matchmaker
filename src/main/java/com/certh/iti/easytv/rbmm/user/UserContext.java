@@ -1,7 +1,5 @@
 package com.certh.iti.easytv.rbmm.user;
 
-import java.util.Date;
-
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;

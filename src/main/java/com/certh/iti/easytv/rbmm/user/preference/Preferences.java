@@ -1,4 +1,4 @@
-package com.certh.iti.easytv.rbmm.user;
+package com.certh.iti.easytv.rbmm.user.preference;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -9,6 +9,7 @@ import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Property;
 
+import com.certh.iti.easytv.rbmm.user.UserPreferencesMappings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Preferences {

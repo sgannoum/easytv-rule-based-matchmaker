@@ -23,11 +23,11 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.certh.iti.easytv.rbmm.builtin.Equals;
-import com.certh.iti.easytv.rbmm.user.Preferences;
 import com.certh.iti.easytv.rbmm.user.SuggestedPreferences;
 import com.certh.iti.easytv.rbmm.user.User;
 import com.certh.iti.easytv.rbmm.user.UserContext;
-import com.certh.iti.easytv.rbmm.user.Visual;
+import com.certh.iti.easytv.rbmm.user.UserPreference;
+import com.certh.iti.easytv.rbmm.user.preference.Preferences;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,9 +47,12 @@ public class UserContextTest {
 	public static final String rules = "[user_rule_1:" + 
 			"(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)" + 
 			",(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" + 
-			",(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasVisualAbility ?visual)" + 
-			",(?visual http://www.owl-ontologies.com/OntologyEasyTV.owl#hasColorBlindness ?blindness)" +	
-			",equals(?blindness, 'protanopia'^^http://www.w3.org/2001/XMLSchema#string, ?res)" +
+		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+User.ONTOLOGY_CLASS_URI+")" + 
+		    ",(?user "+User.HAS_PREFERENCE_PROP+" ?defPref)" +
+		    ",(?defPref "+Preferences.AUDIO_VOLUME_PROP+" ?audioVolume)" +
+		    ",(?defPref "+Preferences.CURSOR_SIZE_PROP+" ?cursorSize)" +
+			",equals(?audioVolume, '6'^^http://www.w3.org/2001/XMLSchema#integer, ?res1)" +
+			",equals(?cursorSize, '10'^^http://www.w3.org/2001/XMLSchema#integer, ?res2)" +
 			"->" + 
 			"	(?sugPref "+Preferences.BACKGROUND_PROP+" '#ffffff'^^http://www.w3.org/2001/XMLSchema#string)" + 
 			"	(?sugPref "+Preferences.FONT_COLOR_PROP+" '#000000'^^http://www.w3.org/2001/XMLSchema#string)" + 
@@ -85,31 +88,33 @@ public class UserContextTest {
 	@Test
 	public void Test_user_rule_1()  {
 		
-		//user
-		OntClass userViualClass = model.getOntClass(Visual.ONTOLOGY_CLASS_URI);
-		Individual  visualInstance = userViualClass.createIndividual();
-		
-		Property hasColorBlindnessProperty = model.getProperty(Visual.COLOR_BLINDNESS_PROP);
-		visualInstance.addProperty(hasColorBlindnessProperty, model.createTypedLiteral("protanopia"));
+		//user	
+		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
+		Individual userInstance = userClass.createIndividual();
 		
 		OntClass suggestedPreferencesClass = model.getOntClass(SuggestedPreferences.ONTOLOGY_CLASS_URI);
 		Individual  suggestedPreferencesnstance = suggestedPreferencesClass.createIndividual();
 		
-		
-		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
-		Individual userInstance = userClass.createIndividual();
-		
-		Property hasVisualAbilityProperty = model.getProperty(User.HAS_VISUAL_PROP);
-		userInstance.addProperty(hasVisualAbilityProperty, visualInstance);
-		
 		Property hasSuggestedPreferencesnstanceProperty = model.getProperty(User.HAS_SUGGESTED_PREFERENCES_PROP);
 		userInstance.addProperty(hasSuggestedPreferencesnstanceProperty, suggestedPreferencesnstance);
+		
+		
+		OntClass userPreferenceClass = model.getOntClass(UserPreference.ONTOLOGY_CLASS_URI);
+		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
+		
+		Property hasAudioVolumeProperty = model.getProperty(Preferences.AUDIO_VOLUME_PROP);
+		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
+		
+		Property cursorSizeProperty = model.getProperty(Preferences.CURSOR_SIZE_PROP);
+		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
+		
+		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
+		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 					
 		
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 			
-		
 		Property hasBackgroundColorProperty = model.getProperty(Preferences.BACKGROUND_PROP);
 		Property hasFontColorProperty = model.getProperty(Preferences.FONT_COLOR_PROP);
 
@@ -119,6 +124,47 @@ public class UserContextTest {
 
 		list = inf.listStatements(suggestedPreferencesnstance, hasFontColorProperty, (RDFNode)null);
 		Assert.assertEquals(list.next().getObject().asLiteral().getString(), "#000000");
+		Assert.assertFalse(list.hasNext());
+		
+	}
+	
+	@Test
+	public void Test_user_rule_2()  {
+		
+		//user	
+		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
+		Individual userInstance = userClass.createIndividual();
+		
+		OntClass suggestedPreferencesClass = model.getOntClass(SuggestedPreferences.ONTOLOGY_CLASS_URI);
+		Individual  suggestedPreferencesnstance = suggestedPreferencesClass.createIndividual();
+		
+		Property hasSuggestedPreferencesnstanceProperty = model.getProperty(User.HAS_SUGGESTED_PREFERENCES_PROP);
+		userInstance.addProperty(hasSuggestedPreferencesnstanceProperty, suggestedPreferencesnstance);
+		
+		
+		OntClass userPreferenceClass = model.getOntClass(UserPreference.ONTOLOGY_CLASS_URI);
+		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
+		
+		Property hasAudioVolumeProperty = model.getProperty(Preferences.AUDIO_VOLUME_PROP);
+		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(5));
+		
+		Property cursorSizeProperty = model.getProperty(Preferences.CURSOR_SIZE_PROP);
+		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
+		
+		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
+		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
+					
+		
+		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
+		InfModel inf = ModelFactory.createInfModel(reasoner, model);
+			
+		Property hasBackgroundColorProperty = model.getProperty(Preferences.BACKGROUND_PROP);
+		Property hasFontColorProperty = model.getProperty(Preferences.FONT_COLOR_PROP);
+
+		StmtIterator list = inf.listStatements(suggestedPreferencesnstance, hasBackgroundColorProperty, (RDFNode)null);
+		Assert.assertFalse(list.hasNext());
+
+		list = inf.listStatements(suggestedPreferencesnstance, hasFontColorProperty, (RDFNode)null);
 		Assert.assertFalse(list.hasNext());
 		
 	}

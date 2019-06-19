@@ -35,16 +35,6 @@
     
 
 
-    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasAuditoryAbility -->
-
-    <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasAuditoryAbility">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#User"/>
-        <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#AuditoryAbility"/>
-    </owl:ObjectProperty>
-    
-
-
     <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConditions -->
 
     <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConditions">
@@ -104,16 +94,6 @@
     
 
 
-    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasVisualAbility -->
-
-    <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasVisualAbility">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#User"/>
-        <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#VisualAbility"/>
-    </owl:ObjectProperty>
-    
-
-
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
@@ -168,7 +148,6 @@
     <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasColorBlindness -->
 
     <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasColorBlindness">
-        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#VisualAbility"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     </owl:DatatypeProperty>
     
@@ -198,7 +177,6 @@
 
     <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasContrastSensitivity">
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#VisualAbility"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
     </owl:DatatypeProperty>
     
@@ -291,16 +269,6 @@
     <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasFontType">
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasHearing -->
-
-    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasHearing">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#AuditoryAbility"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     </owl:DatatypeProperty>
     
@@ -485,16 +453,6 @@
     
 
 
-    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasVisualAcuity -->
-
-    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasVisualAcuity">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#VisualAbility"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-    </owl:DatatypeProperty>
-    
-
-
     <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasVoiceRecognition -->
 
     <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasVoiceRecognition">
@@ -553,12 +511,6 @@
     <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#AccessibilityService -->
 
     <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#AccessibilityService"/>
-    
-
-
-    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#AuditoryAbility -->
-
-    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#AuditoryAbility"/>
     
 
 
@@ -735,12 +687,6 @@
     <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences -->
 
     <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
-    
-
-
-    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#VisualAbility -->
-
-    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#VisualAbility"/>
 </rdf:RDF>
 
 

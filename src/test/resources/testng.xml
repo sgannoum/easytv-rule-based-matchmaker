@@ -12,10 +12,8 @@
       <class name="comparatorOperand.NotEqualsRulesTest"/>
 
       <class name="entities.UserTest"/>
-      <class name="entities.AuditoryTest"/>
       <class name="entities.ConditionsTest"/>
       <class name="entities.DefaultUserPreferenceTest"/>
-      <class name="entities.VisualTest"/>
       <class name="entities.UserContextTest"/>
       
       <class name="logicalOperand.AndRulesTest"/>

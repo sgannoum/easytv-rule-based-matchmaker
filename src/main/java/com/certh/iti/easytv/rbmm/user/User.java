@@ -17,12 +17,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class User {
-	
-    @JsonProperty("visual")
-	private Visual visual;
-    
-    @JsonProperty("auditory")
-	private Auditory auditory;
     
     @JsonProperty("user_preferences")
 	private UserPreference user_preferences;
@@ -34,8 +28,6 @@ public class User {
 	public static final String ONTOLOGY_CLASS_URI = NAMESPACE + "User";
 	
 	//Object properties
-	public static final String HAS_VISUAL_PROP = NAMESPACE + "hasVisualAbility";
-	public static final String HAS_AUDITORY_PROP = NAMESPACE + "hasAuditoryAbility";
 	public static final String HAS_PREFERENCE_PROP = NAMESPACE + "hasPreference";
 	public static final String HAS_CONTEXT_PROP = NAMESPACE + "hasContext";
 	public static final String HAS_SUGGESTED_PREFERENCES_PROP = NAMESPACE + "hasSuggestedPreferences";
@@ -51,26 +43,6 @@ public class User {
 		this.context = context;
 	}
 	
-	public Visual getVisual() {
-		return visual;
-	}
-
-
-	public void setVisual(Visual visual) {
-		this.visual = visual;
-	}
-
-
-	public Auditory getAuditory() {
-		return auditory;
-	}
-
-
-	public void setAuditory(Auditory auditory) {
-		this.auditory = auditory;
-	}
-	
-	
 	public UserPreference getUser_preferences() {
 		return user_preferences;
 	}
@@ -82,10 +54,7 @@ public class User {
 	
 	@Override
 	public String toString() {
-		return "User [" + visual + ", " +
-							auditory + ", " +
-								context + ", " +
-									user_preferences+"]";
+		return "User [" + context + ", " + user_preferences+"]";
 	}
 	
 	public Individual createOntologyInstance(final OntModel model){
@@ -93,14 +62,6 @@ public class User {
 		//create the new user in the ontology
 		OntClass userClass = model.getOntClass(ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
-		
-		//Add visual acuity
-		Property hasVisualAbility = model.getProperty(HAS_VISUAL_PROP);
-		userInstance.addProperty(hasVisualAbility, visual.createOntologyInstance(model));	
-		
-		//Add Auditory ability
-		Property hasAuditoryAbility = model.getProperty(HAS_AUDITORY_PROP);
-		userInstance.addProperty(hasAuditoryAbility, auditory.createOntologyInstance(model));	
 		
 		//Add Auditory ability
 		Property hasContextAbility = model.getProperty(HAS_CONTEXT_PROP);

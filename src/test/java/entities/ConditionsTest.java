@@ -8,10 +8,10 @@ import org.json.JSONObject;
 import org.testng.annotations.Test;
 
 import com.certh.iti.easytv.rbmm.builtin.MergePreferences;
-import com.certh.iti.easytv.rbmm.user.Conditions;
-import com.certh.iti.easytv.rbmm.user.Preferences;
 import com.certh.iti.easytv.rbmm.user.User;
 import com.certh.iti.easytv.rbmm.user.UserPreference;
+import com.certh.iti.easytv.rbmm.user.preference.Conditions;
+import com.certh.iti.easytv.rbmm.user.preference.Preferences;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

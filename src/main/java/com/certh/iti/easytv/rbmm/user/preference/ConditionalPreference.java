@@ -1,4 +1,4 @@
-package com.certh.iti.easytv.rbmm.user;
+package com.certh.iti.easytv.rbmm.user.preference;
 
 import java.util.LinkedHashMap;
 import java.util.List;

@@ -8,6 +8,8 @@ import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Property;
 
+import com.certh.iti.easytv.rbmm.user.preference.ConditionalPreference;
+import com.certh.iti.easytv.rbmm.user.preference.Preferences;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UserPreference {

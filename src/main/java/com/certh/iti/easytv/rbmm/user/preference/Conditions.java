@@ -1,4 +1,4 @@
-package com.certh.iti.easytv.rbmm.user;
+package com.certh.iti.easytv.rbmm.user.preference;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -12,6 +12,7 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.certh.iti.easytv.rbmm.user.UserPreferencesMappings;
 import com.google.gson.Gson;
 
 import org.apache.jena.ontology.Individual;
@@ -215,7 +216,6 @@ public class Conditions {
 	private static List<Object> flatOutOperands(List<Object> nestedOperands) {
 		List<Object> flatOperands = new ArrayList<Object>();
 		
-//		flatList.add(type);
 		int index = 0 ;
 				
 		while(true) { 

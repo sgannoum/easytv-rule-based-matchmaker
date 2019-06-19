@@ -31,8 +31,8 @@ import com.certh.iti.easytv.rbmm.builtin.MergePreferences;
 import com.certh.iti.easytv.rbmm.builtin.NOT;
 import com.certh.iti.easytv.rbmm.builtin.NotEquals;
 import com.certh.iti.easytv.rbmm.builtin.OR;
-import com.certh.iti.easytv.rbmm.user.Preferences;
 import com.certh.iti.easytv.rbmm.user.User;
+import com.certh.iti.easytv.rbmm.user.preference.Preferences;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -61,23 +61,10 @@ public class UserTest {
 	
 	
 	public static final JSONObject jsonProfile1 = new JSONObject("{\r\n" + 
-			"  \"visual\": {\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/visual/visualAcuity\": \"20/400\",\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/visual/contrastSensitivity\": \"21:1\",\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/visual/colorBlindness\": \"normal\"\r\n" + 
-			"	},\r\n" + 
 			" \"context\":{\r\n" + 
 			"    \"http://registry.easytv.eu/context/time\": \"2019-05-30T09:47:47.619Z\" ,\r\n" + 
 			"    \"http://registry.easytv.eu/context/location\": \"fr\"\r\n" + 
 			"	},\r\n"	+
-			"  \"auditory\": {\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt250Hz\": 0,\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt500Hz\": 0,\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt1000Hz\": 0,\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt2000Hz\": 0,\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt4000Hz\": 0,\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt8000Hz\": 0\r\n" + 
-			"  },\r\n" + 
 			"  \"user_preferences\": {\r\n" + 
 			"    \"default\": {\r\n" + 
 			"      \"preferences\": {\r\n" + 
@@ -122,23 +109,10 @@ public class UserTest {
 			"}");
 	
 	public static final JSONObject jsonProfile2 = new JSONObject("{\r\n" + 
-			"  \"visual\": {\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/visual/visualAcuity\": \"20/400\",\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/visual/contrastSensitivity\": \"21:1\",\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/visual/colorBlindness\": \"normal\"\r\n" + 
-			"  },\r\n" + 
 			" \"context\":{\r\n" + 
 			"    \"http://registry.easytv.eu/context/time\": \"2019-05-30T09:47:47.619Z\" ,\r\n" + 
 			"    \"http://registry.easytv.eu/context/location\": \"fr\"\r\n" + 
 			"	},\r\n"	+
-			"  \"auditory\": {\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt250Hz\": 0,\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt500Hz\": 0,\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt1000Hz\": 0,\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt2000Hz\": 0,\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt4000Hz\": 0,\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt8000Hz\": 0\r\n" + 
-			"  },\r\n" + 
 			"  \"user_preferences\": {\r\n" + 
 			"    \"default\": {\r\n" + 
 			"      \"preferences\": {\r\n" + 
@@ -171,23 +145,10 @@ public class UserTest {
 			"}");
 	
 	public static final JSONObject jsonProfile3 = new JSONObject("{\r\n" + 
-			"  \"visual\": {\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/visual/visualAcuity\": \"20/400\",\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/visual/contrastSensitivity\": \"21:1\",\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/visual/colorBlindness\": \"normal\"\r\n" + 
-			"  },\r\n" + 
 			" \"context\":{\r\n" + 
 			"    \"http://registry.easytv.eu/context/time\": \"2019-05-30T09:47:47.619Z\" ,\r\n" + 
 			"    \"http://registry.easytv.eu/context/location\": \"fr\"\r\n" + 
 			"	},\r\n"	+
-			"  \"auditory\": {\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt250Hz\": 0,\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt500Hz\": 0,\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt1000Hz\": 0,\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt2000Hz\": 0,\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt4000Hz\": 0,\r\n" + 
-			"    \"http://registry.easytv.eu/functionalLimitations/auditory/hearingThresholdAt8000Hz\": 0\r\n" + 
-			"  },\r\n" + 
 			"  \"user_preferences\": {\r\n" + 
 			"    \"default\": {\r\n" + 
 			"      \"preferences\": {\r\n" + 

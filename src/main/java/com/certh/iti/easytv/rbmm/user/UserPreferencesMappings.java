@@ -2,7 +2,6 @@ package com.certh.iti.easytv.rbmm.user;
 
 import java.util.HashMap;
 
-import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
 
 public class UserPreferencesMappings {
