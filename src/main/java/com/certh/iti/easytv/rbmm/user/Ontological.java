@@ -3,7 +3,7 @@ package com.certh.iti.easytv.rbmm.user;
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntModel;
 
-public abstract class Ontological {
+public interface Ontological {
 	
 	public static final String NAMESPACE = "http://www.owl-ontologies.com/OntologyEasyTV.owl#";
 

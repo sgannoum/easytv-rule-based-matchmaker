@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class UserProfile extends Ontological{
+public class UserProfile implements Ontological{
     
     @JsonProperty("user_preferences")
 	private UserPreferences user_preferences;

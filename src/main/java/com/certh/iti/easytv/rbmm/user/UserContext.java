@@ -7,7 +7,7 @@ import org.apache.jena.rdf.model.Property;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class UserContext extends Ontological{
+public class UserContext implements Ontological{
 	
     @JsonProperty("http://registry.easytv.eu/context/time")
 	private String time;

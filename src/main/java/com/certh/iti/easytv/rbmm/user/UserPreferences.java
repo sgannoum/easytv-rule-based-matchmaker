@@ -12,7 +12,7 @@ import com.certh.iti.easytv.rbmm.user.preference.ConditionalPreference;
 import com.certh.iti.easytv.rbmm.user.preference.Preference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class UserPreferences extends Ontological {
+public class UserPreferences implements Ontological {
 	
     @JsonProperty("default")
 	private Preference defaultPreferences;

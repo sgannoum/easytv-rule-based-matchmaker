@@ -13,7 +13,7 @@ import com.certh.iti.easytv.rbmm.user.Ontological;
 import com.certh.iti.easytv.rbmm.user.UserPreferencesMappings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Preference extends Ontological {
+public class Preference implements Ontological {
 	
     @JsonProperty("preferences")
 	protected Map<String, Object> preferences;

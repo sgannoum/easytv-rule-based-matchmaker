@@ -21,7 +21,7 @@ import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Property;
 
-public class Condition extends Ontological{
+public class Condition implements Ontological{
 	
 	private String type;
 	private List<Object> operand;
