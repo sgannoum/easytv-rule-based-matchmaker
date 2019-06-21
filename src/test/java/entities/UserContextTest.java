@@ -24,10 +24,10 @@ import org.testng.annotations.Test;
 
 import com.certh.iti.easytv.rbmm.builtin.Equals;
 import com.certh.iti.easytv.rbmm.user.SuggestedPreferences;
-import com.certh.iti.easytv.rbmm.user.User;
+import com.certh.iti.easytv.rbmm.user.UserProfile;
 import com.certh.iti.easytv.rbmm.user.UserContext;
-import com.certh.iti.easytv.rbmm.user.UserPreference;
-import com.certh.iti.easytv.rbmm.user.preference.Preferences;
+import com.certh.iti.easytv.rbmm.user.UserPreferences;
+import com.certh.iti.easytv.rbmm.user.preference.Preference;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,15 +47,15 @@ public class UserContextTest {
 	public static final String rules = "[user_rule_1:" + 
 			"(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)" + 
 			",(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" + 
-		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+User.ONTOLOGY_CLASS_URI+")" + 
-		    ",(?user "+User.HAS_PREFERENCE_PROP+" ?defPref)" +
-		    ",(?defPref "+Preferences.AUDIO_VOLUME_PROP+" ?audioVolume)" +
-		    ",(?defPref "+Preferences.CURSOR_SIZE_PROP+" ?cursorSize)" +
+		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+UserProfile.ONTOLOGY_CLASS_URI+")" + 
+		    ",(?user "+UserProfile.HAS_PREFERENCE_PROP+" ?defPref)" +
+		    ",(?defPref "+Preference.AUDIO_VOLUME_PROP+" ?audioVolume)" +
+		    ",(?defPref "+Preference.CURSOR_SIZE_PROP+" ?cursorSize)" +
 			",equals(?audioVolume, '6'^^http://www.w3.org/2001/XMLSchema#integer, ?res1)" +
 			",equals(?cursorSize, '10'^^http://www.w3.org/2001/XMLSchema#integer, ?res2)" +
 			"->" + 
-			"	(?sugPref "+Preferences.BACKGROUND_PROP+" '#ffffff'^^http://www.w3.org/2001/XMLSchema#string)" + 
-			"	(?sugPref "+Preferences.FONT_COLOR_PROP+" '#000000'^^http://www.w3.org/2001/XMLSchema#string)" + 
+			"	(?sugPref "+Preference.BACKGROUND_PROP+" '#ffffff'^^http://www.w3.org/2001/XMLSchema#string)" + 
+			"	(?sugPref "+Preference.FONT_COLOR_PROP+" '#000000'^^http://www.w3.org/2001/XMLSchema#string)" + 
 			"	print('Suggested preferences')"+
 			"]"
 			;
@@ -89,34 +89,34 @@ public class UserContextTest {
 	public void Test_user_rule_1()  {
 		
 		//user	
-		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
+		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
 		OntClass suggestedPreferencesClass = model.getOntClass(SuggestedPreferences.ONTOLOGY_CLASS_URI);
 		Individual  suggestedPreferencesnstance = suggestedPreferencesClass.createIndividual();
 		
-		Property hasSuggestedPreferencesnstanceProperty = model.getProperty(User.HAS_SUGGESTED_PREFERENCES_PROP);
+		Property hasSuggestedPreferencesnstanceProperty = model.getProperty(UserProfile.HAS_SUGGESTED_PREFERENCES_PROP);
 		userInstance.addProperty(hasSuggestedPreferencesnstanceProperty, suggestedPreferencesnstance);
 		
 		
-		OntClass userPreferenceClass = model.getOntClass(UserPreference.ONTOLOGY_CLASS_URI);
+		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preferences.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property cursorSizeProperty = model.getProperty(Preferences.CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preference.CURSOR_SIZE_PROP);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
-		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(UserProfile.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 					
 		
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 			
-		Property hasBackgroundColorProperty = model.getProperty(Preferences.BACKGROUND_PROP);
-		Property hasFontColorProperty = model.getProperty(Preferences.FONT_COLOR_PROP);
+		Property hasBackgroundColorProperty = model.getProperty(Preference.BACKGROUND_PROP);
+		Property hasFontColorProperty = model.getProperty(Preference.FONT_COLOR_PROP);
 
 		StmtIterator list = inf.listStatements(suggestedPreferencesnstance, hasBackgroundColorProperty, (RDFNode)null);
 		Assert.assertEquals(list.next().getObject().asLiteral().getString(), "#ffffff");
@@ -132,34 +132,34 @@ public class UserContextTest {
 	public void Test_user_rule_2()  {
 		
 		//user	
-		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
+		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
 		OntClass suggestedPreferencesClass = model.getOntClass(SuggestedPreferences.ONTOLOGY_CLASS_URI);
 		Individual  suggestedPreferencesnstance = suggestedPreferencesClass.createIndividual();
 		
-		Property hasSuggestedPreferencesnstanceProperty = model.getProperty(User.HAS_SUGGESTED_PREFERENCES_PROP);
+		Property hasSuggestedPreferencesnstanceProperty = model.getProperty(UserProfile.HAS_SUGGESTED_PREFERENCES_PROP);
 		userInstance.addProperty(hasSuggestedPreferencesnstanceProperty, suggestedPreferencesnstance);
 		
 		
-		OntClass userPreferenceClass = model.getOntClass(UserPreference.ONTOLOGY_CLASS_URI);
+		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preferences.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(5));
 		
-		Property cursorSizeProperty = model.getProperty(Preferences.CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preference.CURSOR_SIZE_PROP);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
-		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(UserProfile.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 					
 		
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 			
-		Property hasBackgroundColorProperty = model.getProperty(Preferences.BACKGROUND_PROP);
-		Property hasFontColorProperty = model.getProperty(Preferences.FONT_COLOR_PROP);
+		Property hasBackgroundColorProperty = model.getProperty(Preference.BACKGROUND_PROP);
+		Property hasFontColorProperty = model.getProperty(Preference.FONT_COLOR_PROP);
 
 		StmtIterator list = inf.listStatements(suggestedPreferencesnstance, hasBackgroundColorProperty, (RDFNode)null);
 		Assert.assertFalse(list.hasNext());

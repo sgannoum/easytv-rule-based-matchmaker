@@ -16,15 +16,14 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class User {
+public class UserProfile extends Ontological{
     
     @JsonProperty("user_preferences")
-	private UserPreference user_preferences;
+	private UserPreferences user_preferences;
     
     @JsonProperty("context")
 	private UserContext context;
     
-    public static final String NAMESPACE = "http://www.owl-ontologies.com/OntologyEasyTV.owl#";
 	public static final String ONTOLOGY_CLASS_URI = NAMESPACE + "User";
 	
 	//Object properties
@@ -43,12 +42,12 @@ public class User {
 		this.context = context;
 	}
 	
-	public UserPreference getUser_preferences() {
+	public UserPreferences getUser_preferences() {
 		return user_preferences;
 	}
 
 
-	public void setUser_preferences(UserPreference user_preferences) {
+	public void setUser_preferences(UserPreferences user_preferences) {
 		this.user_preferences = user_preferences;
 	}
 	
@@ -57,57 +56,67 @@ public class User {
 		return "User [" + context + ", " + user_preferences+"]";
 	}
 	
+	@Override
 	public Individual createOntologyInstance(final OntModel model){
 		
 		//create the new user in the ontology
 		OntClass userClass = model.getOntClass(ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
+		return createOntologyInstance(model, userInstance);
+	}
+	
+	@Override
+	public Individual createOntologyInstance(OntModel model, Individual individual) {
+		
 		//Add Auditory ability
 		Property hasContextAbility = model.getProperty(HAS_CONTEXT_PROP);
-		userInstance.addProperty(hasContextAbility, context.createOntologyInstance(model));	
+		individual.addProperty(hasContextAbility, context.createOntologyInstance(model));	
 		
 		//Add user preferences
 		Property hasPreferences = model.getProperty(HAS_PREFERENCE_PROP);
-		userInstance.addProperty(hasPreferences, user_preferences.createOntologyInstance(model));	
+		individual.addProperty(hasPreferences, user_preferences.createOntologyInstance(model));	
 		
 		//Add suggested preferences
 		Property hasSuggestedPreferences = model.getProperty(HAS_SUGGESTED_PREFERENCES_PROP);
-		userInstance.addProperty(hasSuggestedPreferences, SuggestedPreferences.createOntologyInstance(model));	
+		individual.addProperty(hasSuggestedPreferences, new SuggestedPreferences().createOntologyInstance(model));	
 
-		return userInstance;
+		return individual;
 	}
+
 	
-	public static User read(String json) throws JsonParseException, JsonMappingException, IOException {
+	public static UserProfile read(String json) throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		User user = mapper.readValue(json, User.class);
+		UserProfile user = mapper.readValue(json, UserProfile.class);
 		
 		return user;
 	}
 	
-	public static User read(File file) throws JsonParseException, JsonMappingException, IOException {
+	public static UserProfile read(File file) throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		User user = mapper.readValue(file, User.class);
+		UserProfile user = mapper.readValue(file, UserProfile.class);
 		
 		return user;
 	}
 	
-	public static User read(InputStream in) throws JsonParseException, JsonMappingException, IOException {
+	public static UserProfile read(InputStream in) throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		User user = mapper.readValue(in, User.class);
+		UserProfile user = mapper.readValue(in, UserProfile.class);
 		
 		return user;
 	}
 	
-	public static User read(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
+	public static UserProfile read(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		User user = mapper.readValue(json.toString(), User.class);
+		UserProfile user = mapper.readValue(json.toString(), UserProfile.class);
 		
 		return user;
 	}
+
+
 
 }

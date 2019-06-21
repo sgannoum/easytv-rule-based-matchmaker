@@ -19,7 +19,7 @@ import com.certh.iti.easytv.rbmm.builtin.MergePreferences;
 import com.certh.iti.easytv.rbmm.builtin.NOT;
 import com.certh.iti.easytv.rbmm.builtin.NotEquals;
 import com.certh.iti.easytv.rbmm.builtin.OR;
-import com.certh.iti.easytv.rbmm.user.User;
+import com.certh.iti.easytv.rbmm.user.UserProfile;
 import com.certh.iti.easytv.rbmm.user.UserPreferencesMappings;
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
@@ -89,7 +89,7 @@ public class RuleReasoner {
 	    JSONObject userProfile = new JSONObject(result);
 		
 		//load user file
-		User user = User.read(userProfile);
+		UserProfile user = UserProfile.read(userProfile);
 		
 		//load user into ontology
 		user.createOntologyInstance(model);
@@ -117,7 +117,7 @@ public class RuleReasoner {
 	public JSONObject infer(JSONObject userProfile) throws IOException, JSONException {
 		
 		//load user file
-		User user = User.read(userProfile);
+		UserProfile user = UserProfile.read(userProfile);
 		
 		//load user into ontology
 		user.createOntologyInstance(model);
@@ -292,7 +292,7 @@ public class RuleReasoner {
 		if (result == null)
 			return json;
 		
-		String pref = UserPreferencesMappings.dataPropertyToUri.get(User.NAMESPACE + propertyName);
+		String pref = UserPreferencesMappings.dataPropertyToUri.get(UserProfile.NAMESPACE + propertyName);
 		RDFDatatype datatype = result.getDatatype();
 		if (datatype != null) {			
 			if (datatype.equals(XSDDatatype.XSDboolean)) {
@@ -330,7 +330,7 @@ public class RuleReasoner {
 			return json;
 		
 		
-		String pref = UserPreferencesMappings.dataPropertyToUri.get(User.NAMESPACE + propertyName);
+		String pref = UserPreferencesMappings.dataPropertyToUri.get(UserProfile.NAMESPACE + propertyName);
 		
 		RDFDatatype datatype = result.getDatatype();
 		if (datatype != null) {			

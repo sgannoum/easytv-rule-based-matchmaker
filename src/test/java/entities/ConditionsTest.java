@@ -8,10 +8,10 @@ import org.json.JSONObject;
 import org.testng.annotations.Test;
 
 import com.certh.iti.easytv.rbmm.builtin.MergePreferences;
-import com.certh.iti.easytv.rbmm.user.User;
-import com.certh.iti.easytv.rbmm.user.UserPreference;
-import com.certh.iti.easytv.rbmm.user.preference.Conditions;
-import com.certh.iti.easytv.rbmm.user.preference.Preferences;
+import com.certh.iti.easytv.rbmm.user.UserProfile;
+import com.certh.iti.easytv.rbmm.user.UserPreferences;
+import com.certh.iti.easytv.rbmm.user.preference.Condition;
+import com.certh.iti.easytv.rbmm.user.preference.Preference;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -110,8 +110,8 @@ public class ConditionsTest {
 			",(?condPref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConditions ?cond)" + 
 			",(?condPref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasName ?name)" + 
 			",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" +
-		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+User.ONTOLOGY_CLASS_URI+")" + 
-		    ",(?user "+User.HAS_PREFERENCE_PROP+" ?defPref)" +
+		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+UserProfile.ONTOLOGY_CLASS_URI+")" + 
+		    ",(?user "+UserProfile.HAS_PREFERENCE_PROP+" ?defPref)" +
 			"->" + 			
 		    "	print('Conditional preference', ?name,'is true')" + 
 		    "	mergePref(?defPref, ?condPref)" + 
@@ -186,7 +186,7 @@ public class ConditionsTest {
 	 
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		Conditions conditionalPreferences = mapper.readValue(jsonProfile1.toString(), Conditions.class);
+		Condition conditionalPreferences = mapper.readValue(jsonProfile1.toString(), Condition.class);
 	 
 		System.out.println(conditionalPreferences.toString());
 	    Assert.assertNotNull(conditionalPreferences);
@@ -198,7 +198,7 @@ public class ConditionsTest {
 	 
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		Conditions conditionalPreferences = mapper.readValue(jsonProfile2.toString(), Conditions.class);
+		Condition conditionalPreferences = mapper.readValue(jsonProfile2.toString(), Condition.class);
 	 
 		System.out.println(conditionalPreferences.toString());
 	    Assert.assertNotNull(conditionalPreferences);
@@ -218,58 +218,58 @@ public class ConditionsTest {
 		
 		
 		//user
-		OntClass userPreferenceClass = model.getOntClass(UserPreference.ONTOLOGY_CLASS_URI);
+		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preferences.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
+		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
-		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(UserProfile.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 		
 		
 		//Add conditional preferences
 		//gt
-		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(Condition.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
 		
-		Property isTrue = model.getProperty(Conditions.IS_TURE_PROP);
+		Property isTrue = model.getProperty(Condition.IS_TURE_PROP);
 		gtInstance.addProperty(isTrue, model.createTypedLiteral(true));
 		
 		//lt
-		OntClass ltClass = model.getOntClass(Conditions.NAMESPACE + "LT");
+		OntClass ltClass = model.getOntClass(Condition.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
 		ltInstance.addProperty(isTrue, model.createTypedLiteral(true));
 
 		
 		//and
-		OntClass andClass = model.getOntClass(Conditions.NAMESPACE + "AND");
+		OntClass andClass = model.getOntClass(Condition.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 		
-		Property leftOperandProperty = model.getProperty(Conditions.LEFT_OPERAND_PROP);
+		Property leftOperandProperty = model.getProperty(Condition.LEFT_OPERAND_PROP);
 		andInstance.addProperty(leftOperandProperty, ltInstance);
 		
-		Property rightOperandProperty = model.getProperty(Conditions.RIGHT_OPERAND_PROP);
+		Property rightOperandProperty = model.getProperty(Condition.RIGHT_OPERAND_PROP);
 		andInstance.addProperty(rightOperandProperty, gtInstance);		
 		
 		andInstance.addProperty(isTrue, model.createTypedLiteral(true));
 
 		
 		//conditional
-		OntClass conditionalPreferenceClass = model.getOntClass(Conditions.ONTOLOGY_CLASS_URI);
+		OntClass conditionalPreferenceClass = model.getOntClass(Condition.ONTOLOGY_CLASS_URI);
 		Individual conditionalPreferenceInstance = conditionalPreferenceClass.createIndividual();
 		
-		Property hasConditionsProperty = model.getProperty(Conditions.HAS_CONDITIONS_PROP);
+		Property hasConditionsProperty = model.getProperty(Condition.HAS_CONDITIONS_PROP);
 		conditionalPreferenceInstance.addProperty(hasConditionsProperty, andInstance) ;
 		
-		Property hasNameProperty = model.getProperty(Preferences.HAS_NAME_PROP);
+		Property hasNameProperty = model.getProperty(Preference.HAS_NAME_PROP);
 		conditionalPreferenceInstance.addProperty(hasNameProperty, "condition_1") ;
 	
-		Property hasFontSizeProperty = model.getProperty(Preferences.FONT_SIZE_PROP);
+		Property hasFontSizeProperty = model.getProperty(Preference.FONT_SIZE_PROP);
 		conditionalPreferenceInstance.addProperty(hasFontSizeProperty, model.createTypedLiteral(500)) ;
 
 		conditionalPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(600));
@@ -304,58 +304,58 @@ public class ConditionsTest {
 		
 		
 		//user
-		OntClass userPreferenceClass = model.getOntClass(UserPreference.ONTOLOGY_CLASS_URI);
+		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preferences.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
+		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
-		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(UserProfile.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 		
 		
 		//Add conditional preferences
 		//gt
-		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(Condition.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
 		
-		Property isTrue = model.getProperty(Conditions.IS_TURE_PROP);
+		Property isTrue = model.getProperty(Condition.IS_TURE_PROP);
 		gtInstance.addProperty(isTrue, model.createTypedLiteral(true));
 		
 		//lt
-		OntClass ltClass = model.getOntClass(Conditions.NAMESPACE + "LT");
+		OntClass ltClass = model.getOntClass(Condition.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
 		ltInstance.addProperty(isTrue, model.createTypedLiteral(true));
 
 		
 		//and
-		OntClass andClass = model.getOntClass(Conditions.NAMESPACE + "AND");
+		OntClass andClass = model.getOntClass(Condition.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 		
-		Property leftOperandProperty = model.getProperty(Conditions.LEFT_OPERAND_PROP);
+		Property leftOperandProperty = model.getProperty(Condition.LEFT_OPERAND_PROP);
 		andInstance.addProperty(leftOperandProperty, ltInstance);
 		
-		Property rightOperandProperty = model.getProperty(Conditions.RIGHT_OPERAND_PROP);
+		Property rightOperandProperty = model.getProperty(Condition.RIGHT_OPERAND_PROP);
 		andInstance.addProperty(rightOperandProperty, gtInstance);		
 		
 		andInstance.addProperty(isTrue, model.createTypedLiteral(false));
 
 		
 		//conditional
-		OntClass conditionalPreferenceClass = model.getOntClass(Conditions.ONTOLOGY_CLASS_URI);
+		OntClass conditionalPreferenceClass = model.getOntClass(Condition.ONTOLOGY_CLASS_URI);
 		Individual conditionalPreferenceInstance = conditionalPreferenceClass.createIndividual();
 		
-		Property hasConditionsProperty = model.getProperty(Conditions.HAS_CONDITIONS_PROP);
+		Property hasConditionsProperty = model.getProperty(Condition.HAS_CONDITIONS_PROP);
 		conditionalPreferenceInstance.addProperty(hasConditionsProperty, andInstance) ;
 		
-		Property hasNameProperty = model.getProperty(Preferences.HAS_NAME_PROP);
+		Property hasNameProperty = model.getProperty(Preference.HAS_NAME_PROP);
 		conditionalPreferenceInstance.addProperty(hasNameProperty, "condition_1") ;
 	
-		Property hasFontSizeProperty = model.getProperty(Preferences.FONT_SIZE_PROP);
+		Property hasFontSizeProperty = model.getProperty(Preference.FONT_SIZE_PROP);
 		conditionalPreferenceInstance.addProperty(hasFontSizeProperty, model.createTypedLiteral(500)) ;
 
 		conditionalPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(600));

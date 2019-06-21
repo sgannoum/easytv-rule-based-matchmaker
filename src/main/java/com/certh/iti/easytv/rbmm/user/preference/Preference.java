@@ -9,15 +9,15 @@ import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Property;
 
+import com.certh.iti.easytv.rbmm.user.Ontological;
 import com.certh.iti.easytv.rbmm.user.UserPreferencesMappings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Preferences {
+public class Preference extends Ontological {
 	
     @JsonProperty("preferences")
 	protected Map<String, Object> preferences;
 	
-	private static final String NAMESPACE = "http://www.owl-ontologies.com/OntologyEasyTV.owl#";
 	public static final String ONTOLOGY_CLASS_URI = NAMESPACE + "UserPreferences";
 	
 	// Data Properties
@@ -56,7 +56,8 @@ public class Preferences {
 		this.preferences = preferences;
 	}
 	
-	public Individual createOntologyInstance(final OntModel model){
+	@Override
+	public Individual createOntologyInstance(final OntModel model) {
 		
 		OntClass preferenceClass = model.getOntClass(ONTOLOGY_CLASS_URI);
 		Individual preferenceInstance = preferenceClass.createIndividual();
@@ -80,8 +81,8 @@ public class Preferences {
 		return preferenceInstance;
 	}
 	
-	
-	public Individual createOntologyInstance(final OntModel model, Individual preferenceInstance){
+	@Override
+	public Individual createOntologyInstance(final OntModel model, Individual preferenceInstance) {
 				
 		//Add user preferences
 		Iterator<Entry<String, Object>> iterator = preferences.entrySet().iterator();

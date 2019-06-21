@@ -9,12 +9,12 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.certh.iti.easytv.rbmm.builtin.Equals;
-import com.certh.iti.easytv.rbmm.user.User;
+import com.certh.iti.easytv.rbmm.user.UserProfile;
 import com.certh.iti.easytv.rbmm.user.UserContext;
-import com.certh.iti.easytv.rbmm.user.UserPreference;
+import com.certh.iti.easytv.rbmm.user.UserPreferences;
 import com.certh.iti.easytv.rbmm.user.UserPreferencesMappings;
-import com.certh.iti.easytv.rbmm.user.preference.Conditions;
-import com.certh.iti.easytv.rbmm.user.preference.Preferences;
+import com.certh.iti.easytv.rbmm.user.preference.Condition;
+import com.certh.iti.easytv.rbmm.user.preference.Preference;
 
 import config.RBMMTestConfig;
 
@@ -38,8 +38,8 @@ public class EqualsRulesTest {
 		    "(?cond http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#EQ)" + 
 		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasValue ?value)" + 
 		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType ?type)" + 
-		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+User.ONTOLOGY_CLASS_URI+")" + 
-		    ",(?user "+User.HAS_PREFERENCE_PROP+" ?pref)" + 
+		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+UserProfile.ONTOLOGY_CLASS_URI+")" + 
+		    ",(?user "+UserProfile.HAS_PREFERENCE_PROP+" ?pref)" + 
 		    ",(?pref ?type ?nodeValue)" + 
 		    "->" + 
 			"	equals(?nodeValue, ?value, ?res)"+
@@ -50,8 +50,8 @@ public class EqualsRulesTest {
 		    "(?cond http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#EQ)" + 
 		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasValue ?value)" + 
 		    ",(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType ?type)" + 
-		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+User.ONTOLOGY_CLASS_URI+")" + 
-		    ",(?user "+User.HAS_CONTEXT_PROP+" ?context)" + 
+		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+UserProfile.ONTOLOGY_CLASS_URI+")" + 
+		    ",(?user "+UserProfile.HAS_CONTEXT_PROP+" ?context)" + 
 		    ",(?context ?type ?nodeValue)" + 
 		    "->" + 
 			"	equals(?nodeValue, ?value, ?res)"+
@@ -80,19 +80,19 @@ public class EqualsRulesTest {
 		
 		
 		//user
-		OntClass userPreferenceClass = model.getOntClass(UserPreference.ONTOLOGY_CLASS_URI);
+		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preferences.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
+		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
-		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(UserProfile.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 		
-		Property hasContextProperty = model.getProperty(User.HAS_CONTEXT_PROP);
+		Property hasContextProperty = model.getProperty(UserProfile.HAS_CONTEXT_PROP);
 		userInstance.addProperty(hasContextProperty, userContextInstance);
 		
 	}
@@ -101,20 +101,20 @@ public class EqualsRulesTest {
 	public void Test_greaterThanIsTrue()  {
 		
 		//gt
-		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "EQ");
+		OntClass gtClass = model.getOntClass(Condition.NAMESPACE + "EQ");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
+		Property hasTypeProperty = model.getProperty(Condition.HAS_TYPE_PROP);
 		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
 				
-		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
+		Property hasValueProperty = model.getProperty(Condition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(6));
 		 
 		
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 				
-		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(Condition.IS_TURE_PROP);
 		StmtIterator list = inf.listStatements(null, isTrueProperty, (RDFNode)null);
 		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
 		while (list.hasNext()) {
@@ -127,20 +127,20 @@ public class EqualsRulesTest {
 	public void Test_greaterThanIsFalse()  {
 		
 		//gt
-		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "EQ");
+		OntClass gtClass = model.getOntClass(Condition.NAMESPACE + "EQ");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
+		Property hasTypeProperty = model.getProperty(Condition.HAS_TYPE_PROP);
 		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
 				
-		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
+		Property hasValueProperty = model.getProperty(Condition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(7));
 		
 		
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 				
-		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(Condition.IS_TURE_PROP);
 		StmtIterator list = inf.listStatements(null, isTrueProperty, (RDFNode)null);
 		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
 		while (list.hasNext()) {
@@ -152,20 +152,20 @@ public class EqualsRulesTest {
 	public void Test_greaterThan_UserContext_Date_IsTrue()  {
 		
 		//gt
-		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "EQ");
+		OntClass gtClass = model.getOntClass(Condition.NAMESPACE + "EQ");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
+		Property hasTypeProperty = model.getProperty(Condition.HAS_TYPE_PROP);
 		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/context/time")));
 				
-		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
+		Property hasValueProperty = model.getProperty(Condition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral("2019-05-30T09:47:47.619Z" ));
 		 
 		
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 				
-		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(Condition.IS_TURE_PROP);
 		StmtIterator list = inf.listStatements(null, isTrueProperty, (RDFNode)null);
 		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
 		while (list.hasNext()) {
@@ -178,20 +178,20 @@ public class EqualsRulesTest {
 	public void Test_greaterThan_UserContext_Date_IsFalse()  {
 		
 		//gt
-		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "EQ");
+		OntClass gtClass = model.getOntClass(Condition.NAMESPACE + "EQ");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property hasTypeProperty = model.getProperty(Conditions.HAS_TYPE_PROP);
+		Property hasTypeProperty = model.getProperty(Condition.HAS_TYPE_PROP);
 		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/context/time")));
 				
-		Property hasValueProperty = model.getProperty(Conditions.HAS_VALUE_PROP);
+		Property hasValueProperty = model.getProperty(Condition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral("2014-12-12T10:39:40Z" ));
 		 
 		
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 				
-		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(Condition.IS_TURE_PROP);
 		StmtIterator list = inf.listStatements(null, isTrueProperty, (RDFNode)null);
 		Assert.assertTrue(list.hasNext(), "No such statement "+isTrueProperty.getLocalName());
 		while (list.hasNext()) {

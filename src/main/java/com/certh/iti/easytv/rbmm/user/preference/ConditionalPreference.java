@@ -13,17 +13,16 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ConditionalPreference extends Preferences{
+public class ConditionalPreference extends Preference {
 	
     @JsonProperty("name")
 	private String name;
     
     
     @JsonProperty("conditions")
-    @JsonDeserialize(as=Conditions.class)
-	private Conditions conditions;
+    @JsonDeserialize(as=Condition.class)
+	private Condition conditions;
 	
-	public static final String NAMESPACE = "http://www.owl-ontologies.com/OntologyEasyTV.owl#";
 	public static final String ONTOLOGY_CLASS_URI = NAMESPACE + "ConditionalPreference";
 
 
@@ -37,26 +36,33 @@ public class ConditionalPreference extends Preferences{
 	}
 
 
-	public Conditions getConditions() {
+	public Condition getConditions() {
 		return conditions;
 	}
 
 
-	public void setConditions(Conditions conditions) {
+	public void setConditions(Condition conditions) {
 		this.conditions = conditions;
 	}
 	
 	public void setConditions(List<Object> conditions) {
-		this.conditions = new Conditions();
+		this.conditions = new Condition();
 		LinkedHashMap<String, Object> inst = (LinkedHashMap<String, Object>) conditions.remove(0);
 		this.conditions.setType((String) inst.get("type"));
 		this.conditions.setOperand((List<Object>) inst.get("operands"));
 	}
 	
+	@Override
 	public Individual createOntologyInstance(final OntModel model){
 		
 		OntClass conditionalPrefClass = model.getOntClass(ONTOLOGY_CLASS_URI);
 		Individual conditionalPrefInstance = conditionalPrefClass.createIndividual();		
+
+		return createOntologyInstance(model, conditionalPrefInstance);
+	}
+	
+	@Override
+	public Individual createOntologyInstance(OntModel model, Individual conditionalPrefInstance) {
 		
 		Property hasNameProperty = model.getProperty(HAS_NAME_PROP);
 		conditionalPrefInstance.addProperty(hasNameProperty,model.createTypedLiteral(name));

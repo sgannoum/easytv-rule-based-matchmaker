@@ -12,6 +12,7 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.certh.iti.easytv.rbmm.user.Ontological;
 import com.certh.iti.easytv.rbmm.user.UserPreferencesMappings;
 import com.google.gson.Gson;
 
@@ -20,29 +21,15 @@ import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Property;
 
-public class Conditions {
+public class Condition extends Ontological{
 	
 	private String type;
 	private List<Object> operand;
 	
-	public static final String NAMESPACE = "http://www.owl-ontologies.com/OntologyEasyTV.owl#";
 	public static final String ONTOLOGY_CLASS_URI = NAMESPACE + "ConditionalPreference";
 	
 	// Data Properties
 	public static final String CONDITIONS_PROP = NAMESPACE + "hasConditions";
-	
-	private static final HashMap<String, String> gateToUri  =  new HashMap<String, String>() {{
-		put("and", NAMESPACE + "AND");
-		put("or", NAMESPACE + "OR");
-		put("not", NAMESPACE + "NOT");
-		put("gt", NAMESPACE + "GT");
-		put("ge", NAMESPACE + "GE");
-		put("lt", NAMESPACE + "LT");
-		put("le", NAMESPACE + "LE");
-		put("ne", NAMESPACE + "NE");
-		put("eq", NAMESPACE + "EQ");
-		put("ap", NAMESPACE + "AP");
-    }};
 	
     // Data Properties
 	public static final String LEFT_OPERAND_PROP = NAMESPACE + "hasLeftOperand";
@@ -95,6 +82,7 @@ public class Conditions {
 	 * @param model RDF model to enriched with RDF triples of the conditional preference
 	 * @return instance of conditional preference
 	 */
+	@Override
 	public Individual createOntologyInstance(final OntModel model){
 		OntClass conditionalPreferenceClass = model.getOntClass(ONTOLOGY_CLASS_URI);
 		Individual conditionalPreferenceInstance = conditionalPreferenceClass.createIndividual();
@@ -110,6 +98,7 @@ public class Conditions {
 	 * @param conditionalPreferenceInstance an instance of conditional preference class
 	 * @return
 	 */
+	@Override
 	public Individual createOntologyInstance(final OntModel model, Individual conditionalPreferenceInstance){
 		Deque<Object> nodeStack = new ArrayDeque<Object>();
 			

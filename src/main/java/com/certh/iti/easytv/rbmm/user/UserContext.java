@@ -7,7 +7,7 @@ import org.apache.jena.rdf.model.Property;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class UserContext {
+public class UserContext extends Ontological{
 	
     @JsonProperty("http://registry.easytv.eu/context/time")
 	private String time;
@@ -15,7 +15,6 @@ public class UserContext {
     @JsonProperty("http://registry.easytv.eu/context/location")
 	private String location;
 	
-	private static final String NAMESPACE = "http://www.owl-ontologies.com/OntologyEasyTV.owl#";
 	public static final String ONTOLOGY_CLASS_URI = NAMESPACE + "UserContext";
 	
 	//Object properties
@@ -35,12 +34,18 @@ public class UserContext {
 		this.location = location;
 	}
 	
-	
+	@Override
 	public Individual createOntologyInstance(final OntModel model){
 		
 		//create the new user in the ontology
 		OntClass userContextClass = model.getOntClass(ONTOLOGY_CLASS_URI);
 		Individual userContextInstance = userContextClass.createIndividual();
+		
+		return createOntologyInstance(model, userContextInstance);
+	}
+	
+	@Override
+	public Individual createOntologyInstance(OntModel model, Individual userContextInstance) {
 		
 		Property hasTimeProperty = model.getProperty(HAS_TIME_PROP);
 		userContextInstance.addProperty(hasTimeProperty, model.createTypedLiteral(time));
@@ -55,5 +60,6 @@ public class UserContext {
 	public String toString() {
 		return "userContext [ time: " + time + " location: "+ location + " ]";
 	}
+
 	
 }

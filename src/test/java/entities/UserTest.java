@@ -31,8 +31,8 @@ import com.certh.iti.easytv.rbmm.builtin.MergePreferences;
 import com.certh.iti.easytv.rbmm.builtin.NOT;
 import com.certh.iti.easytv.rbmm.builtin.NotEquals;
 import com.certh.iti.easytv.rbmm.builtin.OR;
-import com.certh.iti.easytv.rbmm.user.User;
-import com.certh.iti.easytv.rbmm.user.preference.Preferences;
+import com.certh.iti.easytv.rbmm.user.UserProfile;
+import com.certh.iti.easytv.rbmm.user.preference.Preference;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -248,7 +248,7 @@ public class UserTest {
 	 
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		User user = mapper.readValue(jsonProfile1.toString(), User.class);
+		UserProfile user = mapper.readValue(jsonProfile1.toString(), UserProfile.class);
 	 
 		System.out.println(user.toString());
 	    Assert.assertNotNull(user);
@@ -260,7 +260,7 @@ public class UserTest {
 	 
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		User user = mapper.readValue(jsonProfile1.toString(), User.class);
+		UserProfile user = mapper.readValue(jsonProfile1.toString(), UserProfile.class);
 		
 		
 		Individual userInstance = user.createOntologyInstance(model);
@@ -268,22 +268,22 @@ public class UserTest {
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 		
-		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(UserProfile.HAS_PREFERENCE_PROP);
 		StmtIterator userList = inf.listStatements(userInstance, hasPreferenceProperty, (RDFNode)null);
 		Resource userPreferenceInstance = userList.next().getObject().asResource();
 		
 		StmtIterator userPreferenceList = inf.listStatements(userPreferenceInstance, null, (RDFNode)null);
-		Property hasAudioVolumeProperty = model.getProperty(Preferences.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasAudioVolumeProperty, (RDFNode)null);
 		Assert.assertEquals(10, userPreferenceList.next().getObject().asLiteral().getInt());
 		Assert.assertFalse(userPreferenceList.hasNext());
 		
-		Property hasFontSizeProperty = model.getProperty(Preferences.FONT_SIZE_PROP);
+		Property hasFontSizeProperty = model.getProperty(Preference.FONT_SIZE_PROP);
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasFontSizeProperty, (RDFNode)null);
 		Assert.assertEquals(3, userPreferenceList.next().getObject().asLiteral().getInt());
 		Assert.assertFalse(userPreferenceList.hasNext());
 		
-		Property hasBackgroundProperty = model.getProperty(Preferences.BACKGROUND_PROP);
+		Property hasBackgroundProperty = model.getProperty(Preference.BACKGROUND_PROP);
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasBackgroundProperty, (RDFNode)null);
 		Assert.assertEquals("#ffffff", userPreferenceList.next().getObject().asLiteral().getString());
 		Assert.assertFalse(userPreferenceList.hasNext());
@@ -296,19 +296,19 @@ public class UserTest {
 	 
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		User user = mapper.readValue(jsonProfile2.toString(), User.class);
+		UserProfile user = mapper.readValue(jsonProfile2.toString(), UserProfile.class);
 		
 		Individual userInstance = user.createOntologyInstance(model);
 				
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 		
-		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(UserProfile.HAS_PREFERENCE_PROP);
 		StmtIterator userList = inf.listStatements(userInstance, hasPreferenceProperty, (RDFNode)null);
 		Resource userPreferenceInstance = userList.next().getObject().asResource();
 		
 		StmtIterator userPreferenceList = inf.listStatements(userPreferenceInstance, null, (RDFNode)null);
-		Property hasAudioVolumeProperty = model.getProperty(Preferences.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasAudioVolumeProperty, (RDFNode)null);
 		Assert.assertEquals(10, userPreferenceList.next().getObject().asLiteral().getInt());
 		Assert.assertFalse(userPreferenceList.hasNext());
@@ -319,23 +319,23 @@ public class UserTest {
 	public void TestUserInference3() 
 	  throws JsonParseException, IOException {
 			
-		User user = User.read(jsonProfile3.toString());
+		UserProfile user = UserProfile.read(jsonProfile3.toString());
 		Individual userInstance = user.createOntologyInstance(model);
 				
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 		
-		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(UserProfile.HAS_PREFERENCE_PROP);
 		StmtIterator userList = inf.listStatements(userInstance, hasPreferenceProperty, (RDFNode)null);
 		Resource userPreferenceInstance = userList.next().getObject().asResource();
 		
 		StmtIterator userPreferenceList = inf.listStatements(userPreferenceInstance, null, (RDFNode)null);
-		Property hasAudioVolumeProperty = model.getProperty(Preferences.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasAudioVolumeProperty, (RDFNode)null);
 		Assert.assertEquals(10, userPreferenceList.next().getObject().asLiteral().getInt());
 		Assert.assertFalse(userPreferenceList.hasNext());
 		
-		Property hasBackgroundProperty = model.getProperty(Preferences.BACKGROUND_PROP);
+		Property hasBackgroundProperty = model.getProperty(Preference.BACKGROUND_PROP);
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasBackgroundProperty, (RDFNode)null);
 		Assert.assertEquals("#222222", userPreferenceList.next().getObject().asLiteral().getString());
 		Assert.assertFalse(userPreferenceList.hasNext());

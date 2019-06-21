@@ -9,18 +9,17 @@ import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Property;
 
 import com.certh.iti.easytv.rbmm.user.preference.ConditionalPreference;
-import com.certh.iti.easytv.rbmm.user.preference.Preferences;
+import com.certh.iti.easytv.rbmm.user.preference.Preference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class UserPreference {
+public class UserPreferences extends Ontological {
 	
     @JsonProperty("default")
-	private Preferences defaultPreferences;
+	private Preference defaultPreferences;
     
     @JsonProperty("conditional")
-	List<Preferences> conditional;
+	List<Preference> conditional;
 	
-	private static final String NAMESPACE = "http://www.owl-ontologies.com/OntologyEasyTV.owl#";
 	public static final String ONTOLOGY_CLASS_URI = NAMESPACE + "UserPreferences";
 	
 	// Data Properties
@@ -30,19 +29,19 @@ public class UserPreference {
 	
 
 
-	public Preferences getDefaultUserPreferences() {
+	public Preference getDefaultUserPreferences() {
 		return defaultPreferences;
 	}
 	
-	public void setDefaultUserPreferences(Preferences defaultPreferences) {
+	public void setDefaultUserPreferences(Preference defaultPreferences) {
 		this.defaultPreferences = defaultPreferences;
 	}
 	
-	public List<Preferences> getConditional(){
+	public List<Preference> getConditional(){
 		return conditional;
 	}
 	
-	public void setConditional(List<Preferences> conditional){
+	public void setConditional(List<Preference> conditional){
 		this.conditional = conditional;
 	}
 	
@@ -57,6 +56,7 @@ public class UserPreference {
 		return userPreferences;
 	}
 	
+	@Override
 	public Individual createOntologyInstance(final OntModel model){
 		
 		//Default preferences
@@ -72,12 +72,18 @@ public class UserPreference {
 		return preferenceInstance;
 	}
 	
+	@Override
+	public Individual createOntologyInstance(OntModel model, Individual individual) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	
     @SuppressWarnings("unchecked")
     @JsonProperty("conditional")
     private void unpackNested(List<Object> conditionals) {
     	
-    	conditional = new ArrayList<Preferences>();
+    	conditional = new ArrayList<Preference>();
     	
     	for(int i = 0; i < conditionals.size(); i++) {	
     		LinkedHashMap<String, Object> inst = (LinkedHashMap<String, Object>) conditionals.get(i);
@@ -90,4 +96,6 @@ public class UserPreference {
     	}
 
     }
+
+
 }

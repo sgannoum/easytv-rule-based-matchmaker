@@ -10,10 +10,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.certh.iti.easytv.rbmm.builtin.NOT;
-import com.certh.iti.easytv.rbmm.user.User;
-import com.certh.iti.easytv.rbmm.user.UserPreference;
-import com.certh.iti.easytv.rbmm.user.preference.Conditions;
-import com.certh.iti.easytv.rbmm.user.preference.Preferences;
+import com.certh.iti.easytv.rbmm.user.UserProfile;
+import com.certh.iti.easytv.rbmm.user.UserPreferences;
+import com.certh.iti.easytv.rbmm.user.preference.Condition;
+import com.certh.iti.easytv.rbmm.user.preference.Preference;
 
 import config.RBMMTestConfig;
 
@@ -55,19 +55,19 @@ public class NotRulesTest {
 		System.out.println("Ontology was loaded");
 		
 		//user
-		OntClass userPreferenceClass = model.getOntClass(UserPreference.ONTOLOGY_CLASS_URI);
+		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preferences.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property cursorSizeProperty = model.getProperty(Preferences.CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preference.CURSOR_SIZE_PROP);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
-		OntClass userClass = model.getOntClass(User.ONTOLOGY_CLASS_URI);
+		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
-		Property hasPreferenceProperty = model.getProperty(User.HAS_PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(UserProfile.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 		
 	}
@@ -76,17 +76,17 @@ public class NotRulesTest {
 	public void Test_Not_True_input()  {
 		
 		//gt
-		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(Condition.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(Condition.IS_TURE_PROP);
 		gtInstance.addProperty(isTrueProperty, model.createTypedLiteral(true));
 		 
 		//not
-		OntClass notClass = model.getOntClass(Conditions.NAMESPACE + "NOT");
+		OntClass notClass = model.getOntClass(Condition.NAMESPACE + "NOT");
 		Individual notInstance = notClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(Conditions.LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(Condition.LEFT_OPERAND_PROP);
 		notInstance.addProperty(hasLeftOperandProperty, gtInstance);			
 		
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
@@ -105,17 +105,17 @@ public class NotRulesTest {
 	public void Test_Not_False_input()  {
 		
 		//gt
-		OntClass gtClass = model.getOntClass(Conditions.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(Condition.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property isTrueProperty = model.getProperty(Conditions.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(Condition.IS_TURE_PROP);
 		gtInstance.addProperty(isTrueProperty, model.createTypedLiteral(false));
 		 
 		//not
-		OntClass notClass = model.getOntClass(Conditions.NAMESPACE + "NOT");
+		OntClass notClass = model.getOntClass(Condition.NAMESPACE + "NOT");
 		Individual notInstance = notClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(Conditions.LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(Condition.LEFT_OPERAND_PROP);
 		notInstance.addProperty(hasLeftOperandProperty, gtInstance);			
 		
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
