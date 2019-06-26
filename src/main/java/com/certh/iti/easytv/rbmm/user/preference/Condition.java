@@ -3,78 +3,23 @@ package com.certh.iti.easytv.rbmm.user.preference;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.certh.iti.easytv.rbmm.user.Ontological;
+import com.certh.iti.easytv.rbmm.user.OntologicalCondition;
 import com.certh.iti.easytv.rbmm.user.UserPreferencesMappings;
-import com.google.gson.Gson;
-
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Property;
 
-public class Condition implements Ontological{
+public class Condition extends com.certh.iti.easytv.user.preference.Condition implements OntologicalCondition{
 	
-	private String type;
-	private List<Object> operand;
-	
-	public static final String ONTOLOGY_CLASS_URI = NAMESPACE + "ConditionalPreference";
-	
-	// Data Properties
-	public static final String CONDITIONS_PROP = NAMESPACE + "hasConditions";
-	
-    // Data Properties
-	public static final String LEFT_OPERAND_PROP = NAMESPACE + "hasLeftOperand";
-	public static final String RIGHT_OPERAND_PROP = NAMESPACE + "hasRightOperand";
-	public static final String HAS_CONDITIONS_PROP = NAMESPACE + "hasConditions";
+	public Condition(JSONObject json) {
+		super(json);
+	}
 
-    
-	// Data Properties
-	public static final String HAS_TYPE_PROP = NAMESPACE + "hasType";
-	public static final String HAS_VALUE_PROP = NAMESPACE + "hasValue";
-	public static final String IS_TURE_PROP = NAMESPACE + "isTrue";
-	
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
-	public List<Object> getOperand() {
-		return operand;
-	}
-	public void setOperand(List<Object> operand) {
-		this.operand = operand;
-	}
-	
-	@Override
-	public String toString() {
-		String conditionalPreferences = "conditions : [\"type\" : \"" + type + "\", \"operand\": "  ;
-		Iterator<Object> iterator = operand.iterator();
-		
-		conditionalPreferences +=  "[\\n";
-		while(iterator.hasNext()) {
-			Object value = iterator.next();
-			
-			if(String.class.isInstance(value)){
-				conditionalPreferences += "\"" + value + "\"";
-			} else {
-				conditionalPreferences += value;
-			}
-			conditionalPreferences +=  ", ";
-		}
-
-		conditionalPreferences +=  "]]";
-		return conditionalPreferences;
-	}
 	
 	/**
 	 * Create an instance of conditionalPreference 
@@ -192,7 +137,7 @@ public class Condition implements Ontological{
 	}
 	
 	public  List<Object> getFlatOperands(){
-		List<Object> nestedOperands = new ArrayList<Object>(operand);
+		List<Object> nestedOperands = new ArrayList<Object>(operands);
 		nestedOperands.add(0, type);
 		return flatOutOperands(nestedOperands);
 	}
@@ -214,29 +159,16 @@ public class Condition implements Ontological{
 			
 			Object operand1 = nestedOperands.get(index++);
 
-			if(LinkedHashMap.class.isInstance(operand1) || 
-					JSONObject.class.isInstance(operand1)) {
+			if(com.certh.iti.easytv.user.preference.Condition.class.isInstance(operand1)) {
 				
-				JSONObject jsonObj = null;
+				com.certh.iti.easytv.user.preference.Condition condition = com.certh.iti.easytv.user.preference.Condition.class.cast(operand1);
 				
-				//handle linkedHashMap and json object
-				if(LinkedHashMap.class.isInstance(operand1)) {
-					String jsonString = new Gson().toJson(operand1, Map.class);
-					
-					try {
-						jsonObj = new JSONObject(jsonString.toString());
-					} catch(JSONException e1) {}
-					
-				} else {
-					jsonObj = (JSONObject) operand1;
-				}
-					
 				//handle first operand					
-				flatOperands.add(jsonObj.getString("type"));
+				flatOperands.add(condition.getType());
 				
 				//add operand
 				int i = index;
-				Iterator<Object> iteratorOperands = jsonObj.getJSONArray("operands").iterator();
+				Iterator<Object> iteratorOperands = condition.getOperands().iterator();
 				while(iteratorOperands.hasNext()) {
 					nestedOperands.add(i++, iteratorOperands.next());
 				}

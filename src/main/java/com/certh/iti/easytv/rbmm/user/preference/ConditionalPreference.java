@@ -1,28 +1,24 @@
 package com.certh.iti.easytv.rbmm.user.preference;
 
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Property;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ConditionalPreference extends Preference {
 	
-    @JsonProperty("name")
-	private String name;
-    
-    
-    @JsonProperty("conditions")
-    @JsonDeserialize(as=Condition.class)
-	private Condition conditions;
+	private List<Condition> conditions;
 	
+	public ConditionalPreference(String name, JSONObject json) {
+		super(name, json);
+	}
+
 	public static final String ONTOLOGY_CLASS_URI = NAMESPACE + "ConditionalPreference";
 
 
@@ -36,20 +32,50 @@ public class ConditionalPreference extends Preference {
 	}
 
 
-	public Condition getConditions() {
+	public List<Condition> getConditions() {
 		return conditions;
 	}
 
 
-	public void setConditions(Condition conditions) {
+	public void setConditions(List<Condition> conditions) {
 		this.conditions = conditions;
 	}
 	
-	public void setConditions(List<Object> conditions) {
-		this.conditions = new Condition();
-		LinkedHashMap<String, Object> inst = (LinkedHashMap<String, Object>) conditions.remove(0);
-		this.conditions.setType((String) inst.get("type"));
-		this.conditions.setOperand((List<Object>) inst.get("operands"));
+	@Override
+	public void setJSONObject(JSONObject json) {
+		//Add preferences
+		super.setJSONObject(json);
+		
+		//Add conditions
+		JSONArray jsonConditions = json.getJSONArray("conditions");
+		this.conditions = new ArrayList<Condition>();
+		for(int i = 0 ; i < jsonConditions.length(); i++) {
+			this.conditions.add(new Condition(jsonConditions.getJSONObject(i)));
+		}
+		
+		this.jsonObj = json;
+	}
+	
+	@Override
+	public JSONObject toJSON() {
+		if(jsonObj == null) {
+			
+			//Convert the preference section
+			super.toJSON();
+			
+			//Add condition name
+			jsonObj.put("name", name);
+			
+			//Add condition section
+			JSONArray jsonConditions = new JSONArray();
+			for(int i = 0; i < conditions.size(); i++) 
+				jsonConditions.put(conditions.get(i).toJSON());
+			
+			//Add condition section to the JSON file
+			jsonObj.put("conditions", jsonConditions);
+		}
+		
+		return jsonObj;
 	}
 	
 	@Override
@@ -71,18 +97,10 @@ public class ConditionalPreference extends Preference {
 		super.createOntologyInstance(model, conditionalPrefInstance);
 		
 		//add conditional preferences properties
-		conditions.createOntologyInstance(model, conditionalPrefInstance);
+		for(Condition cond : conditions)
+			cond.createOntologyInstance(model, conditionalPrefInstance);
 
 		return conditionalPrefInstance;
-	}
-	
-	@Override
-	public String toString() {
-		return "{\r\n"+
-				 "\"name\": \"" + name +"\", \r\n" +
-				 preferences.toString() +", \r\n" +
-				 conditions.toString() + ", \r\n" +
-				 "}";
 	}
 
 }

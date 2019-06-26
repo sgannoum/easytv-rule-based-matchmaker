@@ -29,9 +29,6 @@ import com.certh.iti.easytv.rbmm.user.UserContext;
 import com.certh.iti.easytv.rbmm.user.UserPreferences;
 import com.certh.iti.easytv.rbmm.user.preference.Preference;
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import config.RBMMTestConfig;
 import junit.framework.Assert;
 
@@ -76,9 +73,7 @@ public class UserContextTest {
 	public void TestAuditoyMapper() 
 	  throws JsonParseException, IOException {
 		
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		UserContext userContext = mapper.readValue(jsonProfile1.toString(), UserContext.class);
+		UserContext userContext = new UserContext(jsonProfile1);
 	 
 		System.out.println(userContext.toString());
 	    Assert.assertNotNull(userContext);

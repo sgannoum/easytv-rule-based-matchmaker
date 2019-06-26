@@ -89,15 +89,15 @@ public class UserTest {
 			"			  {\r\n" + 
 			"				\"type\": \"gt\",\r\n" + 
 			"				\"operands\": [\r\n" + 
-			"				  \"http://registry.easytv.eu/common/content/audio/volume\",\r\n" + 
-			"				  1\r\n" + 
+			"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
+			"				  \"2019-04-30T09:47:47.619Z\" \r\n" + 
 			"				]\r\n" + 
 			"			  },\r\n" + 
 			"				{\r\n" + 
 			"					\"type\": \"lt\",\r\n" + 
 			"					\"operands\": [\r\n" + 
-			"					  \"http://registry.easytv.eu/common/display/screen/enhancement/font/size\",\r\n" + 
-			"					  7\r\n" + 
+			"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
+			"				  \"2019-10-30T09:47:47.619Z\" \r\n" + 
 			"					]\r\n" + 
 			"				}\r\n" + 
 			"            ]\r\n" + 
@@ -134,8 +134,8 @@ public class UserTest {
 			"			  {\r\n" + 
 			"				\"type\": \"gt\",\r\n" + 
 			"				\"operands\": [\r\n" + 
-			"				  \"http://registry.easytv.eu/common/content/audio/volume\",\r\n" + 
-			"				  1\r\n" + 
+			"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
+			"				  \"2019-04-30T09:47:47.619Z\" \r\n" + 
 			"				]\r\n" + 
 			"			  },\r\n" + 
 			"        ]\r\n" + 
@@ -174,15 +174,15 @@ public class UserTest {
 			"			  {\r\n" + 
 			"				\"type\": \"gt\",\r\n" + 
 			"				\"operands\": [\r\n" + 
-			"				  \"http://registry.easytv.eu/common/content/audio/volume\",\r\n" + 
-			"				  1\r\n" + 
+			"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
+			"				  \"2019-04-30T09:47:47.619Z\" \r\n" + 
 			"				]\r\n" + 
 			"			  },\r\n" + 
 			"				{\r\n" + 
 			"					\"type\": \"lt\",\r\n" + 
 			"					\"operands\": [\r\n" + 
-			"					  \"http://registry.easytv.eu/common/display/screen/enhancement/font/size\",\r\n" + 
-			"					  7\r\n" + 
+			"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
+			"				  \"2019-10-30T09:47:47.619Z\" \r\n" + 
 			"					]\r\n" + 
 			"				}\r\n" + 
 			"            ]\r\n" + 
@@ -208,8 +208,8 @@ public class UserTest {
 			"				{\r\n" + 
 			"					\"type\": \"eq\",\r\n" + 
 			"					\"operands\": [\r\n" + 
-			"					  \"http://registry.easytv.eu/common/display/screen/enhancement/background\",\r\n" + 
-			"				  \"#ffffff\"\r\n" + 
+			"				  \"http://registry.easytv.eu/context/location\",\r\n" + 
+			"				  \"fr\" \r\n" +  
 			"					]\r\n" + 
 			"				}\r\n" + 
 			"            ]\r\n" + 
@@ -246,9 +246,7 @@ public class UserTest {
 	public void TestUserMapper() 
 	  throws JsonParseException, IOException {
 	 
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		UserProfile user = mapper.readValue(jsonProfile1.toString(), UserProfile.class);
+		UserProfile user = new UserProfile(jsonProfile1);
 	 
 		System.out.println(user.toString());
 	    Assert.assertNotNull(user);
@@ -258,10 +256,7 @@ public class UserTest {
 	public void TestUserInference1() 
 	  throws JsonParseException, IOException {
 	 
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		UserProfile user = mapper.readValue(jsonProfile1.toString(), UserProfile.class);
-		
+		UserProfile user = new UserProfile(jsonProfile1);
 		
 		Individual userInstance = user.createOntologyInstance(model);
 				
@@ -294,9 +289,7 @@ public class UserTest {
 	public void TestUserInference2() 
 	  throws JsonParseException, IOException {
 	 
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		UserProfile user = mapper.readValue(jsonProfile2.toString(), UserProfile.class);
+		UserProfile user = new UserProfile(jsonProfile2);
 		
 		Individual userInstance = user.createOntologyInstance(model);
 				
@@ -319,7 +312,7 @@ public class UserTest {
 	public void TestUserInference3() 
 	  throws JsonParseException, IOException {
 			
-		UserProfile user = UserProfile.read(jsonProfile3.toString());
+		UserProfile user = new UserProfile(jsonProfile3);
 		Individual userInstance = user.createOntologyInstance(model);
 				
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));

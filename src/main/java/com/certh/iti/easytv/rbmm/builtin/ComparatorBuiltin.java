@@ -43,7 +43,13 @@ abstract public class ComparatorBuiltin extends BaseBuiltin {
 			Date d2 = (Date) v1.getLiteralDatatype().parse((String) v2.getLiteralValue());
 
 			return d1.compareTo(d2);
-		} else if(String.class.isInstance(obj1)) {
+		} else if(Instant.class.isInstance(obj1)) {
+			Instant d1 = (Instant) obj1;
+			Instant d2 = Instant.parse( (CharSequence) v2.getLiteralValue().toString());
+		
+			return d1.compareTo(d2);
+		}  
+		else if(String.class.isInstance(obj1)) {
 			String d1 = (String) obj1;
 			String d2 = (String) v2.getLiteralValue();
 			

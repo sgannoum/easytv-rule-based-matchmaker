@@ -14,6 +14,11 @@
 		</repository>
 	</repositories>
 	<dependencies>
+		<dependency>
+			<groupId>com.certh.iti.easytv</groupId>
+			<artifactId>user_profile</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
 		<!-- core library -->
 		<dependency>

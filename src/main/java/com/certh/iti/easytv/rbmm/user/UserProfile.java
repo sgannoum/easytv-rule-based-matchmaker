@@ -1,8 +1,6 @@
 package com.certh.iti.easytv.rbmm.user;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntClass;
@@ -10,28 +8,18 @@ import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Property;
 import org.json.JSONObject;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class UserProfile implements Ontological{
+public class UserProfile implements OntologicalUserProfile{
     
-    @JsonProperty("user_preferences")
-	private UserPreferences user_preferences;
+	private UserPreferences userPreferences;
     
-    @JsonProperty("context")
 	private UserContext context;
-    
-	public static final String ONTOLOGY_CLASS_URI = NAMESPACE + "User";
-	
-	//Object properties
-	public static final String HAS_PREFERENCE_PROP = NAMESPACE + "hasPreference";
-	public static final String HAS_CONTEXT_PROP = NAMESPACE + "hasContext";
-	public static final String HAS_SUGGESTED_PREFERENCES_PROP = NAMESPACE + "hasSuggestedPreferences";
+	private JSONObject jsonObj = null;
 
-
+	public UserProfile(JSONObject json) throws IOException {
+		jsonObj = null;
+		setJSONObject(json);
+	}
 	
 	public UserContext getContext() {
 		return context;
@@ -43,17 +31,28 @@ public class UserProfile implements Ontological{
 	}
 	
 	public UserPreferences getUser_preferences() {
-		return user_preferences;
+		return userPreferences;
 	}
 
 
-	public void setUser_preferences(UserPreferences user_preferences) {
-		this.user_preferences = user_preferences;
+	public void setUserPreferences(UserPreferences user_preferences) {
+		this.userPreferences = user_preferences;
 	}
 	
-	@Override
-	public String toString() {
-		return "User [" + context + ", " + user_preferences+"]";
+	public JSONObject getJSONObject() {
+		if(jsonObj == null) {
+			jsonObj = new JSONObject();
+			jsonObj.put("user_preferences", userPreferences.getJSONObject());
+			jsonObj.put("context", context.getJSONObject());
+
+		}
+		return jsonObj;
+	}
+	
+	public void setJSONObject(JSONObject json) {		
+		userPreferences = new UserPreferences(json.getJSONObject("user_preferences"));
+		context = new UserContext(json.getJSONObject("context"));
+		jsonObj = json;
 	}
 	
 	@Override
@@ -75,7 +74,7 @@ public class UserProfile implements Ontological{
 		
 		//Add user preferences
 		Property hasPreferences = model.getProperty(HAS_PREFERENCE_PROP);
-		individual.addProperty(hasPreferences, user_preferences.createOntologyInstance(model));	
+		individual.addProperty(hasPreferences, userPreferences.createOntologyInstance(model));	
 		
 		//Add suggested preferences
 		Property hasSuggestedPreferences = model.getProperty(HAS_SUGGESTED_PREFERENCES_PROP);
@@ -83,40 +82,5 @@ public class UserProfile implements Ontological{
 
 		return individual;
 	}
-
-	
-	public static UserProfile read(String json) throws JsonParseException, JsonMappingException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		UserProfile user = mapper.readValue(json, UserProfile.class);
-		
-		return user;
-	}
-	
-	public static UserProfile read(File file) throws JsonParseException, JsonMappingException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		UserProfile user = mapper.readValue(file, UserProfile.class);
-		
-		return user;
-	}
-	
-	public static UserProfile read(InputStream in) throws JsonParseException, JsonMappingException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		UserProfile user = mapper.readValue(in, UserProfile.class);
-		
-		return user;
-	}
-	
-	public static UserProfile read(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		UserProfile user = mapper.readValue(json.toString(), UserProfile.class);
-		
-		return user;
-	}
-
-
 
 }

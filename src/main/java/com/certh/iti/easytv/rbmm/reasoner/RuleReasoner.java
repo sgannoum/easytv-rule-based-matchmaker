@@ -89,7 +89,7 @@ public class RuleReasoner {
 	    JSONObject userProfile = new JSONObject(result);
 		
 		//load user file
-		UserProfile user = UserProfile.read(userProfile);
+		UserProfile user = new UserProfile(userProfile);
 		
 		//load user into ontology
 		user.createOntologyInstance(model);
@@ -117,7 +117,7 @@ public class RuleReasoner {
 	public JSONObject infer(JSONObject userProfile) throws IOException, JSONException {
 		
 		//load user file
-		UserProfile user = UserProfile.read(userProfile);
+		UserProfile user = new UserProfile(userProfile);
 		
 		//load user into ontology
 		user.createOntologyInstance(model);

@@ -120,27 +120,27 @@ public class ConditionsTest {
 	
 	public static final JSONObject jsonProfile1 = new JSONObject("{\r\n" + 
 				"      		\"type\": \"gt\",\r\n" + 
-				"      		\"operand\":[\r\n" + 
-				"      		 \"http://registry.easytv.eu/common/content/audio/volume\",\r\n" + 
-				"      		  77\r\n" + 
+				"      		\"operands\":[\r\n" + 
+				"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
+				"				  \"2019-04-30T09:47:47.619Z\" \r\n" + 
 				"      		]\r\n" + 
 				"      }");
 	
 	public static final JSONObject jsonProfile2 = new JSONObject("{\r\n" + 
 				"      		\"type\": \"and\",\r\n" + 
-				"      		\"operand\":[\r\n" + 
+				"      		\"operands\":[\r\n" + 
 				"						{\r\n" + 
 				"							\"type\": \"gt\",\r\n" + 
-				"							\"operand\":[\r\n" + 
-				"								 \"http://registry.easytv.eu/common/content/audio/volume\",\r\n" + 
-				"								 5\r\n" + 
+				"							\"operands\":[\r\n" + 
+				"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
+				"				  \"2019-04-30T09:47:47.619Z\" \r\n" + 
 				"							]\r\n" + 
 				"						},\r\n" + 
 				"						{\r\n" + 
 				"							\"type\": \"lt\",\r\n" + 
-				"							\"operand\":[\r\n" + 
-				"								 \"http://registry.easytv.eu/common/display/screen/enhancement/font/size\",\r\n" + 
-				"								 20\r\n" + 
+				"							\"operands\":[\r\n" + 
+				"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
+				"				  \"2019-10-30T09:47:47.619Z\" \r\n" + 
 				"							]\r\n" + 
 				"						}\r\n" + 
 				"      		]\r\n" + 
@@ -148,31 +148,31 @@ public class ConditionsTest {
 	
 	public static final JSONObject jsonProfile3 = new JSONObject("{\r\n" + 
 				"		\"type\": \"and\",\r\n" + 
-				"		\"operand\":[\r\n" + 
+				"		\"operands\":[\r\n" + 
 				"					{\r\n" + 
 				"						\"type\": \"or\",\r\n" + 
 				"						\"operand\":[\r\n" + 
 				"							{\r\n" + 
 				"								\"type\": \"lt\",\r\n" + 
-				"								\"operand\":[\r\n" + 
-				"								 \"http://registry.easytv.eu/common/content/audio/volume\",\r\n" + 
-				"								 5\r\n" + 
+				"								\"operands\":[\r\n" + 
+				"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
+				"				  \"2019-10-30T09:47:47.619Z\" \r\n" + 
 				"								]\r\n" + 
 				"							},\r\n" + 
 				"							{\r\n" + 
 				"								\"type\": \"gt\",\r\n" + 
-				"								\"operand\":[\r\n" + 
-				"								 \"http://registry.easytv.eu/common/display/screen/enhancement/font/size\",\r\n" + 
-				"								 20\r\n" + 
+				"								\"operands\":[\r\n" + 
+				"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
+				"				  \"2019-04-30T09:47:47.619Z\" \r\n" + 
 				"								]\r\n" + 
 				"							}\r\n" + 
 				"						]\r\n" + 
 				"					},\r\n" + 
 				"					{\r\n" + 
 				"						\"type\": \"eq\",\r\n" + 
-				"						\"operand\":[\r\n" + 
-				"						 \"https://easytvproject.eu/registry/common/signLanguage\",\r\n" + 
-				"						 true\r\n" + 
+				"						\"operands\":[\r\n" + 
+				"				  \"http://registry.easytv.eu/context/location\",\r\n" + 
+				"				  \"fr\" \r\n" + 
 				"						]\r\n" + 
 				"					}\r\n" + 
 				"		]\r\n" + 
@@ -184,9 +184,7 @@ public class ConditionsTest {
 	public void Test_conditionPreferences_Mapper1() 
 	  throws JsonParseException, IOException {
 	 
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		Condition conditionalPreferences = mapper.readValue(jsonProfile1.toString(), Condition.class);
+		Condition conditionalPreferences = new Condition(jsonProfile1);
 	 
 		System.out.println(conditionalPreferences.toString());
 	    Assert.assertNotNull(conditionalPreferences);
@@ -196,9 +194,8 @@ public class ConditionsTest {
 	public void Test_conditionPreferences_Mapper2() 
 	  throws JsonParseException, IOException {
 	 
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		Condition conditionalPreferences = mapper.readValue(jsonProfile2.toString(), Condition.class);
+		Condition conditionalPreferences = new Condition(jsonProfile2);
+
 	 
 		System.out.println(conditionalPreferences.toString());
 	    Assert.assertNotNull(conditionalPreferences);
