@@ -1,9 +1,6 @@
 package com.certh.iti.easytv.rbmm.user.preference;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
-import java.util.Iterator;
 import java.util.List;
 import org.json.JSONObject;
 
@@ -19,7 +16,6 @@ public class Condition extends com.certh.iti.easytv.user.preference.Condition im
 	public Condition(JSONObject json) {
 		super(json);
 	}
-
 	
 	/**
 	 * Create an instance of conditionalPreference 
@@ -33,9 +29,9 @@ public class Condition extends com.certh.iti.easytv.user.preference.Condition im
 		Individual conditionalPreferenceInstance = conditionalPreferenceClass.createIndividual();
 		
 		return createOntologyInstance(model, conditionalPreferenceInstance);
+		
 	}
 	
-
 	/**
 	 * Create an instance of conditionalPreference 
 	 * 
@@ -44,72 +40,32 @@ public class Condition extends com.certh.iti.easytv.user.preference.Condition im
 	 * @return
 	 */
 	@Override
-	public Individual createOntologyInstance(final OntModel model, Individual conditionalPreferenceInstance){
-		Deque<Object> nodeStack = new ArrayDeque<Object>();
-			
-		OntClass operandClass;
-		Individual operandInstance;
+	public Individual createOntologyInstance(final OntModel model, Individual conditionalPreferenceInstance){		
+		Individual individual = createOntologyInstance(model, conditionalPreferenceInstance, new com.certh.iti.easytv.user.preference.Condition(type, new ArrayList<Object>(operands)));
 		
-		//Add conditional preferences
-		List<Object> fastList = getFlatOperands();
-				
-		for(int i = fastList.size() - 1; i >= 0; i--) {
-			Object element = fastList.get(i);
-
-			if(!String.class.isInstance(element)) {
-				nodeStack.push(element);	
-				continue;
-			}
+		Property hasConditionsProperty = model.getProperty(HAS_CONDITIONS_PROP);
+		conditionalPreferenceInstance.addProperty(hasConditionsProperty, individual) ;
+		
+		return conditionalPreferenceInstance;
+	}
+	
+	private Individual createOntologyInstance(final OntModel model, Individual conditionalPreferenceInstance, com.certh.iti.easytv.user.preference.Condition condition){
 					
-			String elementStr = (String) element;
-						
-			//logical gate
-			if(	elementStr.equalsIgnoreCase("not")) {
-					
-					Individual operand_1 = (Individual) nodeStack.pop();
-				
-					operandClass = model.getOntClass(NAMESPACE + elementStr.toUpperCase());
-					operandInstance = operandClass.createIndividual();
-					
-					//set left operand
-					Property leftOperandProperty = model.getProperty(LEFT_OPERAND_PROP);
-					operandInstance.addProperty(leftOperandProperty, operand_1);
-					
-					//add second operand to the stack
-					nodeStack.push(operandInstance);
-					
-			} else if(elementStr.equalsIgnoreCase("and") || 
-						elementStr.equalsIgnoreCase("or")) {
-				
-					Individual operand_1 = (Individual) nodeStack.pop();
-					Individual operand_2 = (Individual) nodeStack.pop();
-				
-					operandClass = model.getOntClass(NAMESPACE + elementStr.toUpperCase());
-					operandInstance = operandClass.createIndividual();
-					
-					//set left operand
-					Property leftOperandProperty = model.getProperty(LEFT_OPERAND_PROP);
-					operandInstance.addProperty(leftOperandProperty, operand_1);
-					
-					//set right operand
-					Property rightOperandProperty = model.getProperty(RIGHT_OPERAND_PROP);
-					operandInstance.addProperty(rightOperandProperty, operand_2);		
-					
-					//add second operand to the stack
-					nodeStack.push(operandInstance);
-				
-			} else if(elementStr.equalsIgnoreCase("gt") || elementStr.equalsIgnoreCase("ge") || 
-						elementStr.equalsIgnoreCase("lt") || elementStr.equalsIgnoreCase("le") ||
-						 elementStr.equalsIgnoreCase("eq") || elementStr.equalsIgnoreCase("ne") ) {
+			String conditionType = (String) condition.getType();
+			List<Object> conditionOprands = condition.getOperands();
+			
+			 if(conditionType.equalsIgnoreCase("gt") || conditionType.equalsIgnoreCase("ge") || 
+					conditionType.equalsIgnoreCase("lt") || conditionType.equalsIgnoreCase("le") ||
+						 conditionType.equalsIgnoreCase("eq") || conditionType.equalsIgnoreCase("ne") ) {
 				
 					
-					Object uriObj = nodeStack.pop();
-					Object value = nodeStack.pop();
-
+					Object uriObj = conditionOprands.get(0);
+					Object value = conditionOprands.get(1);
+	
 					String uri = (String) uriObj;
 										
-					operandClass = model.getOntClass(NAMESPACE + elementStr.toUpperCase());
-					operandInstance = operandClass.createIndividual();
+					OntClass operandClass = model.getOntClass(NAMESPACE + conditionType.toUpperCase());
+					Individual operandInstance = operandClass.createIndividual();
 																			
 					//set type
 					Property hasTypeProperty = model.getProperty(HAS_TYPE_PROP);
@@ -118,66 +74,53 @@ public class Condition extends com.certh.iti.easytv.user.preference.Condition im
 					Property hasValueProperty = model.getProperty(HAS_VALUE_PROP);
 					operandInstance.addProperty(hasValueProperty, model.createTypedLiteral(value));
 					
-					nodeStack.push(operandInstance);	
+					return operandInstance;
+					
 			} else {
-					nodeStack.push(elementStr);	
-			}
+				
+					Individual last = null;
+					List<Individual> individuals = new ArrayList<Individual>();
+					
+					//handle operands
+					for(Object obj : conditionOprands) 
+						individuals.add(createOntologyInstance(model, conditionalPreferenceInstance, (com.certh.iti.easytv.user.preference.Condition) obj));
+					
+					
+					if(conditionType.equalsIgnoreCase("and") || 
+							conditionType.equalsIgnoreCase("or")) {
+					
+						while(!individuals.isEmpty()) {
+							Individual operand_1 = (Individual) individuals.remove(0);
+							Individual operand_2 = (Individual) individuals.remove(0);
+						
+							OntClass operandClass = model.getOntClass(NAMESPACE + conditionType.toUpperCase());
+							last = operandClass.createIndividual();
+							
+							//set left operand
+							Property leftOperandProperty = model.getProperty(LEFT_OPERAND_PROP);
+							last.addProperty(leftOperandProperty, operand_1);
+							
+							//set right operand
+							Property rightOperandProperty = model.getProperty(RIGHT_OPERAND_PROP);
+							last.addProperty(rightOperandProperty, operand_2);		
+						}
+						
+					} if(conditionType.equalsIgnoreCase("not")) {
+						
+						while(!individuals.isEmpty()) {
+							Individual operand_1 = (Individual) individuals.remove(0);
+						
+							OntClass operandClass = model.getOntClass(NAMESPACE + conditionType.toUpperCase());
+							last = operandClass.createIndividual();
+							
+							//set left operand
+							Property leftOperandProperty = model.getProperty(LEFT_OPERAND_PROP);
+							last.addProperty(leftOperandProperty, operand_1);	
+						}
+					}
+							
+					return last;
 		}
-
-		//check that only on operand remains
-		if(nodeStack.size() != 1) {
-			return null;
-		}
-		
-
-		Property hasConditionsProperty = model.getProperty(HAS_CONDITIONS_PROP);
-		conditionalPreferenceInstance.addProperty(hasConditionsProperty, (Individual) nodeStack.pop()) ;
-				
-		return conditionalPreferenceInstance;
-	}
-	
-	public  List<Object> getFlatOperands(){
-		List<Object> nestedOperands = new ArrayList<Object>(operands);
-		nestedOperands.add(0, type);
-		return flatOutOperands(nestedOperands);
-	}
-	
-	/**
-	 * Convert the tree of the conditional preferences into a flat list of operands
-	 * 
-	 * @return
-	 */
-	private static List<Object> flatOutOperands(List<Object> nestedOperands) {
-		List<Object> flatOperands = new ArrayList<Object>();
-		
-		int index = 0 ;
-				
-		while(true) { 
-			if(index >= nestedOperands.size()) {
-				break;
-			}
-			
-			Object operand1 = nestedOperands.get(index++);
-
-			if(com.certh.iti.easytv.user.preference.Condition.class.isInstance(operand1)) {
-				
-				com.certh.iti.easytv.user.preference.Condition condition = com.certh.iti.easytv.user.preference.Condition.class.cast(operand1);
-				
-				//handle first operand					
-				flatOperands.add(condition.getType());
-				
-				//add operand
-				int i = index;
-				Iterator<Object> iteratorOperands = condition.getOperands().iterator();
-				while(iteratorOperands.hasNext()) {
-					nestedOperands.add(i++, iteratorOperands.next());
-				}
-				
-			} else {
-				flatOperands.add(operand1);
-			}
-		}
-		return flatOperands;
 	}
 
 }
