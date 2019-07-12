@@ -172,17 +172,13 @@
 	print('Conditional preference', ?name,'is true')	
 	mergePref(?defPref, ?condPref)]
 
-	
-	
 
-
-	
-[protanopia_rule_1:(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)
-,(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)
-,(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasVisualAbility ?visual)
-,(?visual http://www.owl-ontologies.com/OntologyEasyTV.owl#hasColorBlindness ?blindness)
-,equals(?blindness, 'protanopia'^^http://www.w3.org/2001/XMLSchema#string, ?res)
+[font_size_suggestion:
+ (?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)
+ (?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)
+ (?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasMagnification ?mg)
+ (?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)
+ greaterThan(?mg, 30, ?res)
 ->
-	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasBackground '#ffffff'^^http://www.w3.org/2001/XMLSchema#string)	
-	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasFontColor '#ffff28'^^http://www.w3.org/2001/XMLSchema#string)	
-	print('Suggested preferences')]	
+	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasFontSize 60)
+	print('Suggest a font size 60 to users with magnification level over 50')]	

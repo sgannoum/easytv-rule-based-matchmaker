@@ -5,6 +5,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.StringTokenizer;
+
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.InfModel;
@@ -52,13 +58,42 @@ import logicalOperand.OrRulesTest;
 public class UserTest {
 	
 	private OntModel model;
+	public static final String 	suggestionRule =  
+	"[font_size_suggestion:\r\n" + 
+			" (?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#User) \r\n" + 
+			" (?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)\r\n" + 
+			" (?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasMagnification ?mg)\r\n" + 
+			" (?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)\r\n" + 
+			" greaterThan(?mg, 30, ?res)	\r\n" + 
+			"->\r\n" + 
+			"	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasFontSize 60)\r\n" + 
+	 "]";
+	
 	private String rules =  AndRulesTest.rules + OrRulesTest.rules + NotRulesTest.rules +
 			EqualsRulesTest.rules + NotEqualsRulesTest.rules +
 			GreaterThanRulesTest.rules + GreaterThanEqualRulesTest.rules +
 			LessThanRulesTest.rules + LessThanEqualRulesTest.rules +
-			ConditionsTest.rules
+			ConditionsTest.rules + suggestionRule
 			;
-	
+	public static final JSONObject jsonProfile = new JSONObject("{\r\n" + 
+			" \"context\":{\r\n" + 
+			"    \"http://registry.easytv.eu/context/time\": \"2019-05-30T09:47:47.619Z\" ,\r\n" + 
+			"    \"http://registry.easytv.eu/context/location\": \"fr\"\r\n" + 
+			"	},\r\n"	+
+			"  \"user_preferences\": {\r\n" + 
+			"    \"default\": {\r\n" + 
+			"      \"preferences\": {\r\n" + 
+			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/size\": 3,\r\n" + 
+			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/type\": \"sans-serif\",\r\n" + 
+			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/color\": \"#000000\",\r\n" + 
+			"        \"http://registry.easytv.eu/common/display/screen/enhancement/magnification\": 50,\r\n" + 
+			"        \"http://registry.easytv.eu/common/display/screen/enhancement/background\": \"#ffffff\",\r\n" + 
+			"        \"http://registry.easytv.eu/common/content/audio/volume\": 6,\r\n" + 
+			"        \"http://registry.easytv.eu/common/content/audio/language\": \"en\",\r\n" + 
+			"      }\r\n" + 
+			"    }\r\n" + 
+			"  }\r\n" + 
+			"}");
 	
 	public static final JSONObject jsonProfile1 = new JSONObject("{\r\n" + 
 			" \"context\":{\r\n" + 
@@ -71,6 +106,7 @@ public class UserTest {
 			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/size\": 3,\r\n" + 
 			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/type\": \"sans-serif\",\r\n" + 
 			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/color\": \"#000000\",\r\n" + 
+			"        \"http://registry.easytv.eu/common/display/screen/enhancement/magnification\": 50,\r\n" + 
 			"        \"http://registry.easytv.eu/common/display/screen/enhancement/background\": \"#ffffff\",\r\n" + 
 			"        \"http://registry.easytv.eu/common/content/audio/volume\": 6,\r\n" + 
 			"        \"http://registry.easytv.eu/common/content/audio/language\": \"en\",\r\n" + 
@@ -248,8 +284,34 @@ public class UserTest {
 	 
 		UserProfile user = new UserProfile(jsonProfile1);
 	 
-		System.out.println(user.toString());
+		System.out.println(user.getJSONObject().toString(4));
 	    Assert.assertNotNull(user);
+	}
+	
+	@Test
+	public void TestUserInference() 
+	  throws JsonParseException, IOException {
+	 
+		UserProfile user = new UserProfile(jsonProfile);
+		
+		Individual userInstance = user.createOntologyInstance(model);
+				
+		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
+		InfModel inf = ModelFactory.createInfModel(reasoner, model);
+		
+		Property hasSuggestedPreferenceProperty = model.getProperty(UserProfile.HAS_SUGGESTED_PREFERENCES_PROP);
+		StmtIterator userList = inf.listStatements(userInstance, hasSuggestedPreferenceProperty, (RDFNode)null);
+		Resource userSuggestedPreferenceInstance = userList.next().getObject().asResource();
+		
+		StmtIterator userPreferenceList = inf.listStatements(userSuggestedPreferenceInstance, null, (RDFNode)null);
+		while(userPreferenceList.hasNext()) {
+			System.out.print(userPreferenceList.next().toString());
+		}
+		Property hasFontSizeProperty = model.getProperty(Preference.FONT_SIZE_PROP);
+		 userPreferenceList = inf.listStatements(userSuggestedPreferenceInstance, hasFontSizeProperty, (RDFNode)null);
+		Assert.assertEquals(60, userPreferenceList.next().getObject().asLiteral().getInt());
+		Assert.assertFalse(userPreferenceList.hasNext());
+
 	}
 	
 	@Test

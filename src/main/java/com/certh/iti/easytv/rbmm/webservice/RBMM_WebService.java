@@ -56,7 +56,6 @@ public class RBMM_WebService
     @Consumes("application/json")
     public Response postRunEasyTVRules(Object tmpInput) throws IOException, JSONException
     {
-
     	JSONObject json = new JSONObject((Map)tmpInput);	
     	RuleReasoner ruleReasoner = new RuleReasoner(ONTOLOGY_NAME, RULES_FILE);
     	
