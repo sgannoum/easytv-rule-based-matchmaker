@@ -1,16 +1,21 @@
 package com.certh.iti.easytv.rbmm.user;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
 
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Property;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class UserContext implements Ontological{
 	
-	private Instant time = null;  
+	private Date time = null;  
 	private String location = null;
     private JSONObject jsonObj = null;
 	
@@ -25,10 +30,10 @@ public class UserContext implements Ontological{
 		setJSONObject(json);
 	}
 	
-	public Instant getTime() {
+	public Date getTime() {
 		return time;
 	}
-	public void setTime(Instant time) {
+	public void setTime(Date time) {
 		this.time = time;
 	}
 	public String getLocation() {
@@ -56,7 +61,18 @@ public class UserContext implements Ontological{
 	public void setJSONObject(JSONObject json) {		
 
 		if(json.has("http://registry.easytv.eu/context/time")) {
-			time = Instant.parse(json.getString("http://registry.easytv.eu/context/time"));
+			String timeStr = json.getString("http://registry.easytv.eu/context/time");
+			
+			try {
+				//ISO 8601 
+				time = Date.from( Instant.parse(timeStr));
+			} catch (DateTimeParseException e) {
+
+				try {
+					time = new SimpleDateFormat("hh:mm:ss").parse(timeStr);
+				} catch (ParseException e1) {}
+			}
+
 		}
 		
 		if(json.has("http://registry.easytv.eu/context/location")) {

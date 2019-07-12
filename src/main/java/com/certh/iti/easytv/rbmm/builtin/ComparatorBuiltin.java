@@ -1,5 +1,7 @@
 package com.certh.iti.easytv.rbmm.builtin;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
@@ -40,24 +42,24 @@ abstract public class ComparatorBuiltin extends BaseBuiltin {
 			return d1.compareTo(d2);
 		} else if(Date.class.isInstance(obj1)) {
 			Date d1 = (Date) obj1;
-			Date d2 = (Date) v1.getLiteralDatatype().parse((String) v2.getLiteralValue());
+			Date d2 = null;
+			
+			try {
+				//ISO8601 
+				d2 = Date.from( Instant.parse((String) v2.getLiteralValue()));
+			} catch (DateTimeParseException e) {
+
+				try {
+					d2 = new SimpleDateFormat("hh:mm:ss").parse((String) v2.getLiteralValue());
+				} catch (ParseException e1) {}
+			}
+			
 
 			return d1.compareTo(d2);
-		} else if(Instant.class.isInstance(obj1)) {
-			Instant d1 = (Instant) obj1;
-			Instant d2 = Instant.parse( (CharSequence) v2.getLiteralValue().toString());
-		
-			return d1.compareTo(d2);
-		}  
+		} 
 		else if(String.class.isInstance(obj1)) {
 			String d1 = (String) obj1;
 			String d2 = (String) v2.getLiteralValue();
-			
-			try {
-				Date date1 =  Date.from( Instant.parse(d1));
-				Date date2 =  Date.from( Instant.parse(d2));
-				return date1.compareTo(date2);
-			} catch(DateTimeParseException e) {}
 
 			return d1.compareTo(d2);
 		}
