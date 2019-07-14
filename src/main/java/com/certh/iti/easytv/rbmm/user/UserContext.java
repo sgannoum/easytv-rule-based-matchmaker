@@ -69,7 +69,7 @@ public class UserContext implements Ontological{
 			} catch (DateTimeParseException e) {
 
 				try {
-					time = new SimpleDateFormat("hh:mm:ss").parse(timeStr);
+					time = new SimpleDateFormat("HH:mm:ss").parse(timeStr);
 				} catch (ParseException e1) {}
 			}
 

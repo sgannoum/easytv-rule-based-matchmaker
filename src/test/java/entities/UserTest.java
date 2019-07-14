@@ -144,6 +144,55 @@ public class UserTest {
 			"  }\r\n" + 
 			"}");
 	
+	public static final JSONObject jsonProfile11 = new JSONObject("{\r\n" + 
+			" \"context\":{\r\n" + 
+			"    \"http://registry.easytv.eu/context/time\": \"12:00:00\" ,\r\n" + 
+			"    \"http://registry.easytv.eu/context/location\": \"fr\"\r\n" + 
+			"	},\r\n"	+
+			"  \"user_preferences\": {\r\n" + 
+			"    \"default\": {\r\n" + 
+			"      \"preferences\": {\r\n" + 
+			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/size\": 3,\r\n" + 
+			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/type\": \"sans-serif\",\r\n" + 
+			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/color\": \"#000000\",\r\n" + 
+			"        \"http://registry.easytv.eu/common/display/screen/enhancement/magnification\": 50,\r\n" + 
+			"        \"http://registry.easytv.eu/common/display/screen/enhancement/background\": \"#ffffff\",\r\n" + 
+			"        \"http://registry.easytv.eu/common/content/audio/volume\": 6,\r\n" + 
+			"        \"http://registry.easytv.eu/common/content/audio/language\": \"en\",\r\n" + 
+			"      }\r\n" + 
+			"    },\r\n" + 
+			"    \"conditional\": [\r\n" + 
+			"      {\r\n" + 
+			"        \"name\": \"condition_1\",\r\n" + 
+			"        \"preferences\": {\r\n" + 
+			"          \"http://registry.easytv.eu/common/content/audio/volume\": 10\r\n" + 
+			"        },\r\n" + 
+			"        \"conditions\": [\r\n" + 
+			"          {\r\n" + 
+			"            \"type\": \"and\",\r\n" + 
+			"            \"operands\": [\r\n" + 
+			"			  {\r\n" + 
+			"				\"type\": \"gt\",\r\n" + 
+			"				\"operands\": [\r\n" + 
+			"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
+			"				  \"08:00:00\" \r\n" + 
+			"				]\r\n" + 
+			"			  },\r\n" + 
+			"				{\r\n" + 
+			"					\"type\": \"lt\",\r\n" + 
+			"					\"operands\": [\r\n" + 
+			"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
+			"				  \"15:00:00\" \r\n" + 
+			"					]\r\n" + 
+			"				}\r\n" + 
+			"            ]\r\n" + 
+			"          }\r\n" + 
+			"        ]\r\n" + 
+			"      }\r\n" + 
+			"    ]"+
+			"  }\r\n" + 
+			"}");
+	
 	public static final JSONObject jsonProfile2 = new JSONObject("{\r\n" + 
 			" \"context\":{\r\n" + 
 			"    \"http://registry.easytv.eu/context/time\": \"2019-05-30T09:47:47.619Z\" ,\r\n" + 
@@ -319,6 +368,39 @@ public class UserTest {
 	  throws JsonParseException, IOException {
 	 
 		UserProfile user = new UserProfile(jsonProfile1);
+		
+		Individual userInstance = user.createOntologyInstance(model);
+				
+		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
+		InfModel inf = ModelFactory.createInfModel(reasoner, model);
+		
+		Property hasPreferenceProperty = model.getProperty(UserProfile.HAS_PREFERENCE_PROP);
+		StmtIterator userList = inf.listStatements(userInstance, hasPreferenceProperty, (RDFNode)null);
+		Resource userPreferenceInstance = userList.next().getObject().asResource();
+		
+		StmtIterator userPreferenceList = inf.listStatements(userPreferenceInstance, null, (RDFNode)null);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
+		userPreferenceList = inf.listStatements(userPreferenceInstance, hasAudioVolumeProperty, (RDFNode)null);
+		Assert.assertEquals(10, userPreferenceList.next().getObject().asLiteral().getInt());
+		Assert.assertFalse(userPreferenceList.hasNext());
+		
+		Property hasFontSizeProperty = model.getProperty(Preference.FONT_SIZE_PROP);
+		userPreferenceList = inf.listStatements(userPreferenceInstance, hasFontSizeProperty, (RDFNode)null);
+		Assert.assertEquals(3, userPreferenceList.next().getObject().asLiteral().getInt());
+		Assert.assertFalse(userPreferenceList.hasNext());
+		
+		Property hasBackgroundProperty = model.getProperty(Preference.BACKGROUND_PROP);
+		userPreferenceList = inf.listStatements(userPreferenceInstance, hasBackgroundProperty, (RDFNode)null);
+		Assert.assertEquals("#ffffff", userPreferenceList.next().getObject().asLiteral().getString());
+		Assert.assertFalse(userPreferenceList.hasNext());
+
+	}
+	
+	@Test
+	public void TestUserInference11() 
+	  throws JsonParseException, IOException {
+	 		
+		UserProfile user = new UserProfile(jsonProfile11);
 		
 		Individual userInstance = user.createOntologyInstance(model);
 				

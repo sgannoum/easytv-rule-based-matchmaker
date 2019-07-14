@@ -50,7 +50,7 @@ abstract public class ComparatorBuiltin extends BaseBuiltin {
 			} catch (DateTimeParseException e) {
 
 				try {
-					d2 = new SimpleDateFormat("hh:mm:ss").parse((String) v2.getLiteralValue());
+					d2 = new SimpleDateFormat("HH:mm:ss").parse((String) v2.getLiteralValue());
 				} catch (ParseException e1) {}
 			}
 			
