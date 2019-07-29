@@ -12,11 +12,11 @@
         
         <context-param>
             <param-name>resteasy.resources</param-name>
-            <param-value>rule_matchmaker.RBMM_WebService</param-value>
+            <param-value>com.certh.iti.easytv.rbmm.webservice.RBMM_WebService</param-value>
         </context-param>
         <context-param>
             <param-name>javax.ws.rs.core.Application</param-name>
-            <param-value>rule_matchmaker.RBMM_WebService_Config</param-value>
+            <param-value>com.certh.iti.easytv.rbmm.webservice.RBMM_WebService_Config</param-value>
         </context-param>
 	
 	<servlet>

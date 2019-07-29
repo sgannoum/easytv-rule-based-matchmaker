@@ -1,9 +1,10 @@
-package rule_matchmaker;
+package com.certh.iti.easytv.rbmm.webservice;
 
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -12,22 +13,25 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import org.json.JSONException;
+import org.json.JSONObject;
 
-import com.google.gson.Gson;
+import com.certh.iti.easytv.rbmm.reasoner.RuleReasoner;
 
 
 
 @Path("/RBMM")
 public class RBMM_WebService
 {
+	private static final String ONTOLOGY_NAME = "EasyTV.owl";
+	private static final String RULES_FILE = "rules.txt";
 	
-    //http://localhost:8080/EasyTV_RBMM_Restful_WS/RBMM/match
+    //http://localhost:8080/EasyTV_RBMM_Restful_WS/RBMM/rules
     @GET
     @Path("/rules")
     public Response getEasyTVRules() throws IOException, JSONException
     {
     	char[] content = new char[1024 * 3];
-		File file = new File(this.getClass().getResource("rules.txt").getFile());
+		File file = new File(this.getClass().getClassLoader().getResource(RULES_FILE).getFile());
 		FileReader reader = new FileReader(file);
 
 		reader.read(content);
@@ -52,10 +56,9 @@ public class RBMM_WebService
     @Consumes("application/json")
     public Response postRunEasyTVRules(Object tmpInput) throws IOException, JSONException
     {
-    	RuleReasoner ruleReasoner = new RuleReasoner();
-    	Gson gson = new Gson();
-    	String json = gson.toJson(tmpInput);
-    	System.out.println(json);
-        return Response.status(200).entity(ruleReasoner.infer(json).toString()).build();
+    	JSONObject json = new JSONObject((Map)tmpInput);	
+    	RuleReasoner ruleReasoner = new RuleReasoner(ONTOLOGY_NAME, RULES_FILE);
+    	
+       return Response.status(200).entity(ruleReasoner.infer(json).toString(4)).build();
     }
 }

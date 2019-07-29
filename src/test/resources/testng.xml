@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+  <test name="Test user profile">
+    <classes>
+ 
+      <class name="comparatorOperand.EqualsRulesTest"/>
+      <class name="comparatorOperand.GreaterThanEqualRulesTest"/>
+      <class name="comparatorOperand.GreaterThanRulesTest"/>
+      <class name="comparatorOperand.LessThanEqualRulesTest"/>
+      <class name="comparatorOperand.LessThanRulesTest"/>
+      <class name="comparatorOperand.NotEqualsRulesTest"/>
+
+      <class name="entities.UserTest"/>
+      <class name="entities.ConditionsTest"/>
+      <class name="entities.DefaultUserPreferenceTest"/>
+      <class name="entities.UserContextTest"/>
+      
+      <class name="logicalOperand.AndRulesTest"/>
+      <class name="logicalOperand.OrRulesTest"/>
+      <class name="logicalOperand.NotRulesTest"/>
+      
+      <class name="rules.AllRulesTests"/>
+      
+    </classes>
+  </test>
+</suite>
