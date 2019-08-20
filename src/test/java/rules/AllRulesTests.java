@@ -90,10 +90,10 @@ public class AllRulesTests {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property cursorSizeProperty = model.getProperty(Preference.CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preference.HAS_CURSOR_SIZE_PROP);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
@@ -123,10 +123,10 @@ public class AllRulesTests {
 		OntClass andClass = model.getOntClass(Condition.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(Condition.LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(Condition.HAS_LEFT_OPERAND_PROP);
 		andInstance.addProperty(hasLeftOperandProperty, gtInstance);
 		
-		Property hasRightOperandProperty = model.getProperty(Condition.RIGHT_OPERAND_PROP);
+		Property hasRightOperandProperty = model.getProperty(Condition.HAS_RIGHT_OPERAND_PROP);
 		andInstance.addProperty(hasRightOperandProperty, ltInstance);
 				
 		
@@ -149,10 +149,10 @@ public class AllRulesTests {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property cursorSizeProperty = model.getProperty(Preference.CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preference.HAS_CURSOR_SIZE_PROP);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
@@ -182,10 +182,10 @@ public class AllRulesTests {
 		OntClass andClass = model.getOntClass(Condition.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(Condition.LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(Condition.HAS_LEFT_OPERAND_PROP);
 		andInstance.addProperty(hasLeftOperandProperty, gtInstance);
 		
-		Property hasRightOperandProperty = model.getProperty(Condition.RIGHT_OPERAND_PROP);
+		Property hasRightOperandProperty = model.getProperty(Condition.HAS_RIGHT_OPERAND_PROP);
 		andInstance.addProperty(hasRightOperandProperty, ltInstance);
 				
 		
@@ -207,10 +207,10 @@ public class AllRulesTests {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property cursorSizeProperty = model.getProperty(Preference.CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preference.HAS_CURSOR_SIZE_PROP);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
@@ -240,10 +240,10 @@ public class AllRulesTests {
 		OntClass andClass = model.getOntClass(Condition.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(Condition.LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(Condition.HAS_LEFT_OPERAND_PROP);
 		andInstance.addProperty(hasLeftOperandProperty, gtInstance);
 		
-		Property hasRightOperandProperty = model.getProperty(Condition.RIGHT_OPERAND_PROP);
+		Property hasRightOperandProperty = model.getProperty(Condition.HAS_RIGHT_OPERAND_PROP);
 		andInstance.addProperty(hasRightOperandProperty, ltInstance);
 				
 		
@@ -265,10 +265,10 @@ public class AllRulesTests {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property cursorSizeProperty = model.getProperty(Preference.CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preference.HAS_CURSOR_SIZE_PROP);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
@@ -298,10 +298,10 @@ public class AllRulesTests {
 		OntClass andClass = model.getOntClass(Condition.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(Condition.LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(Condition.HAS_LEFT_OPERAND_PROP);
 		andInstance.addProperty(hasLeftOperandProperty, gtInstance);
 		
-		Property hasRightOperandProperty = model.getProperty(Condition.RIGHT_OPERAND_PROP);
+		Property hasRightOperandProperty = model.getProperty(Condition.HAS_RIGHT_OPERAND_PROP);
 		andInstance.addProperty(hasRightOperandProperty, ltInstance);
 				
 		
@@ -324,10 +324,10 @@ public class AllRulesTests {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property cursorSizeProperty = model.getProperty(Preference.CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preference.HAS_CURSOR_SIZE_PROP);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
@@ -357,10 +357,10 @@ public class AllRulesTests {
 		OntClass andClass = model.getOntClass(Condition.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(Condition.LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(Condition.HAS_LEFT_OPERAND_PROP);
 		andInstance.addProperty(hasLeftOperandProperty, gtInstance);
 		
-		Property hasRightOperandProperty = model.getProperty(Condition.RIGHT_OPERAND_PROP);
+		Property hasRightOperandProperty = model.getProperty(Condition.HAS_RIGHT_OPERAND_PROP);
 		andInstance.addProperty(hasRightOperandProperty, ltInstance);
 		
 		
@@ -390,13 +390,13 @@ public class AllRulesTests {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property hasFontSizeProperty = model.getProperty(Preference.FONT_SIZE_PROP);
+		Property hasFontSizeProperty = model.getProperty(Preference.HAS_FONT_SIZE_PROP);
 		userPreferenceInstance.addProperty(hasFontSizeProperty, model.createTypedLiteral(3));
 		
-		Property cursorSizeProperty = model.getProperty(Preference.CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preference.HAS_CURSOR_SIZE_PROP);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
@@ -428,10 +428,10 @@ public class AllRulesTests {
 		OntClass andClass = model.getOntClass(Condition.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(Condition.LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(Condition.HAS_LEFT_OPERAND_PROP);
 		andInstance.addProperty(hasLeftOperandProperty, gtInstance);
 		
-		Property hasRightOperandProperty = model.getProperty(Condition.RIGHT_OPERAND_PROP);
+		Property hasRightOperandProperty = model.getProperty(Condition.HAS_RIGHT_OPERAND_PROP);
 		andInstance.addProperty(hasRightOperandProperty, ltInstance);
 		
 		
@@ -485,13 +485,13 @@ public class AllRulesTests {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property hasFontSizeProperty = model.getProperty(Preference.FONT_SIZE_PROP);
+		Property hasFontSizeProperty = model.getProperty(Preference.HAS_FONT_SIZE_PROP);
 		userPreferenceInstance.addProperty(hasFontSizeProperty, model.createTypedLiteral(3));
 		
-		Property cursorSizeProperty = model.getProperty(Preference.CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preference.HAS_CURSOR_SIZE_PROP);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);

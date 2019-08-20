@@ -42,17 +42,16 @@ public class UserContextTest {
 	
 	
 	public static final String rules = "[user_rule_1:" + 
-			"(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)" + 
+			"(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+UserProfile.ONTOLOGY_CLASS_URI+")" + 
 			",(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" + 
-		    ",(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+UserProfile.ONTOLOGY_CLASS_URI+")" + 
 		    ",(?user "+UserProfile.HAS_PREFERENCE_PROP+" ?defPref)" +
-		    ",(?defPref "+Preference.AUDIO_VOLUME_PROP+" ?audioVolume)" +
-		    ",(?defPref "+Preference.CURSOR_SIZE_PROP+" ?cursorSize)" +
+		    ",(?defPref "+Preference.HAS_AUDIO_VOLUME_PROP+" ?audioVolume)" +
+		    ",(?defPref "+Preference.HAS_CURSOR_SIZE_PROP+" ?cursorSize)" +
 			",equals(?audioVolume, '6'^^http://www.w3.org/2001/XMLSchema#integer, ?res1)" +
 			",equals(?cursorSize, '10'^^http://www.w3.org/2001/XMLSchema#integer, ?res2)" +
 			"->" + 
-			"	(?sugPref "+Preference.BACKGROUND_PROP+" '#ffffff'^^http://www.w3.org/2001/XMLSchema#string)" + 
-			"	(?sugPref "+Preference.FONT_COLOR_PROP+" '#000000'^^http://www.w3.org/2001/XMLSchema#string)" + 
+			"	(?sugPref "+Preference.HAS_BACKGROUND_PROP+" '#ffffff'^^http://www.w3.org/2001/XMLSchema#string)" + 
+			"	(?sugPref "+Preference.HAS_FONT_COLOR_PROP+" '#000000'^^http://www.w3.org/2001/XMLSchema#string)" + 
 			"	print('Suggested preferences')"+
 			"]"
 			;
@@ -97,10 +96,10 @@ public class UserContextTest {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property cursorSizeProperty = model.getProperty(Preference.CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preference.HAS_CURSOR_SIZE_PROP);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		Property hasPreferenceProperty = model.getProperty(UserProfile.HAS_PREFERENCE_PROP);
@@ -110,8 +109,8 @@ public class UserContextTest {
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 			
-		Property hasBackgroundColorProperty = model.getProperty(Preference.BACKGROUND_PROP);
-		Property hasFontColorProperty = model.getProperty(Preference.FONT_COLOR_PROP);
+		Property hasBackgroundColorProperty = model.getProperty(Preference.HAS_BACKGROUND_PROP);
+		Property hasFontColorProperty = model.getProperty(Preference.HAS_FONT_COLOR_PROP);
 
 		StmtIterator list = inf.listStatements(suggestedPreferencesnstance, hasBackgroundColorProperty, (RDFNode)null);
 		Assert.assertEquals(list.next().getObject().asLiteral().getString(), "#ffffff");
@@ -140,10 +139,10 @@ public class UserContextTest {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(5));
 		
-		Property cursorSizeProperty = model.getProperty(Preference.CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preference.HAS_CURSOR_SIZE_PROP);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		Property hasPreferenceProperty = model.getProperty(UserProfile.HAS_PREFERENCE_PROP);
@@ -153,8 +152,8 @@ public class UserContextTest {
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 			
-		Property hasBackgroundColorProperty = model.getProperty(Preference.BACKGROUND_PROP);
-		Property hasFontColorProperty = model.getProperty(Preference.FONT_COLOR_PROP);
+		Property hasBackgroundColorProperty = model.getProperty(Preference.HAS_BACKGROUND_PROP);
+		Property hasFontColorProperty = model.getProperty(Preference.HAS_FONT_COLOR_PROP);
 
 		StmtIterator list = inf.listStatements(suggestedPreferencesnstance, hasBackgroundColorProperty, (RDFNode)null);
 		Assert.assertFalse(list.hasNext());

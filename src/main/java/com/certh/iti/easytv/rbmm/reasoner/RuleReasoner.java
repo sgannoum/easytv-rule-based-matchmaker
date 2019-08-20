@@ -6,6 +6,9 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,6 +23,7 @@ import com.certh.iti.easytv.rbmm.builtin.NOT;
 import com.certh.iti.easytv.rbmm.builtin.NotEquals;
 import com.certh.iti.easytv.rbmm.builtin.OR;
 import com.certh.iti.easytv.rbmm.user.UserProfile;
+import com.certh.iti.easytv.rbmm.user.Content;
 import com.certh.iti.easytv.rbmm.user.UserPreferencesMappings;
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
@@ -88,23 +92,7 @@ public class RuleReasoner {
 		
 	    JSONObject userProfile = new JSONObject(result);
 		
-		//load user file
-		UserProfile user = new UserProfile(userProfile);
-		
-		//load user into ontology
-		user.createOntologyInstance(model);
-		
-		//run rules and get inferred model
-		InfModel infModel = ModelFactory.createInfModel(reasoner, model);
-		
-		//update user preferences
-		JSONObject newUserprofile = updateUserPreferences(userProfile, getUserPreferences(infModel));
-		
-		//update user suggested preferences
-		newUserprofile = updateSuggestedUserPreferences(newUserprofile,  getSuggestedUserPreferences(infModel));
-		
-		//add the inferred preferences to the user model
-		return newUserprofile;
+		return infer(userProfile);
 	}
 	
 	/**
@@ -121,6 +109,12 @@ public class RuleReasoner {
 		
 		//load user into ontology
 		user.createOntologyInstance(model);
+		
+		//If content information if available
+		if(userProfile.has("content")) {
+			Content content = new Content(userProfile.getJSONObject("content"));
+			content.createOntologyInstance(model);
+		}
 		
 		//run rules and get inferred model
 		InfModel infModel = ModelFactory.createInfModel(reasoner, model);
@@ -157,13 +151,35 @@ public class RuleReasoner {
 		return model;
 	}
 	
-	public Reasoner loadRules(String rulesFile) throws IOException {
+	public Reasoner loadRules(String[] rulesFile) throws IOException {
 		// load files with rules
-		File file = new File(getClass().getClassLoader().getResource(rulesFile).getFile());
-		Reasoner reasoner = new GenericRuleReasoner(Rule.rulesFromURL(file
-				.getCanonicalPath()));
+		List<Rule> rules = new ArrayList<Rule>();
+		
+		for(String fname : rulesFile) {
+			File file = new File(getClass()
+								.getClassLoader()
+								.getResource(fname)
+							.getFile());
+			
+			rules.addAll(Rule.rulesFromURL(file.getCanonicalPath()));
+		}
 
+		//Create generic reasoner 
+		Reasoner reasoner = new GenericRuleReasoner(rules);
 		System.out.println("Rules was loaded");
+		return reasoner;
+	}
+	
+	public Reasoner loadRules(String fname) throws IOException {
+		// load file with rules
+		File file = new File(getClass()
+							.getClassLoader()
+							.getResource(fname)
+						.getFile());
+		
+		//Create generic reasoner 
+		Reasoner reasoner = new GenericRuleReasoner(Rule.rulesFromURL(file.getCanonicalPath()));
+		System.out.println("Rules from file: "+fname+" was loaded");
 
 		return reasoner;
 	}

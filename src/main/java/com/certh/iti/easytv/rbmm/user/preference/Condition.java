@@ -97,11 +97,11 @@ public class Condition extends com.certh.iti.easytv.user.preference.Condition im
 							last = operandClass.createIndividual();
 							
 							//set left operand
-							Property leftOperandProperty = model.getProperty(LEFT_OPERAND_PROP);
+							Property leftOperandProperty = model.getProperty(HAS_LEFT_OPERAND_PROP);
 							last.addProperty(leftOperandProperty, operand_1);
 							
 							//set right operand
-							Property rightOperandProperty = model.getProperty(RIGHT_OPERAND_PROP);
+							Property rightOperandProperty = model.getProperty(HAS_RIGHT_OPERAND_PROP);
 							last.addProperty(rightOperandProperty, operand_2);		
 						}
 						
@@ -114,7 +114,7 @@ public class Condition extends com.certh.iti.easytv.user.preference.Condition im
 							last = operandClass.createIndividual();
 							
 							//set left operand
-							Property leftOperandProperty = model.getProperty(LEFT_OPERAND_PROP);
+							Property leftOperandProperty = model.getProperty(HAS_LEFT_OPERAND_PROP);
 							last.addProperty(leftOperandProperty, operand_1);	
 						}
 					}

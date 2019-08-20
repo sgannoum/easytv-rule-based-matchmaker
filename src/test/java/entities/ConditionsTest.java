@@ -218,7 +218,7 @@ public class ConditionsTest {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
 		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
@@ -247,10 +247,10 @@ public class ConditionsTest {
 		OntClass andClass = model.getOntClass(Condition.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 		
-		Property leftOperandProperty = model.getProperty(Condition.LEFT_OPERAND_PROP);
+		Property leftOperandProperty = model.getProperty(Condition.HAS_LEFT_OPERAND_PROP);
 		andInstance.addProperty(leftOperandProperty, ltInstance);
 		
-		Property rightOperandProperty = model.getProperty(Condition.RIGHT_OPERAND_PROP);
+		Property rightOperandProperty = model.getProperty(Condition.HAS_RIGHT_OPERAND_PROP);
 		andInstance.addProperty(rightOperandProperty, gtInstance);		
 		
 		andInstance.addProperty(isTrue, model.createTypedLiteral(true));
@@ -266,7 +266,7 @@ public class ConditionsTest {
 		Property hasNameProperty = model.getProperty(Preference.HAS_NAME_PROP);
 		conditionalPreferenceInstance.addProperty(hasNameProperty, "condition_1") ;
 	
-		Property hasFontSizeProperty = model.getProperty(Preference.FONT_SIZE_PROP);
+		Property hasFontSizeProperty = model.getProperty(Preference.HAS_FONT_SIZE_PROP);
 		conditionalPreferenceInstance.addProperty(hasFontSizeProperty, model.createTypedLiteral(500)) ;
 
 		conditionalPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(600));
@@ -304,7 +304,7 @@ public class ConditionsTest {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
 		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
@@ -333,10 +333,10 @@ public class ConditionsTest {
 		OntClass andClass = model.getOntClass(Condition.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 		
-		Property leftOperandProperty = model.getProperty(Condition.LEFT_OPERAND_PROP);
+		Property leftOperandProperty = model.getProperty(Condition.HAS_LEFT_OPERAND_PROP);
 		andInstance.addProperty(leftOperandProperty, ltInstance);
 		
-		Property rightOperandProperty = model.getProperty(Condition.RIGHT_OPERAND_PROP);
+		Property rightOperandProperty = model.getProperty(Condition.HAS_RIGHT_OPERAND_PROP);
 		andInstance.addProperty(rightOperandProperty, gtInstance);		
 		
 		andInstance.addProperty(isTrue, model.createTypedLiteral(false));
@@ -352,7 +352,7 @@ public class ConditionsTest {
 		Property hasNameProperty = model.getProperty(Preference.HAS_NAME_PROP);
 		conditionalPreferenceInstance.addProperty(hasNameProperty, "condition_1") ;
 	
-		Property hasFontSizeProperty = model.getProperty(Preference.FONT_SIZE_PROP);
+		Property hasFontSizeProperty = model.getProperty(Preference.HAS_FONT_SIZE_PROP);
 		conditionalPreferenceInstance.addProperty(hasFontSizeProperty, model.createTypedLiteral(500)) ;
 
 		conditionalPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(600));

@@ -8,8 +8,8 @@ public interface OntologicalCondition extends Ontological{
 	public static final String CONDITIONS_PROP = NAMESPACE + "hasConditions";
 	
     // Data Properties
-	public static final String LEFT_OPERAND_PROP = NAMESPACE + "hasLeftOperand";
-	public static final String RIGHT_OPERAND_PROP = NAMESPACE + "hasRightOperand";
+	public static final String HAS_LEFT_OPERAND_PROP = NAMESPACE + "hasLeftOperand";
+	public static final String HAS_RIGHT_OPERAND_PROP = NAMESPACE + "hasRightOperand";
 	public static final String HAS_CONDITIONS_PROP = NAMESPACE + "hasConditions";
 
     

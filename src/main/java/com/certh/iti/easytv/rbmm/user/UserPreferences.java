@@ -95,7 +95,7 @@ public class UserPreferences implements OntologicalUserPreferences {
 		Individual preferenceInstance = defaultPreference.createOntologyInstance(model);
 		
 		//Add conditional preferences
-		Property hasConditionalPreferences = model.getProperty(CONDITIONAL_PREFERENCE_PROP);
+		Property hasConditionalPreferences = model.getProperty(HAS_CONDITIONAL_PREFERENCE_PROP);
 		for(Preference conditionalPreference : conditionalPreferences) {
 			Individual conditionalPreferenceInstance = conditionalPreference.createOntologyInstance(model);
 			preferenceInstance.addProperty(hasConditionalPreferences, conditionalPreferenceInstance);	

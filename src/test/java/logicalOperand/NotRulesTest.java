@@ -58,10 +58,10 @@ public class NotRulesTest {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property cursorSizeProperty = model.getProperty(Preference.CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preference.HAS_CURSOR_SIZE_PROP);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
@@ -86,7 +86,7 @@ public class NotRulesTest {
 		OntClass notClass = model.getOntClass(Condition.NAMESPACE + "NOT");
 		Individual notInstance = notClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(Condition.LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(Condition.HAS_LEFT_OPERAND_PROP);
 		notInstance.addProperty(hasLeftOperandProperty, gtInstance);			
 		
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
@@ -115,7 +115,7 @@ public class NotRulesTest {
 		OntClass notClass = model.getOntClass(Condition.NAMESPACE + "NOT");
 		Individual notInstance = notClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(Condition.LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(Condition.HAS_LEFT_OPERAND_PROP);
 		notInstance.addProperty(hasLeftOperandProperty, gtInstance);			
 		
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));

@@ -12,7 +12,6 @@ import org.json.JSONObject;
 public class UserProfile implements OntologicalUserProfile{
     
 	private UserPreferences userPreferences;
-    
 	private UserContext context;
 	private JSONObject jsonObj = null;
 
@@ -34,7 +33,6 @@ public class UserProfile implements OntologicalUserProfile{
 		return userPreferences;
 	}
 
-
 	public void setUserPreferences(UserPreferences user_preferences) {
 		this.userPreferences = user_preferences;
 	}
@@ -49,14 +47,19 @@ public class UserProfile implements OntologicalUserProfile{
 		return jsonObj;
 	}
 	
-	public void setJSONObject(JSONObject json) {		
+	public void setJSONObject(JSONObject json) {	
+		
+		//if(!json.has("user_preferences")) TO-DO send an error messag
 		userPreferences = new UserPreferences(json.getJSONObject("user_preferences"));
+		
+		//if(!json.has("context")) TO-DO send an error message	
 		context = new UserContext(json.getJSONObject("context"));
+		
 		jsonObj = json;
 	}
 	
 	@Override
-	public Individual createOntologyInstance(final OntModel model){
+	public Individual createOntologyInstance(final OntModel model) {
 		
 		//create the new user in the ontology
 		OntClass userClass = model.getOntClass(ONTOLOGY_CLASS_URI);

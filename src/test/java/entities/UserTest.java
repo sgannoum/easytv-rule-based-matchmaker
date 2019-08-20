@@ -356,7 +356,7 @@ public class UserTest {
 		while(userPreferenceList.hasNext()) {
 			System.out.print(userPreferenceList.next().toString());
 		}
-		Property hasFontSizeProperty = model.getProperty(Preference.FONT_SIZE_PROP);
+		Property hasFontSizeProperty = model.getProperty(Preference.HAS_FONT_SIZE_PROP);
 		 userPreferenceList = inf.listStatements(userSuggestedPreferenceInstance, hasFontSizeProperty, (RDFNode)null);
 		Assert.assertEquals(60, userPreferenceList.next().getObject().asLiteral().getInt());
 		Assert.assertFalse(userPreferenceList.hasNext());
@@ -379,17 +379,17 @@ public class UserTest {
 		Resource userPreferenceInstance = userList.next().getObject().asResource();
 		
 		StmtIterator userPreferenceList = inf.listStatements(userPreferenceInstance, null, (RDFNode)null);
-		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasAudioVolumeProperty, (RDFNode)null);
 		Assert.assertEquals(10, userPreferenceList.next().getObject().asLiteral().getInt());
 		Assert.assertFalse(userPreferenceList.hasNext());
 		
-		Property hasFontSizeProperty = model.getProperty(Preference.FONT_SIZE_PROP);
+		Property hasFontSizeProperty = model.getProperty(Preference.HAS_FONT_SIZE_PROP);
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasFontSizeProperty, (RDFNode)null);
 		Assert.assertEquals(3, userPreferenceList.next().getObject().asLiteral().getInt());
 		Assert.assertFalse(userPreferenceList.hasNext());
 		
-		Property hasBackgroundProperty = model.getProperty(Preference.BACKGROUND_PROP);
+		Property hasBackgroundProperty = model.getProperty(Preference.HAS_BACKGROUND_PROP);
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasBackgroundProperty, (RDFNode)null);
 		Assert.assertEquals("#ffffff", userPreferenceList.next().getObject().asLiteral().getString());
 		Assert.assertFalse(userPreferenceList.hasNext());
@@ -412,17 +412,17 @@ public class UserTest {
 		Resource userPreferenceInstance = userList.next().getObject().asResource();
 		
 		StmtIterator userPreferenceList = inf.listStatements(userPreferenceInstance, null, (RDFNode)null);
-		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasAudioVolumeProperty, (RDFNode)null);
 		Assert.assertEquals(10, userPreferenceList.next().getObject().asLiteral().getInt());
 		Assert.assertFalse(userPreferenceList.hasNext());
 		
-		Property hasFontSizeProperty = model.getProperty(Preference.FONT_SIZE_PROP);
+		Property hasFontSizeProperty = model.getProperty(Preference.HAS_FONT_SIZE_PROP);
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasFontSizeProperty, (RDFNode)null);
 		Assert.assertEquals(3, userPreferenceList.next().getObject().asLiteral().getInt());
 		Assert.assertFalse(userPreferenceList.hasNext());
 		
-		Property hasBackgroundProperty = model.getProperty(Preference.BACKGROUND_PROP);
+		Property hasBackgroundProperty = model.getProperty(Preference.HAS_BACKGROUND_PROP);
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasBackgroundProperty, (RDFNode)null);
 		Assert.assertEquals("#ffffff", userPreferenceList.next().getObject().asLiteral().getString());
 		Assert.assertFalse(userPreferenceList.hasNext());
@@ -445,7 +445,7 @@ public class UserTest {
 		Resource userPreferenceInstance = userList.next().getObject().asResource();
 		
 		StmtIterator userPreferenceList = inf.listStatements(userPreferenceInstance, null, (RDFNode)null);
-		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasAudioVolumeProperty, (RDFNode)null);
 		Assert.assertEquals(10, userPreferenceList.next().getObject().asLiteral().getInt());
 		Assert.assertFalse(userPreferenceList.hasNext());
@@ -467,12 +467,12 @@ public class UserTest {
 		Resource userPreferenceInstance = userList.next().getObject().asResource();
 		
 		StmtIterator userPreferenceList = inf.listStatements(userPreferenceInstance, null, (RDFNode)null);
-		Property hasAudioVolumeProperty = model.getProperty(Preference.AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasAudioVolumeProperty, (RDFNode)null);
 		Assert.assertEquals(10, userPreferenceList.next().getObject().asLiteral().getInt());
 		Assert.assertFalse(userPreferenceList.hasNext());
 		
-		Property hasBackgroundProperty = model.getProperty(Preference.BACKGROUND_PROP);
+		Property hasBackgroundProperty = model.getProperty(Preference.HAS_BACKGROUND_PROP);
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasBackgroundProperty, (RDFNode)null);
 		Assert.assertEquals("#222222", userPreferenceList.next().getObject().asLiteral().getString());
 		Assert.assertFalse(userPreferenceList.hasNext());
