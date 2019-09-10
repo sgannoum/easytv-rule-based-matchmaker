@@ -17,17 +17,15 @@ import org.json.JSONObject;
 
 import com.certh.iti.easytv.rbmm.reasoner.RuleReasoner;
 
-
-
-@Path("/RBMM")
+@Path("/")
 public class RBMM_WebService
 {
 	private static final String ONTOLOGY_NAME = "EasyTV.owl";
 	private static final String RULES_FILE = "rules.txt";
 	
-    //http://localhost:8080/EasyTV_RBMM_Restful_WS/RBMM/rules
+    //http://localhost:8080/EasyTV_RBMM_Restful_WS/rules
     @GET
-    @Path("/rules")
+    @Path("rules")
     public Response getEasyTVRules() throws IOException, JSONException
     {
     	char[] content = new char[1024 * 3];
@@ -42,17 +40,17 @@ public class RBMM_WebService
         return Response.status(200).entity(entity).build();
     }
 	
-    //http://localhost:8080/EasyTV_RBMM_Restful_WS/RBMM/match
+    //http://localhost:8080/EasyTV_RBMM_Restful_WS/match
     @GET
-    @Path("/match")
+    @Path("match")
     public Response getRunEasyTVRules() throws IOException, JSONException
     {
         return Response.status(200).build();
     }
 	
-    //http://localhost:8080/EasyTV_RBMM_Restful_WS/RBMM/match
+    //http://localhost:8080/EasyTV_RBMM_Restful_WS/match
     @POST
-    @Path("/match")
+    @Path("match")
     @Consumes("application/json")
     public Response postRunEasyTVRules(Object tmpInput) throws IOException, JSONException
     {
