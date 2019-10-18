@@ -59,10 +59,10 @@ public class OrRulesTest {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.hasVolume);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property cursorSizeProperty = model.getProperty(Preference.HAS_CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preference.hasCursorSize);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);

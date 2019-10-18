@@ -3,14 +3,13 @@ package com.certh.iti.easytv.rbmm.user;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.format.DateTimeParseException;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Property;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class UserContext implements Ontological{
@@ -60,24 +59,42 @@ public class UserContext implements Ontological{
 	
 	public void setJSONObject(JSONObject json) {		
 
+		//check for context time 
 		if(json.has("http://registry.easytv.eu/context/time")) {
 			String timeStr = json.getString("http://registry.easytv.eu/context/time");
 			
-			try {
-				//ISO 8601 
+			//Known format
+			Pattern iso_8601 = Pattern.compile("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z");  
+			Pattern simpleFormat = Pattern.compile("\\d{2}:\\d{2}:\\d{2}");  
+			Pattern miniSimpleFormat = Pattern.compile("\\d{2}:\\d{2}");  
+			
+			if(iso_8601.matcher(timeStr).matches()) {
 				time = Date.from( Instant.parse(timeStr));
-			} catch (DateTimeParseException e) {
-
-				try {
-					time = new SimpleDateFormat("HH:mm:ss").parse(timeStr);
-				} catch (ParseException e1) {}
+			} else {
+				
+				if(miniSimpleFormat.matcher(timeStr).matches())  
+					timeStr +=":00";
+				
+				if(simpleFormat.matcher(timeStr).matches()) {
+					
+					try {
+						time = new SimpleDateFormat("HH:mm:ss").parse(timeStr);
+					} catch (ParseException e) {}
+					
+				} else {
+					throw new IllegalArgumentException("Wrong time format: "+ timeStr);
+				}
 			}
-
 		}
 		
+		
+		//check for context location
 		if(json.has("http://registry.easytv.eu/context/location")) {
 			location = json.getString("http://registry.easytv.eu/context/location");
 		}
+		
+		
+		
 		jsonObj = json;
 	}
 	

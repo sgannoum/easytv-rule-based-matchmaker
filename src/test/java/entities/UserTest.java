@@ -37,6 +37,7 @@ import com.certh.iti.easytv.rbmm.builtin.MergePreferences;
 import com.certh.iti.easytv.rbmm.builtin.NOT;
 import com.certh.iti.easytv.rbmm.builtin.NotEquals;
 import com.certh.iti.easytv.rbmm.builtin.OR;
+import com.certh.iti.easytv.rbmm.user.UserContext;
 import com.certh.iti.easytv.rbmm.user.UserProfile;
 import com.certh.iti.easytv.rbmm.user.preference.Preference;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -59,14 +60,14 @@ public class UserTest {
 	
 	private OntModel model;
 	public static final String 	suggestionRule =  
-	"[font_size_suggestion:\r\n" + 
-			" (?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#User) \r\n" + 
-			" (?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)\r\n" + 
-			" (?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasMagnification ?mg)\r\n" + 
-			" (?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)\r\n" + 
-			" greaterThan(?mg, 30, ?res)	\r\n" + 
-			"->\r\n" + 
-			"	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasFontSize 60)\r\n" + 
+	"[font_size_suggestion:" + 
+			" (?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#User) " + 
+			" (?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)" + 
+			" (?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasAccessibilityMagnificationScale ?mg)" + 
+			" (?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" + 
+			" greaterThan(?mg, 1, ?res)	" + 
+			"->" + 
+			"	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasCSUITestSize 60)" + 
 	 "]";
 	
 	private String rules =  AndRulesTest.rules + OrRulesTest.rules + NotRulesTest.rules +
@@ -75,234 +76,304 @@ public class UserTest {
 			LessThanRulesTest.rules + LessThanEqualRulesTest.rules +
 			ConditionsTest.rules + suggestionRule
 			;
-	public static final JSONObject jsonProfile = new JSONObject("{\r\n" + 
-			" \"context\":{\r\n" + 
-			"    \"http://registry.easytv.eu/context/time\": \"2019-05-30T09:47:47.619Z\" ,\r\n" + 
-			"    \"http://registry.easytv.eu/context/location\": \"fr\"\r\n" + 
-			"	},\r\n"	+
-			"  \"user_preferences\": {\r\n" + 
-			"    \"default\": {\r\n" + 
-			"      \"preferences\": {\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/size\": 3,\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/type\": \"sans-serif\",\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/color\": \"#000000\",\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/magnification\": 50,\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/background\": \"#ffffff\",\r\n" + 
-			"        \"http://registry.easytv.eu/common/content/audio/volume\": 6,\r\n" + 
-			"        \"http://registry.easytv.eu/common/content/audio/language\": \"en\",\r\n" + 
-			"      }\r\n" + 
-			"    }\r\n" + 
-			"  }\r\n" + 
+	
+	
+	public static final JSONObject UserContext1 = new JSONObject("{" + 
+			"    \"http://registry.easytv.eu/context/time\": \"2019-05-30T09:47:47.619Z\" ," + 
+			"    \"http://registry.easytv.eu/context/location\": \"fr\"" + 
+			" }");
+	
+	public static final JSONObject UserContext2 = new JSONObject("{" + 
+			"    \"http://registry.easytv.eu/context/time\": \"09:47:00\" ," + 
+			"    \"http://registry.easytv.eu/context/location\": \"fr\"" +
+			" }");
+	
+	public static final JSONObject UserContext3 = new JSONObject("{" + 
+			"    \"http://registry.easytv.eu/context/time\": \"09:00:00\" ," + 
+			"    \"http://registry.easytv.eu/context/location\": \"fr\"" + 
+			" }");
+	
+	public static final JSONObject UserContext4 = new JSONObject("{" + 
+			"    \"http://registry.easytv.eu/context/time\": \"09:47:00\" ," + 
+			"    \"http://registry.easytv.eu/context/location\": \"fr\"" + 
+			" }");
+	
+	public static final JSONObject userProfile1 = new JSONObject("{" + 
+			"  \"user_preferences\": {" + 
+			"    \"default\": {" + 
+			"      \"preferences\": {" + 
+"                        \"http://registry.easytv.eu/common/volume\": 36," + 
+"                        \"http://registry.easytv.eu/common/contrast\": 100," + 
+"                        \"http://registry.easytv.eu/application/control/voice\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/audio/track\": \"en\"," + 
+"                        \"http://registry.easytv.eu/application/cs/ui/language\": \"en\"," + 
+"                        \"http://registry.easytv.eu/application/cs/audio/volume\": 27," + 
+"                        \"http://registry.easytv.eu/application/cs/ui/text/size\": \"20\"," + 
+"                        \"http://registry.easytv.eu/application/tts/audio/speed\": 3," + 
+"                        \"http://registry.easytv.eu/application/tts/audio/voice\": \"female\"," + 
+"                        \"http://registry.easytv.eu/application/cs/audio/eq/bass\": 10," + 
+"                        \"http://registry.easytv.eu/application/cs/audio/eq/mids\": -8," + 
+"                        \"http://registry.easytv.eu/application/tts/audio/volume\": 21," + 
+"                        \"http://registry.easytv.eu/application/cs/audio/eq/highs\": 5," + 
+"                        \"http://registry.easytv.eu/common/content/audio/language\": \"ca\"," + 
+"                        \"http://registry.easytv.eu/application/tts/audio/language\": \"en\"," + 
+"                        \"http://registry.easytv.eu/application/cs/cc/audio/subtitle\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/ui/vibration/touch\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/cc/subtitles/language\": \"ca\"," + 
+"                        \"http://registry.easytv.eu/application/cs/cc/subtitles/font/size\": 12," + 
+"                        \"http://registry.easytv.eu/application/cs/cc/subtitles/font/color\": \"#ffffff\"," + 
+"                        \"http://registry.easytv.eu/application/cs/accessibility/sign/language\": \"es\"," + 
+"                        \"http://registry.easytv.eu/application/cs/ui/text/magnification/scale\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/accessibility/detection/text\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/ui/audioAssistanceBasedOnTTS\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/accessibility/detection/sound\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/cc/subtitles/background/color\": \"#000000\"," + 
+"                        \"http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size\": 1.5," + 
+"                        \"http://registry.easytv.eu/application/cs/accessibility/audio/description\": true," + 
+"                        \"http://registry.easytv.eu/common/display/screen/enhancement/cursor/color\": \"#ffffff\"," + 
+"                        \"http://registry.easytv.eu/application/control/csGazeAndGestureControlType\": \"gaze_control\"," + 
+"                        \"http://registry.easytv.eu/application/cs/accessibility/detection/character\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/accessibility/magnification/scale\": 2," + 
+"                        \"http://registry.easytv.eu/application/cs/accessibility/enhancement/image/type\": \"face-detection\"," + 
+"                        \"http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiLanguage\": \"ca\"," + 
+"                        \"http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiTextSize\": 1.5"+
+			"      }" + 
+			"    }" + 
+			"  }" + 
 			"}");
 	
-	public static final JSONObject jsonProfile1 = new JSONObject("{\r\n" + 
-			" \"context\":{\r\n" + 
-			"    \"http://registry.easytv.eu/context/time\": \"2019-05-30T09:47:47.619Z\" ,\r\n" + 
-			"    \"http://registry.easytv.eu/context/location\": \"fr\"\r\n" + 
-			"	},\r\n"	+
-			"  \"user_preferences\": {\r\n" + 
-			"    \"default\": {\r\n" + 
-			"      \"preferences\": {\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/size\": 3,\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/type\": \"sans-serif\",\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/color\": \"#000000\",\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/magnification\": 50,\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/background\": \"#ffffff\",\r\n" + 
-			"        \"http://registry.easytv.eu/common/content/audio/volume\": 6,\r\n" + 
-			"        \"http://registry.easytv.eu/common/content/audio/language\": \"en\",\r\n" + 
-			"      }\r\n" + 
-			"    },\r\n" + 
-			"    \"conditional\": [\r\n" + 
-			"      {\r\n" + 
-			"        \"name\": \"condition_1\",\r\n" + 
-			"        \"preferences\": {\r\n" + 
-			"          \"http://registry.easytv.eu/common/content/audio/volume\": 10\r\n" + 
-			"        },\r\n" + 
-			"        \"conditions\": [\r\n" + 
-			"          {\r\n" + 
-			"            \"type\": \"and\",\r\n" + 
-			"            \"operands\": [\r\n" + 
-			"			  {\r\n" + 
-			"				\"type\": \"gt\",\r\n" + 
-			"				\"operands\": [\r\n" + 
-			"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
-			"				  \"2019-04-30T09:47:47.619Z\" \r\n" + 
-			"				]\r\n" + 
-			"			  },\r\n" + 
-			"				{\r\n" + 
-			"					\"type\": \"lt\",\r\n" + 
-			"					\"operands\": [\r\n" + 
-			"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
-			"				  \"2019-10-30T09:47:47.619Z\" \r\n" + 
-			"					]\r\n" + 
-			"				}\r\n" + 
-			"            ]\r\n" + 
-			"          }\r\n" + 
-			"        ]\r\n" + 
-			"      }\r\n" + 
+	public static final JSONObject userProfile2 = new JSONObject("{" + 
+			"  \"user_preferences\": {" + 
+			"    \"default\": {" + 
+			"      \"preferences\": {" + 
+"                        \"http://registry.easytv.eu/common/volume\": 36," + 
+"                        \"http://registry.easytv.eu/common/contrast\": 100," + 
+"                        \"http://registry.easytv.eu/application/control/voice\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/audio/track\": \"en\"," + 
+"                        \"http://registry.easytv.eu/application/cs/ui/language\": \"en\"," + 
+"                        \"http://registry.easytv.eu/application/cs/audio/volume\": 27," + 
+"                        \"http://registry.easytv.eu/application/cs/ui/text/size\": \"20\"," + 
+"                        \"http://registry.easytv.eu/application/tts/audio/speed\": 3," + 
+"                        \"http://registry.easytv.eu/application/tts/audio/voice\": \"female\"," + 
+"                        \"http://registry.easytv.eu/application/cs/audio/eq/bass\": 10," + 
+"                        \"http://registry.easytv.eu/application/cs/audio/eq/mids\": -8," + 
+"                        \"http://registry.easytv.eu/application/tts/audio/volume\": 21," + 
+"                        \"http://registry.easytv.eu/application/cs/audio/eq/highs\": 5," + 
+"                        \"http://registry.easytv.eu/common/content/audio/language\": \"ca\"," + 
+"                        \"http://registry.easytv.eu/application/tts/audio/language\": \"en\"," + 
+"                        \"http://registry.easytv.eu/application/cs/cc/audio/subtitle\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/ui/vibration/touch\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/cc/subtitles/language\": \"ca\"," + 
+"                        \"http://registry.easytv.eu/application/cs/cc/subtitles/font/size\": 12," + 
+"                        \"http://registry.easytv.eu/application/cs/cc/subtitles/font/color\": \"#ffffff\"," + 
+"                        \"http://registry.easytv.eu/application/cs/accessibility/sign/language\": \"es\"," + 
+"                        \"http://registry.easytv.eu/application/cs/ui/text/magnification/scale\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/accessibility/detection/text\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/ui/audioAssistanceBasedOnTTS\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/accessibility/detection/sound\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/cc/subtitles/background/color\": \"#000000\"," + 
+"                        \"http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size\": 1.5," + 
+"                        \"http://registry.easytv.eu/application/cs/accessibility/audio/description\": true," + 
+"                        \"http://registry.easytv.eu/common/display/screen/enhancement/cursor/color\": \"#ffffff\"," + 
+"                        \"http://registry.easytv.eu/application/control/csGazeAndGestureControlType\": \"gaze_control\"," + 
+"                        \"http://registry.easytv.eu/application/cs/accessibility/detection/character\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/accessibility/magnification/scale\": 2," + 
+"                        \"http://registry.easytv.eu/application/cs/accessibility/enhancement/image/type\": \"face-detection\"," + 
+"                        \"http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiLanguage\": \"ca\"," + 
+"                        \"http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiTextSize\": 1.5"+
+			"      }" + 
+			"    }," + 
+			"    \"conditional\": [" + 
+			"      {" + 
+			"        \"name\": \"condition_1\"," + 
+			"        \"preferences\": {" + 
+			"          \"http://registry.easytv.eu/application/cs/audio/volume\": 10" + 
+			"        }," + 
+			"        \"conditions\": [" + 
+			"          {" + 
+			"            \"type\": \"and\"," + 
+			"            \"operands\": [" + 
+			"			  {" + 
+			"				\"type\": \"gt\"," + 
+			"				\"operands\": [" + 
+			"				  \"http://registry.easytv.eu/context/time\"," + 
+			"				  \"09:00:00\" " + 
+			"				]" + 
+			"			  }," + 
+			"				{" + 
+			"					\"type\": \"lt\"," + 
+			"					\"operands\": [" + 
+			"				  \"http://registry.easytv.eu/context/time\"," + 
+			"				  \"12:47:00\" " + 
+			"					]" + 
+			"				}" + 
+			"            ]" + 
+			"          }" + 
+			"        ]" + 
+			"      }" + 
 			"    ]"+
-			"  }\r\n" + 
+			"  }" + 
 			"}");
 	
-	public static final JSONObject jsonProfile11 = new JSONObject("{\r\n" + 
-			" \"context\":{\r\n" + 
-			"    \"http://registry.easytv.eu/context/time\": \"12:00:00\" ,\r\n" + 
-			"    \"http://registry.easytv.eu/context/location\": \"fr\"\r\n" + 
-			"	},\r\n"	+
-			"  \"user_preferences\": {\r\n" + 
-			"    \"default\": {\r\n" + 
-			"      \"preferences\": {\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/size\": 3,\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/type\": \"sans-serif\",\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/color\": \"#000000\",\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/magnification\": 50,\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/background\": \"#ffffff\",\r\n" + 
-			"        \"http://registry.easytv.eu/common/content/audio/volume\": 6,\r\n" + 
-			"        \"http://registry.easytv.eu/common/content/audio/language\": \"en\",\r\n" + 
-			"      }\r\n" + 
-			"    },\r\n" + 
-			"    \"conditional\": [\r\n" + 
-			"      {\r\n" + 
-			"        \"name\": \"condition_1\",\r\n" + 
-			"        \"preferences\": {\r\n" + 
-			"          \"http://registry.easytv.eu/common/content/audio/volume\": 10\r\n" + 
-			"        },\r\n" + 
-			"        \"conditions\": [\r\n" + 
-			"          {\r\n" + 
-			"            \"type\": \"and\",\r\n" + 
-			"            \"operands\": [\r\n" + 
-			"			  {\r\n" + 
-			"				\"type\": \"gt\",\r\n" + 
-			"				\"operands\": [\r\n" + 
-			"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
-			"				  \"08:00:00\" \r\n" + 
-			"				]\r\n" + 
-			"			  },\r\n" + 
-			"				{\r\n" + 
-			"					\"type\": \"lt\",\r\n" + 
-			"					\"operands\": [\r\n" + 
-			"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
-			"				  \"15:00:00\" \r\n" + 
-			"					]\r\n" + 
-			"				}\r\n" + 
-			"            ]\r\n" + 
-			"          }\r\n" + 
-			"        ]\r\n" + 
-			"      }\r\n" + 
+	public static final JSONObject userProfile3 = new JSONObject("{" + 
+			"  \"user_preferences\": {" + 
+			"    \"default\": {" + 
+			"      \"preferences\": {" + 
+"                        \"http://registry.easytv.eu/common/volume\": 36," + 
+"                        \"http://registry.easytv.eu/common/contrast\": 100," + 
+"                        \"http://registry.easytv.eu/application/control/voice\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/audio/track\": \"en\"," + 
+"                        \"http://registry.easytv.eu/application/cs/ui/language\": \"en\"," + 
+"                        \"http://registry.easytv.eu/application/cs/audio/volume\": 27," + 
+"                        \"http://registry.easytv.eu/application/cs/ui/text/size\": \"20\"," + 
+"                        \"http://registry.easytv.eu/application/tts/audio/speed\": 3," + 
+"                        \"http://registry.easytv.eu/application/tts/audio/voice\": \"female\"," + 
+"                        \"http://registry.easytv.eu/application/cs/audio/eq/bass\": 10," + 
+"                        \"http://registry.easytv.eu/application/cs/audio/eq/mids\": -8," + 
+"                        \"http://registry.easytv.eu/application/tts/audio/volume\": 21," + 
+"                        \"http://registry.easytv.eu/application/cs/audio/eq/highs\": 5," + 
+"                        \"http://registry.easytv.eu/common/content/audio/language\": \"ca\"," + 
+"                        \"http://registry.easytv.eu/application/tts/audio/language\": \"en\"," + 
+"                        \"http://registry.easytv.eu/application/cs/cc/audio/subtitle\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/ui/vibration/touch\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/cc/subtitles/language\": \"ca\"," + 
+"                        \"http://registry.easytv.eu/application/cs/cc/subtitles/font/size\": 12," + 
+"                        \"http://registry.easytv.eu/application/cs/cc/subtitles/font/color\": \"#ffffff\"," + 
+"                        \"http://registry.easytv.eu/application/cs/accessibility/sign/language\": \"es\"," + 
+"                        \"http://registry.easytv.eu/application/cs/ui/text/magnification/scale\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/accessibility/detection/text\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/ui/audioAssistanceBasedOnTTS\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/accessibility/detection/sound\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/cc/subtitles/background/color\": \"#000000\"," + 
+"                        \"http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size\": 1.5," + 
+"                        \"http://registry.easytv.eu/application/cs/accessibility/audio/description\": true," + 
+"                        \"http://registry.easytv.eu/common/display/screen/enhancement/cursor/color\": \"#ffffff\"," + 
+"                        \"http://registry.easytv.eu/application/control/csGazeAndGestureControlType\": \"gaze_control\"," + 
+"                        \"http://registry.easytv.eu/application/cs/accessibility/detection/character\": true," + 
+"                        \"http://registry.easytv.eu/application/cs/accessibility/magnification/scale\": 2," + 
+"                        \"http://registry.easytv.eu/application/cs/accessibility/enhancement/image/type\": \"face-detection\"," + 
+"                        \"http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiLanguage\": \"ca\"," + 
+"                        \"http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiTextSize\": 1.5"+
+			"      }" + 
+			"    }," + 
+			"    \"conditional\": [" + 
+			"      {" + 
+			"        \"name\": \"condition_1\"," + 
+			"        \"preferences\": {" + 
+			"          \"http://registry.easytv.eu/common/volume\": 10" + 
+			"        }," + 
+			"        \"conditions\": [" + 
+			"			  {" + 
+			"				\"type\": \"gt\"," + 
+			"				\"operands\": [" + 
+			"				  \"http://registry.easytv.eu/context/time\"," + 
+			"				  \"08:00:00\" " + 
+			"				]" + 
+			"			  }," + 
+			"        ]" + 
+			"      }" + 
 			"    ]"+
-			"  }\r\n" + 
+			"  }" + 
 			"}");
 	
-	public static final JSONObject jsonProfile2 = new JSONObject("{\r\n" + 
-			" \"context\":{\r\n" + 
-			"    \"http://registry.easytv.eu/context/time\": \"2019-05-30T09:47:47.619Z\" ,\r\n" + 
-			"    \"http://registry.easytv.eu/context/location\": \"fr\"\r\n" + 
-			"	},\r\n"	+
-			"  \"user_preferences\": {\r\n" + 
-			"    \"default\": {\r\n" + 
-			"      \"preferences\": {\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/size\": 3,\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/type\": \"sans-serif\",\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/color\": \"#000000\",\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/background\": \"#ffffff\",\r\n" + 
-			"        \"http://registry.easytv.eu/common/content/audio/volume\": 6,\r\n" + 
-			"        \"http://registry.easytv.eu/common/content/audio/language\": \"en\",\r\n" + 
-			"      }\r\n" + 
-			"    },\r\n" + 
-			"    \"conditional\": [\r\n" + 
-			"      {\r\n" + 
-			"        \"name\": \"condition_1\",\r\n" + 
-			"        \"preferences\": {\r\n" + 
-			"          \"http://registry.easytv.eu/common/content/audio/volume\": 10\r\n" + 
-			"        },\r\n" + 
-			"        \"conditions\": [\r\n" + 
-			"			  {\r\n" + 
-			"				\"type\": \"gt\",\r\n" + 
-			"				\"operands\": [\r\n" + 
-			"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
-			"				  \"2019-04-30T09:47:47.619Z\" \r\n" + 
-			"				]\r\n" + 
-			"			  },\r\n" + 
-			"        ]\r\n" + 
-			"      }\r\n" + 
+	public static final JSONObject userProfile4 = new JSONObject("{" + 
+			"  \"user_preferences\": {" + 
+			"    \"default\": {" + 
+			"      \"preferences\": {" + 
+			"                        \"http://registry.easytv.eu/common/volume\": 36," + 
+			"                        \"http://registry.easytv.eu/common/contrast\": 100," + 
+			"                        \"http://registry.easytv.eu/application/control/voice\": true," + 
+			"                        \"http://registry.easytv.eu/application/cs/audio/track\": \"en\"," + 
+			"                        \"http://registry.easytv.eu/application/cs/ui/language\": \"en\"," + 
+			"                        \"http://registry.easytv.eu/application/cs/audio/volume\": 27," + 
+			"                        \"http://registry.easytv.eu/application/cs/ui/text/size\": \"20\"," + 
+			"                        \"http://registry.easytv.eu/application/tts/audio/speed\": 3," + 
+			"                        \"http://registry.easytv.eu/application/tts/audio/voice\": \"female\"," + 
+			"                        \"http://registry.easytv.eu/application/cs/audio/eq/bass\": 10," + 
+			"                        \"http://registry.easytv.eu/application/cs/audio/eq/mids\": -8," + 
+			"                        \"http://registry.easytv.eu/application/tts/audio/volume\": 21," + 
+			"                        \"http://registry.easytv.eu/application/cs/audio/eq/highs\": 5," + 
+			"                        \"http://registry.easytv.eu/common/content/audio/language\": \"ca\"," + 
+			"                        \"http://registry.easytv.eu/application/tts/audio/language\": \"en\"," + 
+			"                        \"http://registry.easytv.eu/application/cs/cc/audio/subtitle\": true," + 
+			"                        \"http://registry.easytv.eu/application/cs/ui/vibration/touch\": true," + 
+			"                        \"http://registry.easytv.eu/application/cs/cc/subtitles/language\": \"ca\"," + 
+			"                        \"http://registry.easytv.eu/application/cs/cc/subtitles/font/size\": 12," + 
+			"                        \"http://registry.easytv.eu/application/cs/cc/subtitles/font/color\": \"#ffffff\"," + 
+			"                        \"http://registry.easytv.eu/application/cs/accessibility/sign/language\": \"es\"," + 
+			"                        \"http://registry.easytv.eu/application/cs/ui/text/magnification/scale\": true," + 
+			"                        \"http://registry.easytv.eu/application/cs/accessibility/detection/text\": true," + 
+			"                        \"http://registry.easytv.eu/application/cs/ui/audioAssistanceBasedOnTTS\": true," + 
+			"                        \"http://registry.easytv.eu/application/cs/accessibility/detection/sound\": true," + 
+			"                        \"http://registry.easytv.eu/application/cs/cc/subtitles/background/color\": \"#000000\"," + 
+			"                        \"http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size\": 1.5," + 
+			"                        \"http://registry.easytv.eu/application/cs/accessibility/audio/description\": true," + 
+			"                        \"http://registry.easytv.eu/common/display/screen/enhancement/cursor/color\": \"#ffffff\"," + 
+			"                        \"http://registry.easytv.eu/application/control/csGazeAndGestureControlType\": \"gaze_control\"," + 
+			"                        \"http://registry.easytv.eu/application/cs/accessibility/detection/character\": true," + 
+			"                        \"http://registry.easytv.eu/application/cs/accessibility/magnification/scale\": 2," + 
+			"                        \"http://registry.easytv.eu/application/cs/accessibility/enhancement/image/type\": \"face-detection\"," + 
+			"                        \"http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiLanguage\": \"ca\"," + 
+			"                        \"http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiTextSize\": 1.5"+
+			"      }" + 
+			"    }," + 
+			"    \"conditional\": [" + 
+			"      {" + 
+			"        \"name\": \"condition_1\"," + 
+			"        \"preferences\": {" + 
+			"          \"http://registry.easytv.eu/common/volume\": 10" + 
+			"        }," + 
+			"        \"conditions\": [" + 
+			"          {" + 
+			"            \"type\": \"and\"," + 
+			"            \"operands\": [" + 
+			"			  {" + 
+			"				\"type\": \"gt\"," + 
+			"				\"operands\": [" + 
+			"				  \"http://registry.easytv.eu/context/time\"," + 
+			"				  \"09:47:47\" " + 
+			"				]" + 
+			"			  }," + 
+			"				{" + 
+			"					\"type\": \"lt\"," + 
+			"					\"operands\": [" + 
+			"				  \"http://registry.easytv.eu/context/time\"," + 
+			"				  \"09:47:47\" " + 
+			"					]" + 
+			"				}" + 
+			"            ]" + 
+			"          }" + 
+			"        ]" + 
+			"      }," + 
+			"      {" + 
+			"        \"name\": \"condition_2\"," + 
+			"        \"preferences\": {" + 
+			"          \"http://registry.easytv.eu/common/display/screen/enhancement/cursor/color\":  \"#222222\"" + 
+			"        }," + 
+			"        \"conditions\": [" + 
+			"          {" + 
+			"            \"type\": \"and\"," + 
+			"            \"operands\": [" + 
+			"			  {" + 
+			"				\"type\": \"eq\"," + 
+			"				\"operands\": [" + 
+			"				  \"http://registry.easytv.eu/context/time\"," + 
+			"				  \"09:47:00\"" + 
+			"				]" + 
+			"			  }," + 
+			"				{" + 
+			"					\"type\": \"eq\"," + 
+			"					\"operands\": [" + 
+			"				  \"http://registry.easytv.eu/context/location\"," + 
+			"				  \"fr\" " +  
+			"					]" + 
+			"				}" + 
+			"            ]" + 
+			"          }" + 
+			"        ]" + 
+			"      }" +
 			"    ]"+
-			"  }\r\n" + 
-			"}");
-	
-	public static final JSONObject jsonProfile3 = new JSONObject("{\r\n" + 
-			" \"context\":{\r\n" + 
-			"    \"http://registry.easytv.eu/context/time\": \"2019-05-30T09:47:47.619Z\" ,\r\n" + 
-			"    \"http://registry.easytv.eu/context/location\": \"fr\"\r\n" + 
-			"	},\r\n"	+
-			"  \"user_preferences\": {\r\n" + 
-			"    \"default\": {\r\n" + 
-			"      \"preferences\": {\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/size\": 3,\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/type\": \"sans-serif\",\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/color\": \"#000000\",\r\n" + 
-			"        \"http://registry.easytv.eu/common/display/screen/enhancement/background\": \"#ffffff\",\r\n" + 
-			"        \"http://registry.easytv.eu/common/content/audio/volume\": 6,\r\n" + 
-			"        \"http://registry.easytv.eu/common/content/audio/language\": \"en\",\r\n" + 
-			" 		 \"https://easytvproject.eu/registry/common/audiolanguage\": \"en\","+
-			"      }\r\n" + 
-			"    },\r\n" + 
-			"    \"conditional\": [\r\n" + 
-			"      {\r\n" + 
-			"        \"name\": \"condition_1\",\r\n" + 
-			"        \"preferences\": {\r\n" + 
-			"          \"http://registry.easytv.eu/common/content/audio/volume\": 10\r\n" + 
-			"        },\r\n" + 
-			"        \"conditions\": [\r\n" + 
-			"          {\r\n" + 
-			"            \"type\": \"and\",\r\n" + 
-			"            \"operands\": [\r\n" + 
-			"			  {\r\n" + 
-			"				\"type\": \"gt\",\r\n" + 
-			"				\"operands\": [\r\n" + 
-			"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
-			"				  \"2019-04-30T09:47:47.619Z\" \r\n" + 
-			"				]\r\n" + 
-			"			  },\r\n" + 
-			"				{\r\n" + 
-			"					\"type\": \"lt\",\r\n" + 
-			"					\"operands\": [\r\n" + 
-			"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
-			"				  \"2019-10-30T09:47:47.619Z\" \r\n" + 
-			"					]\r\n" + 
-			"				}\r\n" + 
-			"            ]\r\n" + 
-			"          }\r\n" + 
-			"        ]\r\n" + 
-			"      },\r\n" + 
-			"      {\r\n" + 
-			"        \"name\": \"condition_2\",\r\n" + 
-			"        \"preferences\": {\r\n" + 
-			"          \"http://registry.easytv.eu/common/display/screen/enhancement/background\":  \"#222222\"\r\n" + 
-			"        },\r\n" + 
-			"        \"conditions\": [\r\n" + 
-			"          {\r\n" + 
-			"            \"type\": \"and\",\r\n" + 
-			"            \"operands\": [\r\n" + 
-			"			  {\r\n" + 
-			"				\"type\": \"eq\",\r\n" + 
-			"				\"operands\": [\r\n" + 
-			"				  \"http://registry.easytv.eu/context/time\",\r\n" + 
-			"				  \"2019-05-30T09:47:47.619Z\"\r\n" + 
-			"				]\r\n" + 
-			"			  },\r\n" + 
-			"				{\r\n" + 
-			"					\"type\": \"eq\",\r\n" + 
-			"					\"operands\": [\r\n" + 
-			"				  \"http://registry.easytv.eu/context/location\",\r\n" + 
-			"				  \"fr\" \r\n" +  
-			"					]\r\n" + 
-			"				}\r\n" + 
-			"            ]\r\n" + 
-			"          }\r\n" + 
-			"        ]\r\n" + 
-			"      }\r\n" +
-			"    ]"+
-			"  }\r\n" + 
+			"  }" + 
 			"}");
 	
 	@BeforeMethod
@@ -331,9 +402,9 @@ public class UserTest {
 	public void TestUserMapper() 
 	  throws JsonParseException, IOException {
 	 
-		UserProfile user = new UserProfile(jsonProfile1);
+		UserProfile user = new UserProfile(userProfile2);
 	 
-		System.out.println(user.getJSONObject().toString(4));
+		//System.out.println(user.getJSONObject().toString(4));
 	    Assert.assertNotNull(user);
 	}
 	
@@ -341,9 +412,16 @@ public class UserTest {
 	public void TestUserInference() 
 	  throws JsonParseException, IOException {
 	 
-		UserProfile user = new UserProfile(jsonProfile);
-		
+		UserProfile user = new UserProfile(userProfile1);
 		Individual userInstance = user.createOntologyInstance(model);
+		
+		//Add context to the model
+		UserContext context = new UserContext(UserContext1);
+		Individual contextIndividual = context.createOntologyInstance(model);
+			
+		Property hasContextAbility = model.getProperty(UserProfile.HAS_CONTEXT_PROP);
+		userInstance.addProperty(hasContextAbility, contextIndividual);	
+		
 				
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
@@ -353,10 +431,7 @@ public class UserTest {
 		Resource userSuggestedPreferenceInstance = userList.next().getObject().asResource();
 		
 		StmtIterator userPreferenceList = inf.listStatements(userSuggestedPreferenceInstance, null, (RDFNode)null);
-		while(userPreferenceList.hasNext()) {
-			System.out.print(userPreferenceList.next().toString());
-		}
-		Property hasFontSizeProperty = model.getProperty(Preference.HAS_FONT_SIZE_PROP);
+		Property hasFontSizeProperty = model.getProperty(Preference.hasCSUITestSize);
 		 userPreferenceList = inf.listStatements(userSuggestedPreferenceInstance, hasFontSizeProperty, (RDFNode)null);
 		Assert.assertEquals(60, userPreferenceList.next().getObject().asLiteral().getInt());
 		Assert.assertFalse(userPreferenceList.hasNext());
@@ -367,9 +442,17 @@ public class UserTest {
 	public void TestUserInference1() 
 	  throws JsonParseException, IOException {
 	 
-		UserProfile user = new UserProfile(jsonProfile1);
-		
+		//Add user profile to the model
+		UserProfile user = new UserProfile(userProfile2);
 		Individual userInstance = user.createOntologyInstance(model);
+		
+		//Add context to the model
+		UserContext context = new UserContext(UserContext2);
+		Individual contextIndividual = context.createOntologyInstance(model);
+			
+		Property hasContextAbility = model.getProperty(UserProfile.HAS_CONTEXT_PROP);
+		userInstance.addProperty(hasContextAbility, contextIndividual);	
+		
 				
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
@@ -379,63 +462,32 @@ public class UserTest {
 		Resource userPreferenceInstance = userList.next().getObject().asResource();
 		
 		StmtIterator userPreferenceList = inf.listStatements(userPreferenceInstance, null, (RDFNode)null);
-		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.hasCSAudioVolume);
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasAudioVolumeProperty, (RDFNode)null);
 		Assert.assertEquals(10, userPreferenceList.next().getObject().asLiteral().getInt());
 		Assert.assertFalse(userPreferenceList.hasNext());
 		
-		Property hasFontSizeProperty = model.getProperty(Preference.HAS_FONT_SIZE_PROP);
+		Property hasFontSizeProperty = model.getProperty(Preference.hasCSUITestSize);
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasFontSizeProperty, (RDFNode)null);
-		Assert.assertEquals(3, userPreferenceList.next().getObject().asLiteral().getInt());
-		Assert.assertFalse(userPreferenceList.hasNext());
-		
-		Property hasBackgroundProperty = model.getProperty(Preference.HAS_BACKGROUND_PROP);
-		userPreferenceList = inf.listStatements(userPreferenceInstance, hasBackgroundProperty, (RDFNode)null);
-		Assert.assertEquals("#ffffff", userPreferenceList.next().getObject().asLiteral().getString());
+		Assert.assertEquals(20, userPreferenceList.next().getObject().asLiteral().getInt());
 		Assert.assertFalse(userPreferenceList.hasNext());
 
 	}
-	
-	@Test
-	public void TestUserInference11() 
-	  throws JsonParseException, IOException {
-	 		
-		UserProfile user = new UserProfile(jsonProfile11);
-		
-		Individual userInstance = user.createOntologyInstance(model);
-				
-		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
-		InfModel inf = ModelFactory.createInfModel(reasoner, model);
-		
-		Property hasPreferenceProperty = model.getProperty(UserProfile.HAS_PREFERENCE_PROP);
-		StmtIterator userList = inf.listStatements(userInstance, hasPreferenceProperty, (RDFNode)null);
-		Resource userPreferenceInstance = userList.next().getObject().asResource();
-		
-		StmtIterator userPreferenceList = inf.listStatements(userPreferenceInstance, null, (RDFNode)null);
-		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
-		userPreferenceList = inf.listStatements(userPreferenceInstance, hasAudioVolumeProperty, (RDFNode)null);
-		Assert.assertEquals(10, userPreferenceList.next().getObject().asLiteral().getInt());
-		Assert.assertFalse(userPreferenceList.hasNext());
-		
-		Property hasFontSizeProperty = model.getProperty(Preference.HAS_FONT_SIZE_PROP);
-		userPreferenceList = inf.listStatements(userPreferenceInstance, hasFontSizeProperty, (RDFNode)null);
-		Assert.assertEquals(3, userPreferenceList.next().getObject().asLiteral().getInt());
-		Assert.assertFalse(userPreferenceList.hasNext());
-		
-		Property hasBackgroundProperty = model.getProperty(Preference.HAS_BACKGROUND_PROP);
-		userPreferenceList = inf.listStatements(userPreferenceInstance, hasBackgroundProperty, (RDFNode)null);
-		Assert.assertEquals("#ffffff", userPreferenceList.next().getObject().asLiteral().getString());
-		Assert.assertFalse(userPreferenceList.hasNext());
 
-	}
 	
 	@Test
 	public void TestUserInference2() 
 	  throws JsonParseException, IOException {
 	 
-		UserProfile user = new UserProfile(jsonProfile2);
-		
+		UserProfile user = new UserProfile(userProfile3);
 		Individual userInstance = user.createOntologyInstance(model);
+		
+		//Add context to the model
+		UserContext context = new UserContext(UserContext3);
+		Individual contextIndividual = context.createOntologyInstance(model);
+			
+		Property hasContextAbility = model.getProperty(UserProfile.HAS_CONTEXT_PROP);
+		userInstance.addProperty(hasContextAbility, contextIndividual);	
 				
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
@@ -445,7 +497,7 @@ public class UserTest {
 		Resource userPreferenceInstance = userList.next().getObject().asResource();
 		
 		StmtIterator userPreferenceList = inf.listStatements(userPreferenceInstance, null, (RDFNode)null);
-		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.hasVolume);
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasAudioVolumeProperty, (RDFNode)null);
 		Assert.assertEquals(10, userPreferenceList.next().getObject().asLiteral().getInt());
 		Assert.assertFalse(userPreferenceList.hasNext());
@@ -456,8 +508,16 @@ public class UserTest {
 	public void TestUserInference3() 
 	  throws JsonParseException, IOException {
 			
-		UserProfile user = new UserProfile(jsonProfile3);
+		UserProfile user = new UserProfile(userProfile4);
 		Individual userInstance = user.createOntologyInstance(model);
+
+		//Add context to the model
+		UserContext context = new UserContext(UserContext4);
+		Individual contextIndividual = context.createOntologyInstance(model);
+			
+		Property hasContextAbility = model.getProperty(UserProfile.HAS_CONTEXT_PROP);
+		userInstance.addProperty(hasContextAbility, contextIndividual);	
+		
 				
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
@@ -467,12 +527,12 @@ public class UserTest {
 		Resource userPreferenceInstance = userList.next().getObject().asResource();
 		
 		StmtIterator userPreferenceList = inf.listStatements(userPreferenceInstance, null, (RDFNode)null);
-		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.hasVolume);
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasAudioVolumeProperty, (RDFNode)null);
-		Assert.assertEquals(10, userPreferenceList.next().getObject().asLiteral().getInt());
+		Assert.assertEquals(36, userPreferenceList.next().getObject().asLiteral().getInt());
 		Assert.assertFalse(userPreferenceList.hasNext());
 		
-		Property hasBackgroundProperty = model.getProperty(Preference.HAS_BACKGROUND_PROP);
+		Property hasBackgroundProperty = model.getProperty(Preference.hasDisplayCursorColor);
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasBackgroundProperty, (RDFNode)null);
 		Assert.assertEquals("#222222", userPreferenceList.next().getObject().asLiteral().getString());
 		Assert.assertFalse(userPreferenceList.hasNext());

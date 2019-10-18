@@ -218,7 +218,7 @@ public class ConditionsTest {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.hasVolume);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
 		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
@@ -266,7 +266,7 @@ public class ConditionsTest {
 		Property hasNameProperty = model.getProperty(Preference.HAS_NAME_PROP);
 		conditionalPreferenceInstance.addProperty(hasNameProperty, "condition_1") ;
 	
-		Property hasFontSizeProperty = model.getProperty(Preference.HAS_FONT_SIZE_PROP);
+		Property hasFontSizeProperty = model.getProperty(Preference.hasCSUITestSize);
 		conditionalPreferenceInstance.addProperty(hasFontSizeProperty, model.createTypedLiteral(500)) ;
 
 		conditionalPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(600));
@@ -304,7 +304,7 @@ public class ConditionsTest {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.hasVolume);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
 		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
@@ -352,7 +352,7 @@ public class ConditionsTest {
 		Property hasNameProperty = model.getProperty(Preference.HAS_NAME_PROP);
 		conditionalPreferenceInstance.addProperty(hasNameProperty, "condition_1") ;
 	
-		Property hasFontSizeProperty = model.getProperty(Preference.HAS_FONT_SIZE_PROP);
+		Property hasFontSizeProperty = model.getProperty(Preference.hasCSUITestSize);
 		conditionalPreferenceInstance.addProperty(hasFontSizeProperty, model.createTypedLiteral(500)) ;
 
 		conditionalPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(600));

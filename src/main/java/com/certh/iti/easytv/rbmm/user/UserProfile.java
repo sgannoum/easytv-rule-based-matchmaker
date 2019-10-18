@@ -12,21 +12,11 @@ import org.json.JSONObject;
 public class UserProfile implements OntologicalUserProfile{
     
 	private UserPreferences userPreferences;
-	private UserContext context;
 	private JSONObject jsonObj = null;
 
 	public UserProfile(JSONObject json) throws IOException {
 		jsonObj = null;
 		setJSONObject(json);
-	}
-	
-	public UserContext getContext() {
-		return context;
-	}
-
-
-	public void setContext(UserContext context) {
-		this.context = context;
 	}
 	
 	public UserPreferences getUser_preferences() {
@@ -41,8 +31,6 @@ public class UserProfile implements OntologicalUserProfile{
 		if(jsonObj == null) {
 			jsonObj = new JSONObject();
 			jsonObj.put("user_preferences", userPreferences.getJSONObject());
-			jsonObj.put("context", context.getJSONObject());
-
 		}
 		return jsonObj;
 	}
@@ -51,9 +39,6 @@ public class UserProfile implements OntologicalUserProfile{
 		
 		//if(!json.has("user_preferences")) TO-DO send an error messag
 		userPreferences = new UserPreferences(json.getJSONObject("user_preferences"));
-		
-		//if(!json.has("context")) TO-DO send an error message	
-		context = new UserContext(json.getJSONObject("context"));
 		
 		jsonObj = json;
 	}
@@ -70,10 +55,6 @@ public class UserProfile implements OntologicalUserProfile{
 	
 	@Override
 	public Individual createOntologyInstance(OntModel model, Individual individual) {
-		
-		//Add Auditory ability
-		Property hasContextAbility = model.getProperty(HAS_CONTEXT_PROP);
-		individual.addProperty(hasContextAbility, context.createOntologyInstance(model));	
 		
 		//Add user preferences
 		Property hasPreferences = model.getProperty(HAS_PREFERENCE_PROP);

@@ -82,7 +82,7 @@ public class LessThanEqualRulesTest {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.hasVolume);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
 		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
@@ -104,7 +104,7 @@ public class LessThanEqualRulesTest {
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(Condition.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/volume")));
 				
 		Property hasValueProperty = model.getProperty(Condition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(7));
@@ -130,7 +130,7 @@ public class LessThanEqualRulesTest {
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(Condition.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/volume")));
 				
 		Property hasValueProperty = model.getProperty(Condition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(6));
@@ -156,7 +156,7 @@ public class LessThanEqualRulesTest {
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(Condition.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/volume")));
 				
 		Property hasValueProperty = model.getProperty(Condition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(3));

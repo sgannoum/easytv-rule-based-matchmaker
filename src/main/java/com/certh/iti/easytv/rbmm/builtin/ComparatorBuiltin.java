@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import org.apache.jena.graph.Node_Literal;
 import org.apache.jena.reasoner.rulesys.builtins.BaseBuiltin;
@@ -44,16 +45,29 @@ abstract public class ComparatorBuiltin extends BaseBuiltin {
 			Date d1 = (Date) obj1;
 			Date d2 = null;
 			
-			try {
-				//ISO8601 
-				d2 = Date.from( Instant.parse((String) v2.getLiteralValue()));
-			} catch (DateTimeParseException e) {
-
-				try {
-					d2 = new SimpleDateFormat("HH:mm:ss").parse((String) v2.getLiteralValue());
-				} catch (ParseException e1) {}
-			}
+			Pattern iso_8601 = Pattern.compile("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z");  
+			Pattern simpleFormat = Pattern.compile("\\d{2}:\\d{2}:\\d{2}");  
+			Pattern miniSimpleFormat = Pattern.compile("\\d{2}:\\d{2}");  
 			
+			String timeStr = (String) v2.getLiteralValue();
+			
+			
+			if(iso_8601.matcher(timeStr).matches()) {
+				d2 = Date.from( Instant.parse(timeStr));
+			} else {
+				if(miniSimpleFormat.matcher(timeStr).matches())  
+					timeStr +=":00";
+				
+				if(simpleFormat.matcher(timeStr).matches()) 
+				{	
+					try {
+						d2 = new SimpleDateFormat("HH:mm:ss").parse(timeStr);
+					} catch (ParseException e) {}
+					
+				} else {
+					throw new IllegalArgumentException("Wrong time format: "+ timeStr);
+				}
+			}
 
 			return d1.compareTo(d2);
 		} 

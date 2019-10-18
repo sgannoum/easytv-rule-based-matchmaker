@@ -12,16 +12,31 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
+
+import org.apache.jena.ontology.Individual;
+import org.apache.jena.rdf.model.Property;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.certh.iti.easytv.rbmm.reasoner.RuleReasoner;
+import com.certh.iti.easytv.rbmm.user.Content;
+import com.certh.iti.easytv.rbmm.user.UserContext;
+import com.certh.iti.easytv.rbmm.user.UserProfile;
 
 @Path("/")
 public class RBMM_WebService
 {
 	private static final String ONTOLOGY_NAME = "EasyTV.owl";
 	private static final String RULES_FILE = "rules.txt";
+	private RuleReasoner ruleReasoner;
+	
+	public RBMM_WebService() {
+		try {
+			ruleReasoner = new RuleReasoner(ONTOLOGY_NAME, RULES_FILE);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
     //http://localhost:8080/EasyTV_RBMM_Restful_WS/rules
     @GET
@@ -55,8 +70,21 @@ public class RBMM_WebService
     public Response postRunEasyTVRules(Object tmpInput) throws IOException, JSONException
     {
     	JSONObject json = new JSONObject((Map)tmpInput);	
-    	RuleReasoner ruleReasoner = new RuleReasoner(ONTOLOGY_NAME, RULES_FILE);
     	
-       return Response.status(200).entity(ruleReasoner.infer(json).toString(4)).build();
+		if(!json.has("user_profile")) {
+			//TO-DO handle the case of non-existing profile 
+		}
+	
+		//context
+		if(!json.has("user_context")) {
+			//TO-DO handle the case of non-existing user_context 
+		}
+		
+		JSONObject userProfile = json.getJSONObject("user_profile");
+		JSONObject userContext = json.getJSONObject("user_context");
+		
+		JSONObject personalizedProfile = ruleReasoner.infer(userProfile, userContext);
+    	
+        return Response.status(200).entity(personalizedProfile.toString(4)).build();
     }
 }

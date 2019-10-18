@@ -90,10 +90,10 @@ public class AllRulesTests {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.hasVolume);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property cursorSizeProperty = model.getProperty(Preference.HAS_CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preference.hasDisplayCursorColor);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
@@ -107,7 +107,7 @@ public class AllRulesTests {
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(Condition.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/volume")));
 				
 		Property hasValueProperty = model.getProperty(Condition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(3));
@@ -116,7 +116,7 @@ public class AllRulesTests {
 		OntClass ltClass = model.getOntClass(Condition.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
-		ltInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
+		ltInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/volume")));
 		ltInstance.addProperty(hasValueProperty, model.createTypedLiteral(7));
 		
 		//and
@@ -149,10 +149,10 @@ public class AllRulesTests {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.hasVolume);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property cursorSizeProperty = model.getProperty(Preference.HAS_CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preference.hasDisplayCursorColor);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
@@ -166,7 +166,7 @@ public class AllRulesTests {
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(Condition.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/volume")));
 				
 		Property hasValueProperty = model.getProperty(Condition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(7));
@@ -175,7 +175,7 @@ public class AllRulesTests {
 		OntClass ltClass = model.getOntClass(Condition.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
-		ltInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
+		ltInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/volume")));
 		ltInstance.addProperty(hasValueProperty, model.createTypedLiteral(7));
 		
 		//and
@@ -207,10 +207,10 @@ public class AllRulesTests {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.hasVolume);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property cursorSizeProperty = model.getProperty(Preference.HAS_CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preference.hasDisplayCursorColor);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
@@ -224,7 +224,7 @@ public class AllRulesTests {
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(Condition.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/volume")));
 				
 		Property hasValueProperty = model.getProperty(Condition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(3));
@@ -233,7 +233,7 @@ public class AllRulesTests {
 		OntClass ltClass = model.getOntClass(Condition.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
-		ltInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
+		ltInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/volume")));
 		ltInstance.addProperty(hasValueProperty, model.createTypedLiteral(5));
 		
 		//and
@@ -265,10 +265,10 @@ public class AllRulesTests {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.hasVolume);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property cursorSizeProperty = model.getProperty(Preference.HAS_CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preference.hasDisplayCursorColor);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
@@ -282,7 +282,7 @@ public class AllRulesTests {
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(Condition.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/volume")));
 				
 		Property hasValueProperty = model.getProperty(Condition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(7));
@@ -291,7 +291,7 @@ public class AllRulesTests {
 		OntClass ltClass = model.getOntClass(Condition.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
-		ltInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
+		ltInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/volume")));
 		ltInstance.addProperty(hasValueProperty, model.createTypedLiteral(5));
 		
 		//and
@@ -324,10 +324,10 @@ public class AllRulesTests {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.hasVolume);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property cursorSizeProperty = model.getProperty(Preference.HAS_CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preference.hasDisplayCursorColor);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
@@ -341,7 +341,7 @@ public class AllRulesTests {
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(Condition.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/volume")));
 				
 		Property hasValueProperty = model.getProperty(Condition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(7));
@@ -350,7 +350,7 @@ public class AllRulesTests {
 		OntClass ltClass = model.getOntClass(Condition.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
-		ltInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
+		ltInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/volume")));
 		ltInstance.addProperty(hasValueProperty, model.createTypedLiteral(5));
 		
 		//and
@@ -390,13 +390,13 @@ public class AllRulesTests {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.hasVolume);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property hasFontSizeProperty = model.getProperty(Preference.HAS_FONT_SIZE_PROP);
+		Property hasFontSizeProperty = model.getProperty(Preference.hasCSUITestSize);
 		userPreferenceInstance.addProperty(hasFontSizeProperty, model.createTypedLiteral(3));
 		
-		Property cursorSizeProperty = model.getProperty(Preference.HAS_CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preference.hasDisplayCursorColor);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
@@ -412,7 +412,7 @@ public class AllRulesTests {
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(Condition.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/volume")));
 				
 		Property hasValueProperty = model.getProperty(Condition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(1));
@@ -421,7 +421,7 @@ public class AllRulesTests {
 		OntClass ltClass = model.getOntClass(Condition.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
-		ltInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/display/screen/enhancement/font/size")));
+		ltInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/application/cs/ui/text/size")));
 		ltInstance.addProperty(hasValueProperty, model.createTypedLiteral(7));
 		
 		//and
@@ -485,13 +485,13 @@ public class AllRulesTests {
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.HAS_AUDIO_VOLUME_PROP);
+		Property hasAudioVolumeProperty = model.getProperty(Preference.hasVolume);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property hasFontSizeProperty = model.getProperty(Preference.HAS_FONT_SIZE_PROP);
+		Property hasFontSizeProperty = model.getProperty(Preference.hasCSUITestSize);
 		userPreferenceInstance.addProperty(hasFontSizeProperty, model.createTypedLiteral(3));
 		
-		Property cursorSizeProperty = model.getProperty(Preference.HAS_CURSOR_SIZE_PROP);
+		Property cursorSizeProperty = model.getProperty(Preference.hasDisplayCursorColor);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
@@ -507,7 +507,7 @@ public class AllRulesTests {
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(Condition.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/volume")));
 				
 		Property hasValueProperty = model.getProperty(Condition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(1));

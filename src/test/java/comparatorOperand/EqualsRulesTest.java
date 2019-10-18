@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.StringReader;
+
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -70,14 +72,12 @@ public class EqualsRulesTest {
 		BuiltinRegistry.theRegistry.register(new Equals());
 		System.out.println("Ontology was loaded");
 		
-		
 		//user context
-		OntClass userContextClass = model.getOntClass(UserContext.ONTOLOGY_CLASS_URI);
+/*		OntClass userContextClass = model.getOntClass(UserContext.ONTOLOGY_CLASS_URI);
 		Individual  userContextInstance = userContextClass.createIndividual();
 		
 		Property hasTimeProperty = model.getProperty(UserContext.HAS_TIME_PROP);
 		userContextInstance.addProperty(hasTimeProperty, model.createTypedLiteral("2019-05-30T09:47:47.619Z"));
-		
 		
 		//user
 		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
@@ -95,21 +95,42 @@ public class EqualsRulesTest {
 		Property hasContextProperty = model.getProperty(UserProfile.HAS_CONTEXT_PROP);
 		userInstance.addProperty(hasContextProperty, userContextInstance);
 		
+		model.write(System.out, "N-TRIPLE");
+*/
+		
+		//These statements replace the above ones
+		StringReader  str = new StringReader(
+				"_:userContextInstance <http://www.owl-ontologies.com/OntologyEasyTV.owl#hasTime> \"2019-05-30T09:47:47.619Z\" .\r\n" + 
+				"_:userContextInstance <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.owl-ontologies.com/OntologyEasyTV.owl#UserContext> .\r\n" + 
+				"_:userPreferenceInstance <http://www.owl-ontologies.com/OntologyEasyTV.owl#hasVolume> \"6\"^^<http://www.w3.org/2001/XMLSchema#int> .\r\n" + 
+				"_:userPreferenceInstance <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences> .\r\n" + 
+				"_:userInstance <http://www.owl-ontologies.com/OntologyEasyTV.owl#hasContext> _:userContextInstance .\r\n" + 
+				"_:userInstance <http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference> _:userPreferenceInstance .\r\n" + 
+				"_:userInstance <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.owl-ontologies.com/OntologyEasyTV.owl#User> .");
+		model.read(str, null,"N-TRIPLE");
+		
 	}
 
 	@Test
 	public void Test_greaterThanIsTrue()  {
 		
 		//gt
-		OntClass gtClass = model.getOntClass(Condition.NAMESPACE + "EQ");
+/*		OntClass gtClass = model.getOntClass(Condition.NAMESPACE + "EQ");
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(Condition.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/volume")));
 				
 		Property hasValueProperty = model.getProperty(Condition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(6));
-		 
+*/
+		
+		StringReader  str = new StringReader(
+				"_:EqInstance <http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType> <http://www.owl-ontologies.com/OntologyEasyTV.owl#hasVolume> .\r\n" + 
+				"_:EqInstance <http://www.owl-ontologies.com/OntologyEasyTV.owl#hasValue> \"6\"^^<http://www.w3.org/2001/XMLSchema#int> .\r\n" + 
+				"_:EqInstance <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.owl-ontologies.com/OntologyEasyTV.owl#EQ> .\r\n");
+		model.read(str, null,"N-TRIPLE");
+
 		
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
@@ -131,7 +152,7 @@ public class EqualsRulesTest {
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(Condition.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/content/audio/volume")));
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty("http://registry.easytv.eu/common/volume")));
 				
 		Property hasValueProperty = model.getProperty(Condition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(7));
