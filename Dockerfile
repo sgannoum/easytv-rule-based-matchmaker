@@ -20,5 +20,6 @@ EXPOSE 8080
 # Run tomcat
 CMD ["./bin/catalina.sh", "run"]
 
-
+#docker build --tag rbmm:v1 .
+#docker image save -o C:\Users\salgan\Desktop\Docker_Images\rbmm_v1.tar rbmm:v1
 #docker run -it --rm -p 8888:8080 

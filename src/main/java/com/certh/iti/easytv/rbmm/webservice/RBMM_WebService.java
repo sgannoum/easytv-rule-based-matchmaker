@@ -22,7 +22,7 @@ import com.certh.iti.easytv.rbmm.reasoner.RuleReasoner;
 import com.certh.iti.easytv.rbmm.user.Content;
 import com.certh.iti.easytv.rbmm.user.UserContext;
 import com.certh.iti.easytv.rbmm.user.UserProfile;
-
+//http://localhost:8080/EasyTV_RBMM_Restful_WS/rules
 @Path("/")
 public class RBMM_WebService
 {
@@ -38,10 +38,9 @@ public class RBMM_WebService
 		}
 	}
 	
-    //http://localhost:8080/EasyTV_RBMM_Restful_WS/rules
     @GET
-    @Path("rules")
-    public Response getEasyTVRules() throws IOException, JSONException
+    @Path("personalize/rules")
+    public Response getRules() throws IOException, JSONException
     {
     	char[] content = new char[1024 * 3];
 		File file = new File(this.getClass().getClassLoader().getResource(RULES_FILE).getFile());
@@ -55,36 +54,121 @@ public class RBMM_WebService
         return Response.status(200).entity(entity).build();
     }
 	
-    //http://localhost:8080/EasyTV_RBMM_Restful_WS/match
     @GET
-    @Path("match")
-    public Response getRunEasyTVRules() throws IOException, JSONException
+    @Path("personalize/profile")
+    public Response getInfor() throws IOException, JSONException
     {
         return Response.status(200).build();
     }
 	
-    //http://localhost:8080/EasyTV_RBMM_Restful_WS/match
     @POST
-    @Path("match")
+    @Path("personalize/profile")
     @Consumes("application/json")
-    public Response postRunEasyTVRules(Object tmpInput) throws IOException, JSONException
+    public Response personalizeProfile(Object tmpInput) throws IOException, JSONException
     {
     	JSONObject json = new JSONObject((Map)tmpInput);	
     	
+		if(!json.has("user_id")) {
+			JSONObject err = new JSONObject("{ code: 401, msg: Missing user_id element. }");
+			return Response.status(201).entity(err).build();
+		}
+    	
 		if(!json.has("user_profile")) {
-			//TO-DO handle the case of non-existing profile 
+			JSONObject err = new JSONObject("{ code: 401, msg: Missing user_profile element. }");
+			return Response.status(201).entity(err).build();
+		}
+		
+		//Unmarshal inputs
+		int user_id = json.getInt("user_id");
+		JSONObject user_profile = json.getJSONObject("user_profile");
+		
+		//infer
+		JSONObject personalized_profile = ruleReasoner.infer(user_profile);
+		
+		//Marshal the results
+		JSONObject response = new JSONObject("{user_id: "+String.valueOf(user_id)+", user_profile: "+personalized_profile+"}");
+    	
+        return Response.status(200).entity(response.toString(4)).build();
+    }
+    
+    @POST
+    @Path("personalize/context")
+    @Consumes("application/json")
+    public Response personalizeContext(Object tmpInput) throws IOException, JSONException
+    {
+    	JSONObject json = new JSONObject((Map)tmpInput);	
+    	
+    	//user_id
+		if(!json.has("user_id")) {
+			JSONObject err = new JSONObject("{ code: 401, msg: Missing user_id element. }");
+			return Response.status(201).entity(err).build();
+		}
+    	
+		//user_profile
+		if(!json.has("user_profile")) {
+			JSONObject err = new JSONObject("{ code: 401, msg: Missing user_profile element. }");
+			return Response.status(201).entity(err).build();
 		}
 	
 		//context
 		if(!json.has("user_context")) {
-			//TO-DO handle the case of non-existing user_context 
+			JSONObject err = new JSONObject("{ code: 401, msg: Missing user_context element. }");
+			return Response.status(201).entity(err).build();
 		}
 		
-		JSONObject userProfile = json.getJSONObject("user_profile");
-		JSONObject userContext = json.getJSONObject("user_context");
+		int user_id = json.getInt("user_id");
+		JSONObject user_profile = json.getJSONObject("user_profile");
+		JSONObject user_context = json.getJSONObject("user_context");
 		
-		JSONObject personalizedProfile = ruleReasoner.infer(userProfile, userContext);
+		JSONObject personalized_profile = ruleReasoner.infer(user_profile, user_context);
+		
+		//Marshal the results
+		JSONObject response = new JSONObject("{user_id: "+String.valueOf(user_id)+", user_profile: "+personalized_profile+"}");
     	
-        return Response.status(200).entity(personalizedProfile.toString(4)).build();
+        return Response.status(200).entity(response.toString(4)).build();
+    }
+    
+    @POST
+    @Path("personalize/content")
+    @Consumes("application/json")
+    public Response personalizeContent(Object tmpInput) throws IOException, JSONException
+    {
+    	JSONObject json = new JSONObject((Map)tmpInput);	
+    	
+    	//user_id
+		if(!json.has("user_id")) {
+			JSONObject err = new JSONObject("{ code: 401, msg: Missing user_id element. }");
+			return Response.status(201).entity(err).build();
+		}
+    	
+		//user_profile
+		if(!json.has("user_profile")) {
+			JSONObject err = new JSONObject("{ code: 401, msg: Missing user_profile element. }");
+			return Response.status(201).entity(err).build();
+		}
+	
+		//context
+		if(!json.has("user_context")) {
+			JSONObject err = new JSONObject("{ code: 401, msg: Missing user_context element. }");
+			return Response.status(201).entity(err).build();
+		}
+		
+		//content
+		if(!json.has("user_content")) {
+			JSONObject err = new JSONObject("{ code: 401, msg: Missing user_content element. }");
+			return Response.status(201).entity(err).build();
+		}
+		
+		int user_id = json.getInt("user_id");
+		JSONObject user_profile = json.getJSONObject("user_profile");
+		JSONObject user_context = json.getJSONObject("user_context");
+		JSONObject user_content = json.getJSONObject("user_content");
+		
+		JSONObject personalized_profile = ruleReasoner.infer(user_profile, user_context, user_content);
+    	
+		//Marshal the results
+		JSONObject response = new JSONObject("{user_id: "+String.valueOf(user_id)+", user_profile: "+personalized_profile+"}");
+    	
+        return Response.status(200).entity(response.toString(4)).build();
     }
 }

@@ -50,6 +50,7 @@ import org.apache.jena.reasoner.rulesys.Rule;
 
 public class RuleReasoner {
 
+	protected RuleReasoner instance;
 	private OntModel model;
 	private Reasoner reasoner;
 	
@@ -65,6 +66,13 @@ public class RuleReasoner {
 		
 		//load rules
 		reasoner = loadRules(rulesFile);
+	}
+	
+	/**
+	 * Update rules
+	 */
+	public void updateRules() {
+		//TO-DO 
 	}
 	
 	/**
@@ -144,6 +152,27 @@ public class RuleReasoner {
 	}
 	
 	/**
+	 * Personalize user profile 
+	 * 
+	 * @param json
+	 * @return
+	 * @throws IOException
+	 * @throws JSONException 
+	 */
+	public JSONObject infer(JSONObject userProfile) throws IOException, JSONException {
+		
+		//load user file
+		UserProfile user = new UserProfile(userProfile);
+		
+		//load user into ontology
+		Individual UserProfileIndividual = user.createOntologyInstance(model);
+		
+		//add the inferred preferences to the user model
+		return extractPreferences(userProfile);
+	}
+	
+	/**
+	 * Personalize user profile based on the user context
 	 * 
 	 * @param json
 	 * @return
@@ -170,6 +199,7 @@ public class RuleReasoner {
 	}
 	
 	/**
+	 * Personalize user profile based on the user context and content
 	 * 
 	 * @param json
 	 * @return
@@ -290,7 +320,6 @@ public class RuleReasoner {
 		return json;
 	}
 	
-	
 	/**
 	 * Makes a query to the data model and retrieve the given property from the
 	 * UserPreferences class
@@ -331,7 +360,6 @@ public class RuleReasoner {
 		}
 		
 		return json;
-		
 	}
 	
 	/**
