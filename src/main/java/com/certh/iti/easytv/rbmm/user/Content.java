@@ -37,19 +37,19 @@ public class Content implements Ontological {
 			jsonObj = new JSONObject();
 			
 			if(faceDetection) {
-				jsonObj.put("http://registry.easytv.eu/application/cs/accessibility/faceDetection", faceDetection);
+				jsonObj.put("http://registry.easytv.eu/application/cs/accessibility/detection/face", faceDetection);
 			}
 			
 			if(textDetection) {
-				jsonObj.put("http://registry.easytv.eu/application/cs/accessibility/textDetection", textDetection);
+				jsonObj.put("http://registry.easytv.eu/application/cs/accessibility/detection/text", textDetection);
 			}
 			
 			if(soundDetection) {
-				jsonObj.put("http://registry.easytv.eu/application/cs/accessibility/soundDetection", soundDetection);
+				jsonObj.put("http://registry.easytv.eu/application/cs/accessibility/detection/sound", soundDetection);
 			}
 			
 			if(characterRecognition) {
-				jsonObj.put("http://registry.easytv.eu/application/cs/accessibility/characterRecognition", characterRecognition);
+				jsonObj.put("http://registry.easytv.eu/application/cs/accessibility/detection/character", characterRecognition);
 			}
 			
 			if(subtitileLanguage != null) {
@@ -75,20 +75,20 @@ public class Content implements Ontological {
 	
 	public void setJSONObject(JSONObject json) {
 
-		if(json.has("http://registry.easytv.eu/application/cs/accessibility/faceDetection")) {
-			faceDetection = json.getBoolean("http://registry.easytv.eu/application/cs/accessibility/faceDetection");
+		if(json.has("http://registry.easytv.eu/application/cs/accessibility/detection/face")) {
+			faceDetection = json.getBoolean("http://registry.easytv.eu/application/cs/accessibility/detection/face");
 		}
 		
-		if(json.has("http://registry.easytv.eu/application/cs/accessibility/textDetection")) {
-			textDetection = json.getBoolean("http://registry.easytv.eu/application/cs/accessibility/textDetection");
+		if(json.has("http://registry.easytv.eu/application/cs/accessibility/detection/text")) {
+			textDetection = json.getBoolean("http://registry.easytv.eu/application/cs/accessibility/detection/text");
 		}
 		
-		if(json.has("http://registry.easytv.eu/application/cs/accessibility/soundDetection")) {
-			soundDetection = json.getBoolean("http://registry.easytv.eu/application/cs/accessibility/soundDetection");
+		if(json.has("http://registry.easytv.eu/application/cs/accessibility/detection/sound")) {
+			soundDetection = json.getBoolean("http://registry.easytv.eu/application/cs/accessibility/detection/sound");
 		}
 		
-		if(json.has("http://registry.easytv.eu/application/cs/accessibility/characterRecognition")) {
-			characterRecognition = json.getBoolean("http://registry.easytv.eu/application/cs/accessibility/characterRecognition");
+		if(json.has("http://registry.easytv.eu/application/cs/accessibility/detection/character")) {
+			characterRecognition = json.getBoolean("http://registry.easytv.eu/application/cs/accessibility/detection/character");
 		}
 		
 		if(json.has("http://registry.easytv.eu/application/cs/cc/subtitles/language")) {

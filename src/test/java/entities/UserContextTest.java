@@ -24,10 +24,11 @@ import org.testng.annotations.Test;
 
 import com.certh.iti.easytv.rbmm.builtin.Equals;
 import com.certh.iti.easytv.rbmm.user.SuggestedPreferences;
-import com.certh.iti.easytv.rbmm.user.UserProfile;
-import com.certh.iti.easytv.rbmm.user.UserContext;
-import com.certh.iti.easytv.rbmm.user.UserPreferences;
-import com.certh.iti.easytv.rbmm.user.preference.Preference;
+import com.certh.iti.easytv.rbmm.user.OntUserProfile;
+import com.certh.iti.easytv.rbmm.user.OntUserContext;
+import com.certh.iti.easytv.rbmm.user.OntUserPreferences;
+import com.certh.iti.easytv.rbmm.user.preference.OntPreference;
+import com.certh.iti.easytv.user.exceptions.UserContextParsingException;
 import com.fasterxml.jackson.core.JsonParseException;
 import config.RBMMTestConfig;
 import junit.framework.Assert;
@@ -38,21 +39,21 @@ public class UserContextTest {
 	
 	JSONObject jsonProfile1 = new JSONObject("{\r\n" + 
 			"    \"http://registry.easytv.eu/context/time\": \"2019-05-30T09:47:47.619Z\" ,\r\n" + 
-			"    \"http://registry.easytv.eu/context/location\": \"fr\"\r\n" + 
+			"    \"http://registry.easytv.eu/context/location\": \"ca\"\r\n" + 
 			"}");
 	
 	
 	public static final String rules = "[user_rule_1:" + 
-			"(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+UserProfile.ONTOLOGY_CLASS_URI+")" + 
+			"(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+OntUserProfile.ONTOLOGY_CLASS_URI+")" + 
 			",(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" + 
-		    ",(?user "+UserProfile.HAS_PREFERENCE_PROP+" ?defPref)" +
-		    ",(?defPref "+Preference.hasVolume+" ?audioVolume)" +
-		    ",(?defPref "+Preference.hasCursorSize+" ?cursorSize)" +
+		    ",(?user "+OntUserProfile.HAS_PREFERENCE_PROP+" ?defPref)" +
+		    ",(?defPref "+OntPreference.hasVolume+" ?audioVolume)" +
+		    ",(?defPref "+OntPreference.hasCursorSize+" ?cursorSize)" +
 			",equals(?audioVolume, '6'^^http://www.w3.org/2001/XMLSchema#integer, ?res1)" +
 			",equals(?cursorSize, '10'^^http://www.w3.org/2001/XMLSchema#integer, ?res2)" +
 			"->" + 
-			"	(?sugPref "+Preference.hasCSSubtitlesBackgroundColor+" '#ffffff'^^http://www.w3.org/2001/XMLSchema#string)" + 
-			"	(?sugPref "+Preference.hasCSSubtitlesFontColor+" '#000000'^^http://www.w3.org/2001/XMLSchema#string)" + 
+			"	(?sugPref "+OntPreference.hasCSSubtitlesBackgroundColor+" '#ffffff'^^http://www.w3.org/2001/XMLSchema#string)" + 
+			"	(?sugPref "+OntPreference.hasCSSubtitlesFontColor+" '#000000'^^http://www.w3.org/2001/XMLSchema#string)" + 
 			"	print('Suggested preferences')"+
 			"]"
 			;
@@ -71,9 +72,9 @@ public class UserContextTest {
 	
 	@Test
 	public void TestAuditoyMapper() 
-	  throws JsonParseException, IOException {
+	  throws JsonParseException, IOException, UserContextParsingException {
 		
-		UserContext userContext = new UserContext(jsonProfile1);
+		OntUserContext userContext = new OntUserContext(jsonProfile1);
 	 
 		System.out.println(userContext.toString());
 	    Assert.assertNotNull(userContext);
@@ -84,34 +85,34 @@ public class UserContextTest {
 	public void Test_user_rule_1()  {
 		
 		//user	
-		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
+		OntClass userClass = model.getOntClass(OntUserProfile.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
 		OntClass suggestedPreferencesClass = model.getOntClass(SuggestedPreferences.ONTOLOGY_CLASS_URI);
 		Individual  suggestedPreferencesnstance = suggestedPreferencesClass.createIndividual();
 		
-		Property hasSuggestedPreferencesnstanceProperty = model.getProperty(UserProfile.HAS_SUGGESTED_PREFERENCES_PROP);
+		Property hasSuggestedPreferencesnstanceProperty = model.getProperty(OntUserProfile.HAS_SUGGESTED_PREFERENCES_PROP);
 		userInstance.addProperty(hasSuggestedPreferencesnstanceProperty, suggestedPreferencesnstance);
 		
 		
-		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
+		OntClass userPreferenceClass = model.getOntClass(OntUserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.hasVolume);
+		Property hasAudioVolumeProperty = model.getProperty(OntPreference.hasVolume);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property cursorSizeProperty = model.getProperty(Preference.hasCursorSize);
+		Property cursorSizeProperty = model.getProperty(OntPreference.hasCursorSize);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
-		Property hasPreferenceProperty = model.getProperty(UserProfile.HAS_PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(OntUserProfile.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 					
 		
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 			
-		Property hasBackgroundColorProperty = model.getProperty(Preference.hasCSSubtitlesBackgroundColor);
-		Property hasFontColorProperty = model.getProperty(Preference.hasCSSubtitlesFontColor);
+		Property hasBackgroundColorProperty = model.getProperty(OntPreference.hasCSSubtitlesBackgroundColor);
+		Property hasFontColorProperty = model.getProperty(OntPreference.hasCSSubtitlesFontColor);
 
 		StmtIterator list = inf.listStatements(suggestedPreferencesnstance, hasBackgroundColorProperty, (RDFNode)null);
 		Assert.assertEquals(list.next().getObject().asLiteral().getString(), "#ffffff");
@@ -127,34 +128,34 @@ public class UserContextTest {
 	public void Test_user_rule_2()  {
 		
 		//user	
-		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
+		OntClass userClass = model.getOntClass(OntUserProfile.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
 		OntClass suggestedPreferencesClass = model.getOntClass(SuggestedPreferences.ONTOLOGY_CLASS_URI);
 		Individual  suggestedPreferencesnstance = suggestedPreferencesClass.createIndividual();
 		
-		Property hasSuggestedPreferencesnstanceProperty = model.getProperty(UserProfile.HAS_SUGGESTED_PREFERENCES_PROP);
+		Property hasSuggestedPreferencesnstanceProperty = model.getProperty(OntUserProfile.HAS_SUGGESTED_PREFERENCES_PROP);
 		userInstance.addProperty(hasSuggestedPreferencesnstanceProperty, suggestedPreferencesnstance);
 		
 		
-		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
+		OntClass userPreferenceClass = model.getOntClass(OntUserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.hasVolume);
+		Property hasAudioVolumeProperty = model.getProperty(OntPreference.hasVolume);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(5));
 		
-		Property cursorSizeProperty = model.getProperty(Preference.hasCursorSize);
+		Property cursorSizeProperty = model.getProperty(OntPreference.hasCursorSize);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
-		Property hasPreferenceProperty = model.getProperty(UserProfile.HAS_PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(OntUserProfile.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 					
 		
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 			
-		Property hasBackgroundColorProperty = model.getProperty(Preference.hasCSSubtitlesBackgroundColor);
-		Property hasFontColorProperty = model.getProperty(Preference.hasCSSubtitlesFontColor);
+		Property hasBackgroundColorProperty = model.getProperty(OntPreference.hasCSSubtitlesBackgroundColor);
+		Property hasFontColorProperty = model.getProperty(OntPreference.hasCSSubtitlesFontColor);
 
 		StmtIterator list = inf.listStatements(suggestedPreferencesnstance, hasBackgroundColorProperty, (RDFNode)null);
 		Assert.assertFalse(list.hasNext());

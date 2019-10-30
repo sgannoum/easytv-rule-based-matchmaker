@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,10 +21,10 @@ import com.certh.iti.easytv.rbmm.builtin.MergePreferences;
 import com.certh.iti.easytv.rbmm.builtin.NOT;
 import com.certh.iti.easytv.rbmm.builtin.NotEquals;
 import com.certh.iti.easytv.rbmm.builtin.OR;
-import com.certh.iti.easytv.rbmm.user.UserProfile;
-import com.certh.iti.easytv.rbmm.user.Content;
-import com.certh.iti.easytv.rbmm.user.UserContext;
-import com.certh.iti.easytv.rbmm.user.UserPreferencesMappings;
+import com.certh.iti.easytv.rbmm.user.OntProfile;
+import com.certh.iti.easytv.rbmm.user.preference.OntPreference;
+import com.certh.iti.easytv.rbmm.webservice.RBMM_WebService;
+
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.ontology.Individual;
@@ -49,6 +50,8 @@ import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
 import org.apache.jena.reasoner.rulesys.Rule;
 
 public class RuleReasoner {
+
+	private final static Logger logger = java.util.logging.Logger.getLogger(RBMM_WebService.class.getName());
 
 	protected RuleReasoner instance;
 	private OntModel model;
@@ -84,10 +87,17 @@ public class RuleReasoner {
 	 */
 	public OntModel loadModel(String ontologyFile) throws IOException {
 		
-		File file = new File(getClass().getClassLoader().getResource(ontologyFile).getFile());
+		File file = new File(getClass()
+							.getClassLoader().
+							getResource(ontologyFile)
+							.getFile());
+		
+		//Read model
 		OntModel model = ModelFactory.createOntologyModel();
 		InputStream in = new FileInputStream(file);
 		model = (OntModel) model.read(in, null, "");
+		
+		//Register builds in functions
 		BuiltinRegistry.theRegistry.register(new NotEquals());
 		BuiltinRegistry.theRegistry.register(new Equals());
 		BuiltinRegistry.theRegistry.register(new GreaterThan());
@@ -99,7 +109,8 @@ public class RuleReasoner {
 		BuiltinRegistry.theRegistry.register(new NOT());
 		BuiltinRegistry.theRegistry.register(new MergePreferences());
 		
-		System.out.println("Ontology was loaded");
+	
+		logger.info("Ontology was loaded");
 		
 		return model;
 	}
@@ -114,19 +125,21 @@ public class RuleReasoner {
 	public Reasoner loadRules(String[] rulesFile) throws IOException {
 		// load files with rules
 		List<Rule> rules = new ArrayList<Rule>();
+		ClassLoader classLoader = getClass().getClassLoader();
 		
 		for(String fname : rulesFile) {
-			File file = new File(getClass()
-								.getClassLoader()
+			File file = new File(classLoader
 								.getResource(fname)
-							.getFile());
+								.getFile());
 			
 			rules.addAll(Rule.rulesFromURL(file.getCanonicalPath()));
 		}
 
 		//Create generic reasoner 
 		Reasoner reasoner = new GenericRuleReasoner(rules);
-		System.out.println("Rules was loaded");
+		
+    	logger.info("Rules were loaded");
+
 		return reasoner;
 	}
 	
@@ -146,7 +159,8 @@ public class RuleReasoner {
 		
 		//Create generic reasoner 
 		Reasoner reasoner = new GenericRuleReasoner(Rule.rulesFromURL(file.getCanonicalPath()));
-		System.out.println("Rules from file: "+fname+" was loaded");
+		
+    	logger.info("Rules from file: "+fname+" were loaded");
 
 		return reasoner;
 	}
@@ -159,77 +173,15 @@ public class RuleReasoner {
 	 * @throws IOException
 	 * @throws JSONException 
 	 */
-	public JSONObject infer(JSONObject userProfile) throws IOException, JSONException {
-		
-		//load user file
-		UserProfile user = new UserProfile(userProfile);
+	public JSONObject infer(OntProfile profile) throws IOException, JSONException {
 		
 		//load user into ontology
-		Individual UserProfileIndividual = user.createOntologyInstance(model);
+		Individual UserProfileIndividual = profile.createOntologyInstance(model);
 		
 		//add the inferred preferences to the user model
-		return extractPreferences(userProfile);
+		return extractPreferences(profile.getUserProfile().getJSONObject());
 	}
-	
-	/**
-	 * Personalize user profile based on the user context
-	 * 
-	 * @param json
-	 * @return
-	 * @throws IOException
-	 * @throws JSONException 
-	 */
-	public JSONObject infer(JSONObject userProfile, JSONObject userContext) throws IOException, JSONException {
-		
-		//load user file
-		UserProfile user = new UserProfile(userProfile);
-		
-		//load user into ontology
-		Individual UserProfileIndividual = user.createOntologyInstance(model);
-		
-		//Add context to the model
-		UserContext context = new UserContext(userContext);
-		Individual contextIndividual = context.createOntologyInstance(model);
-			
-		Property hasContextAbility = model.getProperty(UserProfile.HAS_CONTEXT_PROP);
-		UserProfileIndividual.addProperty(hasContextAbility, contextIndividual);	
-		
-		//add the inferred preferences to the user model
-		return extractPreferences(userProfile);
-	}
-	
-	/**
-	 * Personalize user profile based on the user context and content
-	 * 
-	 * @param json
-	 * @return
-	 * @throws IOException
-	 * @throws JSONException 
-	 */
-	public JSONObject infer(JSONObject userProfile, JSONObject userContext, JSONObject userContent) throws IOException, JSONException {
-		
-		//load user file
-		UserProfile user = new UserProfile(userProfile);
-		
-		//load user into ontology
-		Individual UserProfileIndividual = user.createOntologyInstance(model);
-		
-		//context
-		UserContext context = new UserContext(userContext);
-		Individual contextIndividual = context.createOntologyInstance(model);
-			
-		//Add Auditory ability
-		Property hasContextAbility = model.getProperty(UserProfile.HAS_CONTEXT_PROP);
-		UserProfileIndividual.addProperty(hasContextAbility, contextIndividual);	
-		
-		//Add content to the model
-		Content content = new Content(userContent);
-		content.createOntologyInstance(model);
-		
-		//add the inferred preferences to the user model
-		return extractPreferences(userProfile);
-	}
-	
+
 	/**
 	 * Execute inference and extract user preferences and suggested preferences.
 	 * 
@@ -375,7 +327,7 @@ public class RuleReasoner {
 		if (result == null)
 			return json;
 		
-		String pref = UserPreferencesMappings.dataPropertyToUri.get(propertyName);
+		String pref = OntPreference.getURI(propertyName);
 		
 		RDFDatatype datatype = result.getDatatype();
 		if (datatype != null) {			

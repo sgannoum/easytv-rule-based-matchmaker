@@ -8,30 +8,35 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import javax.ws.rs.core.Response;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.certh.iti.easytv.rbmm.reasoner.RuleReasoner;
+import com.certh.iti.easytv.rbmm.user.Content;
+import com.certh.iti.easytv.rbmm.user.OntProfile;
+import com.certh.iti.easytv.rbmm.user.OntUserContext;
+import com.certh.iti.easytv.rbmm.user.OntUserProfile;
+import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 
 
 public class main {
 
 	// Arguments
 	private static final String _ArgUserProfile = "-u";
-	private static final String _ArgUserContext = "-c";
 	
 	// Profiles
 	private static File _UserProfileFile = null;
-	private static File _UserContextFile = null;	
 	
 	//Files 
 	private static final String ONTOLOGY_NAME = "EasyTV.owl";
 	private static final String RULES_FILE = "rules.txt";
 	
 	
-	public static void main(String[] args) throws IOException, JSONException {
+	public static void main(String[] args) throws IOException, JSONException, UserProfileParsingException {
 		
-		JSONObject userProfile, userContext;
+		JSONObject json = null, userProfile = null, userContext = null, userContent = null;
 		
 		//Parse arguments
 		if(args.length != 0) {
@@ -41,36 +46,39 @@ public class main {
 				String value = args[i+1];
 				if(arg.equals(_ArgUserProfile)) 
 					_UserProfileFile = new File(value.trim());
-				else if (arg.equals(_ArgUserContext)) 
-					_UserContextFile = new File(value.trim());
 			}
 			
 			if(_UserProfileFile == null || !_UserProfileFile.exists() ) {
-				System.err.println("CRITICAL: Profiles directory ('" + _ArgUserProfile + "') does not exist.");
+				System.err.println("CRITICAL: User profiles ('" + _ArgUserProfile + "') does not exist.");
 				System.exit(-1);
 			}
 			
-			if(_UserContextFile == null || !_UserContextFile.exists() ) {
-				System.err.println("CRITICAL: Profiles directory ('" + _ArgUserContext + "') does not exist.");
-				System.exit(-1);
-			}
-			
-			userProfile = readFile(_UserProfileFile);
-			userContext = readFile(_UserContextFile);
+			//read user profile
+			json = readFile(_UserProfileFile);
+
 		
 		} else {
-			
+			System.out.println("Enter profile: ");
 			InputStreamReader fileReader = new InputStreamReader(System.in);
-			JSONObject json = readFile(fileReader);
-			
-			userProfile = json.getJSONObject("user_profile");
-			userContext = json.getJSONObject("user_context");
+			json = readFile(fileReader);
 		}
+		
+		//parse json
+		if(!json.has("user_profile")) {
+			System.err.println("CRITICAL: User profile ('" + json + "') does not exist.");
+			System.exit(-1);
+		}
+		
+		//read user profile
+		userProfile = json.getJSONObject("user_profile");
+		OntProfile profile = new OntProfile(userProfile);
 		
 		//initialize
 		RuleReasoner ruleReasoner = new RuleReasoner(ONTOLOGY_NAME, RULES_FILE);
 		
-		System.out.println(ruleReasoner.infer(userProfile, userContext).toString(4));
+		System.out.println(ruleReasoner.infer(profile));
+
+		
 	}
 	
 

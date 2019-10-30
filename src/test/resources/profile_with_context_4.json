@@ -1,0 +1,94 @@
+{
+    "user_id": 4,
+    "user_profile": {"user_preferences": {
+        "default": {"preferences": {
+            "http://registry.easytv.eu/application/cs/audio/track": "en",
+            "http://registry.easytv.eu/common/contrast": 100,
+            "http://registry.easytv.eu/application/cs/audio/eq/bass": 10,
+            "http://registry.easytv.eu/application/cs/ui/language": "en",
+            "http://registry.easytv.eu/application/tts/audio/speed": 3,
+            "http://registry.easytv.eu/application/tts/audio/voice": "female",
+            "http://registry.easytv.eu/application/cs/ui/text/size": "20",
+            "http://registry.easytv.eu/application/control/voice": true,
+            "http://registry.easytv.eu/application/cs/cc/audio/subtitle": true,
+            "http://registry.easytv.eu/application/cs/ui/audioAssistanceBasedOnTTS": true,
+            "http://registry.easytv.eu/application/cs/accessibility/detection/character": true,
+            "http://registry.easytv.eu/application/cs/ui/text/magnification/scale": true,
+            "http://registry.easytv.eu/common/content/audio/language": "ca",
+            "http://registry.easytv.eu/application/cs/accessibility/detection/text": true,
+            "http://registry.easytv.eu/application/tts/audio/language": "en",
+            "http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiLanguage": "ca",
+            "http://registry.easytv.eu/application/cs/audio/volume": 27,
+            "http://registry.easytv.eu/application/cs/accessibility/enhancement/image/type": "face-detection",
+            "http://registry.easytv.eu/application/cs/cc/subtitles/font/size": 12,
+            "http://registry.easytv.eu/application/cs/cc/subtitles/font/color": "#ffffff",
+            "http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size": 1.5,
+            "http://registry.easytv.eu/application/tts/audio/volume": 21,
+            "http://registry.easytv.eu/application/cs/cc/subtitles/language": "ca",
+            "http://registry.easytv.eu/application/control/csGazeAndGestureControlType": "gaze_control",
+            "http://registry.easytv.eu/application/cs/ui/vibration/touch": true,
+            "http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiTextSize": 1.5,
+            "http://registry.easytv.eu/application/cs/audio/eq/highs": 5,
+            "http://registry.easytv.eu/application/cs/cc/subtitles/background/color": "#000000",
+            "http://registry.easytv.eu/application/cs/accessibility/sign/language": "es",
+            "http://registry.easytv.eu/application/cs/accessibility/detection/sound": true,
+            "http://registry.easytv.eu/application/cs/accessibility/audio/description": true,
+            "http://registry.easytv.eu/application/cs/audio/eq/mids": -8,
+            "http://registry.easytv.eu/common/display/screen/enhancement/cursor/color": "#ffffff",
+            "http://registry.easytv.eu/common/volume": 36,
+            "http://registry.easytv.eu/application/cs/accessibility/magnification/scale": 2
+        }},
+        "conditional": [
+            {
+                "preferences": {"http://registry.easytv.eu/common/volume": 10},
+                "name": "condition_1",
+                "conditions": [{
+                    "operands": [
+                        {
+                            "operands": [
+                                "http://registry.easytv.eu/context/time",
+                                "09:47:47"
+                            ],
+                            "type": "gt"
+                        },
+                        {
+                            "operands": [
+                                "http://registry.easytv.eu/context/time",
+                                "09:47:47"
+                            ],
+                            "type": "lt"
+                        }
+                    ],
+                    "type": "and"
+                }]
+            },
+            {
+                "preferences": {"http://registry.easytv.eu/common/display/screen/enhancement/cursor/color": "#222222"},
+                "name": "condition_2",
+                "conditions": [{
+                    "operands": [
+                        {
+                            "operands": [
+                                "http://registry.easytv.eu/context/time",
+                                "09:47:00"
+                            ],
+                            "type": "eq"
+                        },
+                        {
+                            "operands": [
+                                "http://registry.easytv.eu/context/location",
+                                "ca"
+                            ],
+                            "type": "eq"
+                        }
+                    ],
+                    "type": "and"
+                }]
+            }
+        ]
+    }},
+    "user_context": {
+        "http://registry.easytv.eu/context/location": "ca",
+        "http://registry.easytv.eu/context/time": "09:47:00"
+    }
+}

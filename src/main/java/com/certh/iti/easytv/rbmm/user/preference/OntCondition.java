@@ -2,19 +2,39 @@ package com.certh.iti.easytv.rbmm.user.preference;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.json.JSONObject;
 
-import com.certh.iti.easytv.rbmm.user.OntologicalCondition;
-import com.certh.iti.easytv.rbmm.user.UserPreferencesMappings;
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Property;
 
-public class Condition extends com.certh.iti.easytv.user.preference.Condition implements OntologicalCondition{
+import com.certh.iti.easytv.rbmm.user.Ontological;
+import com.certh.iti.easytv.user.preference.Condition;
+
+public class OntCondition implements Ontological {
 	
-	public Condition(JSONObject json) {
-		super(json);
+	public static final String ONTOLOGY_CLASS_URI = NAMESPACE + "ConditionalPreference";
+		
+    // Data Properties
+	public static final String HAS_LEFT_OPERAND_PROP = NAMESPACE + "hasLeftOperand";
+	public static final String HAS_RIGHT_OPERAND_PROP = NAMESPACE + "hasRightOperand";
+	public static final String HAS_CONDITIONS_PROP = NAMESPACE + "hasConditions";
+
+    
+	// Data Properties
+	public static final String HAS_TYPE_PROP = NAMESPACE + "hasType";
+	public static final String HAS_VALUE_PROP = NAMESPACE + "hasValue";
+	public static final String IS_TURE_PROP = NAMESPACE + "isTrue";
+	
+	
+	private Condition condition;
+	
+	public OntCondition(Condition condition) {
+		this.condition = condition;
+	}
+	
+	public Condition getCondition() {
+		return condition;
 	}
 	
 	/**
@@ -29,7 +49,6 @@ public class Condition extends com.certh.iti.easytv.user.preference.Condition im
 		Individual conditionalPreferenceInstance = conditionalPreferenceClass.createIndividual();
 		
 		return createOntologyInstance(model, conditionalPreferenceInstance);
-		
 	}
 	
 	/**
@@ -41,15 +60,25 @@ public class Condition extends com.certh.iti.easytv.user.preference.Condition im
 	 */
 	@Override
 	public Individual createOntologyInstance(final OntModel model, Individual conditionalPreferenceInstance){		
-		Individual individual = createOntologyInstance(model, conditionalPreferenceInstance, new com.certh.iti.easytv.user.preference.Condition(type, new ArrayList<Object>(operands)));
+		Individual individual = createOntologyInstance(model, conditionalPreferenceInstance, condition);
 		
 		Property hasConditionsProperty = model.getProperty(HAS_CONDITIONS_PROP);
 		conditionalPreferenceInstance.addProperty(hasConditionsProperty, individual) ;
 		
 		return conditionalPreferenceInstance;
 	}
+
 	
-	private Individual createOntologyInstance(final OntModel model, Individual conditionalPreferenceInstance, com.certh.iti.easytv.user.preference.Condition condition){
+
+	/**
+	 * Handle the operand of a condition
+	 * 
+	 * @param model
+	 * @param conditionalPreferenceInstance
+	 * @param condition
+	 * @return
+	 */
+	private Individual createOntologyInstance(final OntModel model, Individual conditionalPreferenceInstance, Condition condition){
 					
 			String conditionType = (String) condition.getType();
 			List<Object> conditionOprands = condition.getOperands();
@@ -69,7 +98,7 @@ public class Condition extends com.certh.iti.easytv.user.preference.Condition im
 																			
 					//set type
 					Property hasTypeProperty = model.getProperty(HAS_TYPE_PROP);
-					operandInstance.addProperty(hasTypeProperty, model.createProperty(UserPreferencesMappings.getDataProperty(uri)));
+					operandInstance.addProperty(hasTypeProperty, model.createProperty(OntPreference.getDataProperty(uri)));
 					//set value
 					Property hasValueProperty = model.getProperty(HAS_VALUE_PROP);
 					operandInstance.addProperty(hasValueProperty, model.createTypedLiteral(value));
@@ -82,8 +111,10 @@ public class Condition extends com.certh.iti.easytv.user.preference.Condition im
 					List<Individual> individuals = new ArrayList<Individual>();
 					
 					//handle operands
-					for(Object obj : conditionOprands) 
-						individuals.add(createOntologyInstance(model, conditionalPreferenceInstance, (com.certh.iti.easytv.user.preference.Condition) obj));
+					for(Object obj : conditionOprands) {
+						OntCondition tmp = new OntCondition((com.certh.iti.easytv.user.preference.Condition) obj);
+						individuals.add(tmp.createOntologyInstance(model, conditionalPreferenceInstance, (Condition) obj));
+					}
 					
 					
 					if(conditionType.equalsIgnoreCase("and") || 

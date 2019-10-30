@@ -3,7 +3,6 @@ package com.certh.iti.easytv.rbmm.builtin;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.regex.Pattern;
 

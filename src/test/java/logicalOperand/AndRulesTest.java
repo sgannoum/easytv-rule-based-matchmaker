@@ -22,10 +22,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.certh.iti.easytv.rbmm.builtin.And;
-import com.certh.iti.easytv.rbmm.user.UserProfile;
-import com.certh.iti.easytv.rbmm.user.UserPreferences;
-import com.certh.iti.easytv.rbmm.user.preference.Condition;
-import com.certh.iti.easytv.rbmm.user.preference.Preference;
+import com.certh.iti.easytv.rbmm.user.OntUserProfile;
+import com.certh.iti.easytv.rbmm.user.OntUserPreferences;
+import com.certh.iti.easytv.rbmm.user.preference.OntCondition;
+import com.certh.iti.easytv.rbmm.user.preference.OntPreference;
 
 import config.RBMMTestConfig;
 
@@ -56,19 +56,19 @@ public class AndRulesTest {
 		System.out.println("Ontology was loaded");
 		
 		//user
-		OntClass userPreferenceClass = model.getOntClass(UserPreferences.ONTOLOGY_CLASS_URI);
+		OntClass userPreferenceClass = model.getOntClass(OntUserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(Preference.hasVolume);
+		Property hasAudioVolumeProperty = model.getProperty(OntPreference.hasVolume);
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property cursorSizeProperty = model.getProperty(Preference.hasCursorSize);
+		Property cursorSizeProperty = model.getProperty(OntPreference.hasCursorSize);
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
-		OntClass userClass = model.getOntClass(UserProfile.ONTOLOGY_CLASS_URI);
+		OntClass userClass = model.getOntClass(OntUserProfile.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
-		Property hasPreferenceProperty = model.getProperty(UserProfile.HAS_PREFERENCE_PROP);
+		Property hasPreferenceProperty = model.getProperty(OntUserProfile.HAS_PREFERENCE_PROP);
 		userInstance.addProperty(hasPreferenceProperty, userPreferenceInstance);
 	}
 
@@ -76,26 +76,26 @@ public class AndRulesTest {
 	public void Test_And_True_True_input()  {
 		
 		//gt
-		OntClass gtClass = model.getOntClass(Condition.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(OntCondition.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property isTrueProperty = model.getProperty(Condition.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(OntCondition.IS_TURE_PROP);
 		gtInstance.addProperty(isTrueProperty, model.createTypedLiteral(true));
 		
 		//lt
-		OntClass ltClass = model.getOntClass(Condition.NAMESPACE + "LT");
+		OntClass ltClass = model.getOntClass(OntCondition.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
 		ltInstance.addProperty(isTrueProperty, model.createTypedLiteral(true));
 		 
 		//and
-		OntClass andClass = model.getOntClass(Condition.NAMESPACE + "AND");
+		OntClass andClass = model.getOntClass(OntCondition.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(Condition.HAS_LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(OntCondition.HAS_LEFT_OPERAND_PROP);
 		andInstance.addProperty(hasLeftOperandProperty, gtInstance);
 		
-		Property hasRightOperandProperty = model.getProperty(Condition.HAS_RIGHT_OPERAND_PROP);
+		Property hasRightOperandProperty = model.getProperty(OntCondition.HAS_RIGHT_OPERAND_PROP);
 		andInstance.addProperty(hasRightOperandProperty, ltInstance);
 				
 		
@@ -116,26 +116,26 @@ public class AndRulesTest {
 	public void Test_And_False_True_input()  {
 		
 		//gt
-		OntClass gtClass = model.getOntClass(Condition.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(OntCondition.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property isTrueProperty = model.getProperty(Condition.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(OntCondition.IS_TURE_PROP);
 		gtInstance.addProperty(isTrueProperty, model.createTypedLiteral(false));
 		
 		//lt
-		OntClass ltClass = model.getOntClass(Condition.NAMESPACE + "LT");
+		OntClass ltClass = model.getOntClass(OntCondition.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
 		ltInstance.addProperty(isTrueProperty, model.createTypedLiteral(true));
 		 
 		//and
-		OntClass andClass = model.getOntClass(Condition.NAMESPACE + "AND");
+		OntClass andClass = model.getOntClass(OntCondition.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(Condition.HAS_LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(OntCondition.HAS_LEFT_OPERAND_PROP);
 		andInstance.addProperty(hasLeftOperandProperty, gtInstance);
 		
-		Property hasRightOperandProperty = model.getProperty(Condition.HAS_RIGHT_OPERAND_PROP);
+		Property hasRightOperandProperty = model.getProperty(OntCondition.HAS_RIGHT_OPERAND_PROP);
 		andInstance.addProperty(hasRightOperandProperty, ltInstance);
 				
 		
@@ -155,26 +155,26 @@ public class AndRulesTest {
 	public void Test_And_True_False_input()  {
 		
 		//gt
-		OntClass gtClass = model.getOntClass(Condition.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(OntCondition.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property isTrueProperty = model.getProperty(Condition.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(OntCondition.IS_TURE_PROP);
 		gtInstance.addProperty(isTrueProperty, model.createTypedLiteral(true));
 		
 		//lt
-		OntClass ltClass = model.getOntClass(Condition.NAMESPACE + "LT");
+		OntClass ltClass = model.getOntClass(OntCondition.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
 		ltInstance.addProperty(isTrueProperty, model.createTypedLiteral(false));
 		 
 		//and
-		OntClass andClass = model.getOntClass(Condition.NAMESPACE + "AND");
+		OntClass andClass = model.getOntClass(OntCondition.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(Condition.HAS_LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(OntCondition.HAS_LEFT_OPERAND_PROP);
 		andInstance.addProperty(hasLeftOperandProperty, gtInstance);
 		
-		Property hasRightOperandProperty = model.getProperty(Condition.HAS_RIGHT_OPERAND_PROP);
+		Property hasRightOperandProperty = model.getProperty(OntCondition.HAS_RIGHT_OPERAND_PROP);
 		andInstance.addProperty(hasRightOperandProperty, ltInstance);
 				
 		
@@ -194,26 +194,26 @@ public class AndRulesTest {
 	public void Test_And_False_False_input()  {
 		
 		//gt
-		OntClass gtClass = model.getOntClass(Condition.NAMESPACE + "GT");
+		OntClass gtClass = model.getOntClass(OntCondition.NAMESPACE + "GT");
 		Individual gtInstance = gtClass.createIndividual();
 
-		Property isTrueProperty = model.getProperty(Condition.IS_TURE_PROP);
+		Property isTrueProperty = model.getProperty(OntCondition.IS_TURE_PROP);
 		gtInstance.addProperty(isTrueProperty, model.createTypedLiteral(false));
 		
 		//lt
-		OntClass ltClass = model.getOntClass(Condition.NAMESPACE + "LT");
+		OntClass ltClass = model.getOntClass(OntCondition.NAMESPACE + "LT");
 		Individual ltInstance = ltClass.createIndividual();
 		
 		ltInstance.addProperty(isTrueProperty, model.createTypedLiteral(false));
 		 
 		//and
-		OntClass andClass = model.getOntClass(Condition.NAMESPACE + "AND");
+		OntClass andClass = model.getOntClass(OntCondition.NAMESPACE + "AND");
 		Individual andInstance = andClass.createIndividual();
 
-		Property hasLeftOperandProperty = model.getProperty(Condition.HAS_LEFT_OPERAND_PROP);
+		Property hasLeftOperandProperty = model.getProperty(OntCondition.HAS_LEFT_OPERAND_PROP);
 		andInstance.addProperty(hasLeftOperandProperty, gtInstance);
 		
-		Property hasRightOperandProperty = model.getProperty(Condition.HAS_RIGHT_OPERAND_PROP);
+		Property hasRightOperandProperty = model.getProperty(OntCondition.HAS_RIGHT_OPERAND_PROP);
 		andInstance.addProperty(hasRightOperandProperty, ltInstance);
 				
 		
