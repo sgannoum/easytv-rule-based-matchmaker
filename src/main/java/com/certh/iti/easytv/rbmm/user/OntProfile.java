@@ -39,24 +39,24 @@ public class OntProfile implements Ontological{
 
 	}
 	
-	public OntProfile(UserProfile userProfile) throws IOException, UserProfileParsingException {
+	public OntProfile(int userId, UserProfile userProfile) throws IOException, UserProfileParsingException {
 		
 		if(userProfile == null)
 			throw new NullPointerException("No userprofile");
 			
-		this.contextualUserProfile = new Profile(userProfile, null,  null);
+		this.contextualUserProfile = new Profile(userId, userProfile, null,  null);
 		OntUserProfile = new OntUserProfile(contextualUserProfile.getUserProfile());
 	}
 	
-	public OntProfile(UserProfile userProfile, UserContext userContext) throws IOException, UserProfileParsingException {
+	public OntProfile(int userId ,UserProfile userProfile, UserContext userContext) throws IOException, UserProfileParsingException {
 		
-		this.contextualUserProfile = new Profile(userProfile, userContext, null);
+		this.contextualUserProfile = new Profile(userId, userProfile, userContext, null);
 		OntUserProfile = new OntUserProfile(contextualUserProfile.getUserProfile());
 		OntUserContext = new OntUserContext(contextualUserProfile.getUserContext());
 	}
 	
-	public OntProfile(UserProfile userProfile, UserContext userContext, UserContent userContent) throws IOException, UserProfileParsingException {
-		this.contextualUserProfile = new Profile(userProfile, userContext,  userContent);
+	public OntProfile(int userId, UserProfile userProfile, UserContext userContext, UserContent userContent) throws IOException, UserProfileParsingException {
+		this.contextualUserProfile = new Profile(userId, userProfile, userContext,  userContent);
 	}
 
 	
