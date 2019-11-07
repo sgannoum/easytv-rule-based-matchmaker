@@ -10,7 +10,8 @@
 ->
 	and(?v1, ?v2, ?v3)	
 	(?cond easyTV:isTrue ?v3)	
-	print('AND', ?v1, ?v2, ?v3)]
+	print('AND', ?v1, ?v2, ?v3)
+]
 
 [or_rule:(?cond rdf:#type easyTV:OR)
 ,(?cond easyTV:hasLeftOperand ?leftOp)
@@ -20,7 +21,8 @@
 ->
 	or(?v1, ?v2, ?v3)	
 	(?cond easyTV:isTrue ?v3)	
-	print('OR', ?v1, ?v2, ?v3)]
+	print('OR', ?v1, ?v2, ?v3)
+]
 
 [Not_rule:(?cond rdf:#type easyTV:NOT)
 ,(?cond easyTV:hasLeftOperand ?leftOp)
@@ -28,7 +30,8 @@
 ->
 	not(?v1, ?v2)	
 	(?cond easyTV:isTrue ?v2)	
-	print('NOT', ?v1, ?v2)]
+	print('NOT', ?v1, ?v2)
+]
 	
 [Equals_pref:(?cond rdf:#type easyTV:EQ)
 ,(?cond easyTV:hasValue ?value)
@@ -39,7 +42,8 @@
 ->
 	equals(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
-	print('Equals', ?nodeValue, ?value, ?res)]
+	print('Equals', ?nodeValue, ?value, ?res)
+]
 	
 [Equals_context:(?cond rdf:#type easyTV:EQ)
 ,(?cond easyTV:hasValue ?value)
@@ -50,7 +54,8 @@
 ->
 	equals(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
-	print('Equals', ?type, ?nodeValue, ?value, ?res)]
+	print('Equals', ?type, ?nodeValue, ?value, ?res)
+]
 	
 [Not_equals_true:(?cond rdf:#type easyTV:NE)
 ,(?cond easyTV:hasValue ?value)
@@ -61,7 +66,8 @@
 ->
 	notEquals(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
-	print('Not equals', ?nodeValue, ?value, ?res)]
+	print('Not equals', ?nodeValue, ?value, ?res)
+]
 	
 [Not_equals_true:(?cond rdf:#type easyTV:NE)
 ,(?cond easyTV:hasValue ?value)
@@ -72,7 +78,8 @@
 ->
 	notEquals(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
-	print('Not equals', ?nodeValue, ?value, ?res)]
+	print('Not equals', ?nodeValue, ?value, ?res)
+]
 	
 [Greater_than:(?cond rdf:#type easyTV:GT)
 ,(?cond easyTV:hasValue ?value)
@@ -83,7 +90,8 @@
 ->
 	greaterThan(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
-	print('Greater Than', ?nodeValue, ?value, ?res)]
+	print('Greater Than', ?nodeValue, ?value, ?res)
+]
 	
 [Greater_than_context:(?cond rdf:#type easyTV:GT)
 ,(?cond easyTV:hasValue ?value)
@@ -94,7 +102,8 @@
 ->
 	greaterThan(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
-	print('Greater Than', ?nodeValue, ?value, ?res)]
+	print('Greater Than', ?nodeValue, ?value, ?res)
+]
 	
 [Greater_than_equals: (?cond rdf:#type easyTV:GE)
 ,(?cond easyTV:hasValue ?value)
@@ -105,7 +114,8 @@
 ->
 	greaterThanEquals(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
-	print('Greater than equals', ?nodeValue, ?value, ?res)]
+	print('Greater than equals', ?nodeValue, ?value, ?res)
+]
 	
 [Greater_than_equals_context: (?cond rdf:#type easyTV:GE)
 ,(?cond easyTV:hasValue ?value)
@@ -116,7 +126,8 @@
 ->
 	greaterThanEquals(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
-	print('Greater than equals', ?nodeValue, ?value, ?res)]
+	print('Greater than equals', ?nodeValue, ?value, ?res)
+]
 	
 [Less_than:(?cond rdf:#type easyTV:LT)
 ,(?cond easyTV:hasValue ?value)
@@ -127,7 +138,8 @@
 ->
 	lessThan(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
-	print('Less than', ?nodeValue, ?value, ?res)]
+	print('Less than', ?nodeValue, ?value, ?res)
+]
 	
 [Less_than_context:(?cond rdf:#type easyTV:LT)
 ,(?cond easyTV:hasValue ?value)
@@ -138,7 +150,8 @@
 ->
 	lessThan(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
-	print('Less than', ?nodeValue, ?value, ?res)]
+	print('Less than', ?nodeValue, ?value, ?res)
+]
 	
 [Less_than_equals: (?cond rdf:#type easyTV:LE)
 ,(?cond easyTV:hasValue ?value)
@@ -149,7 +162,8 @@
 ->
 	lessThanEquals(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
-	print('Less than equals', ?nodeValue, ?value, ?res)]
+	print('Less than equals', ?nodeValue, ?value, ?res)
+]
 	
 [Less_than_equals_context: (?cond rdf:#type easyTV:LE)
 ,(?cond easyTV:hasValue ?value)
@@ -160,7 +174,8 @@
 ->
 	lessThanEquals(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
-	print('Less than equals', ?nodeValue, ?value, ?res)]
+	print('Less than equals', ?nodeValue, ?value, ?res)
+]
 	
 [conditional_preference: (?condPref rdf:#type easyTV:ConditionalPreference)
 ,(?condPref easyTV:hasConditions ?cond)
@@ -170,15 +185,5 @@
 ,(?user easyTV:hasPreference ?defPref)
 ->
 	print('Conditional preference', ?name,'is true')	
-	mergePref(?defPref, ?condPref)]
-
-
-[font_size_suggestion:
- (?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)
- (?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)
- (?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasMagnification ?mg)
- (?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)
- greaterThan(?mg, 30, ?res)
-->
-	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasFontSize 60)
-	print('Suggest a font size 60 to users with magnification level over 50')]	
+	mergePref(?defPref, ?condPref)
+]

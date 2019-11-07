@@ -35,7 +35,7 @@ public class OntProfile implements Ontological{
 		//TODO
 /*		if(contextualUserProfile.getUserContent() != null)
 			OntUserContext = new OntUserContent(contextualUserProfile.getUserContent());
-			*/
+*/
 
 	}
 	
@@ -48,7 +48,7 @@ public class OntProfile implements Ontological{
 		OntUserProfile = new OntUserProfile(contextualUserProfile.getUserProfile());
 	}
 	
-	public OntProfile(int userId ,UserProfile userProfile, UserContext userContext) throws IOException, UserProfileParsingException {
+	public OntProfile(int userId, UserProfile userProfile, UserContext userContext) throws IOException, UserProfileParsingException {
 		
 		this.contextualUserProfile = new Profile(userId, userProfile, userContext, null);
 		OntUserProfile = new OntUserProfile(contextualUserProfile.getUserProfile());
@@ -59,6 +59,10 @@ public class OntProfile implements Ontological{
 		this.contextualUserProfile = new Profile(userId, userProfile, userContext,  userContent);
 	}
 
+	
+	public Profile getProfile() {
+		return this.contextualUserProfile;
+	}
 	
 	public UserProfile getUserProfile() {
 		return this.contextualUserProfile.getUserProfile();

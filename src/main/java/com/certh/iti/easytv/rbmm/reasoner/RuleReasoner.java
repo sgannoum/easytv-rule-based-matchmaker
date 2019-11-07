@@ -2,6 +2,7 @@ package com.certh.iti.easytv.rbmm.reasoner;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import com.certh.iti.easytv.rbmm.user.OntProfile;
 import com.certh.iti.easytv.rbmm.user.preference.OntPreference;
 import com.certh.iti.easytv.rbmm.webservice.RBMM_WebService;
 
+import org.apache.jena.atlas.json.JSON;
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.ontology.Individual;
@@ -58,11 +60,14 @@ public class RuleReasoner {
 	private Reasoner reasoner;
 	
 	private String ontologyFile;
-	private String rulesFile;
+	private String[] rulesFile;
 	
-	public RuleReasoner(String ontologyFile, String rulesFile) throws IOException {
+	public RuleReasoner(String ontologyFile, String[] rulesFile) throws IOException {
 		this.ontologyFile = ontologyFile;
 		this.rulesFile = rulesFile;
+		
+		//load built in
+		loadBuiltIn();
 		
 		//load model
 		model = loadModel(ontologyFile);
@@ -78,25 +83,8 @@ public class RuleReasoner {
 		//TO-DO 
 	}
 	
-	/**
-	 * Load OWL model from the give file.
-	 * 
-	 * @param ontologyFile
-	 * @return
-	 * @throws IOException
-	 */
-	public OntModel loadModel(String ontologyFile) throws IOException {
-		
-		File file = new File(getClass()
-							.getClassLoader().
-							getResource(ontologyFile)
-							.getFile());
-		
-		//Read model
-		OntModel model = ModelFactory.createOntologyModel();
-		InputStream in = new FileInputStream(file);
-		model = (OntModel) model.read(in, null, "");
-		
+	
+	private void loadBuiltIn() {
 		//Register builds in functions
 		BuiltinRegistry.theRegistry.register(new NotEquals());
 		BuiltinRegistry.theRegistry.register(new Equals());
@@ -108,6 +96,35 @@ public class RuleReasoner {
 		BuiltinRegistry.theRegistry.register(new OR());
 		BuiltinRegistry.theRegistry.register(new NOT());
 		BuiltinRegistry.theRegistry.register(new MergePreferences());
+	}
+	
+	/**
+	 * Load OWL model from the give file.
+	 * 
+	 * @param ontologyFile
+	 * @return
+	 * @throws IOException
+	 */
+	public OntModel loadModel(String ontologyFile) throws IOException {
+		
+		File file = new File(getClass()
+							.getClassLoader()
+							.getResource(ontologyFile)
+							.getFile());
+		
+		//Read model
+		OntModel model = ModelFactory.createOntologyModel();
+		InputStream in = new FileInputStream(file);
+		model = (OntModel) model.read(in, null, "");
+		
+		//reader
+		FileReader reader = new FileReader(new File(getClass().getClassLoader().getResource("ContentServiceStatments.txt").getFile()));
+		
+		//read the model
+		model.read(reader, null, "N-TRIPLE");
+		
+		//close
+		reader.close();
 		
 	
 		logger.info("Ontology was loaded");
@@ -132,36 +149,14 @@ public class RuleReasoner {
 								.getResource(fname)
 								.getFile());
 			
+			logger.info("Loadeding rules file..."+file.getName());
+			
 			rules.addAll(Rule.rulesFromURL(file.getCanonicalPath()));
 		}
 
 		//Create generic reasoner 
 		Reasoner reasoner = new GenericRuleReasoner(rules);
 		
-    	logger.info("Rules were loaded");
-
-		return reasoner;
-	}
-	
-	/**
-	 * Load rules from file.
-	 * 
-	 * @param fname
-	 * @return
-	 * @throws IOException
-	 */
-	public Reasoner loadRules(String fname) throws IOException {
-		// load file with rules
-		File file = new File(getClass()
-							.getClassLoader()
-							.getResource(fname)
-						.getFile());
-		
-		//Create generic reasoner 
-		Reasoner reasoner = new GenericRuleReasoner(Rule.rulesFromURL(file.getCanonicalPath()));
-		
-    	logger.info("Rules from file: "+fname+" were loaded");
-
 		return reasoner;
 	}
 	
@@ -178,37 +173,45 @@ public class RuleReasoner {
 		//load user into ontology
 		Individual UserProfileIndividual = profile.createOntologyInstance(model);
 		
-		//add the inferred preferences to the user model
-		return extractPreferences(profile.getUserProfile().getJSONObject());
-	}
-
-	/**
-	 * Execute inference and extract user preferences and suggested preferences.
-	 * 
-	 * @param userProfile
-	 * @return
-	 * @throws JSONException
-	 * @throws IOException
-	 */
-	private JSONObject extractPreferences(JSONObject userProfile) throws JSONException, IOException {
-		
 		//run rules and get inferred model
 		InfModel infModel = ModelFactory.createInfModel(reasoner, model);
 		
 		//retrieve user preferences
 		JSONObject inferedPreferences = getUserPreferences(infModel);
 		
-		//update user preferences
-		JSONObject newUserprofile = updateUserPreferences(userProfile, inferedPreferences);
-		
 		//retrieve user suggested preferences
 		JSONObject suggesteddPreferences = getSuggestedUserPreference(infModel);
 		
-		//update user preferences with suggested preferences
-		newUserprofile = updateUserPreferences(newUserprofile, inferedPreferences);
+		JSONObject jsonProfile = profile.getProfile().getJSONObject();
 		
-		//add the inferred preferences to the user model
-		return newUserprofile;
+		//update user preferences
+		JSONObject newUserprofile = updateUserPreferences(jsonProfile.getJSONObject("user_profile")
+																     .getJSONObject("user_preferences")
+														   		     .getJSONObject("default")
+														   		     .getJSONObject("preferences"), inferedPreferences);
+		
+		//remove context if exists
+		jsonProfile.remove("user_context");
+		jsonProfile.remove("user_content");
+		
+		//remove conditional is exists
+		jsonProfile.getJSONObject("user_profile")
+				   .getJSONObject("user_preferences")
+				   .remove("conditional");
+				
+		//update preference
+		jsonProfile.getJSONObject("user_profile")
+				   .getJSONObject("user_preferences")
+		   		   .getJSONObject("default")
+		   		   .put("preferences", newUserprofile);
+		
+		//add recommendations
+		jsonProfile.getJSONObject("user_profile")
+		   		   .getJSONObject("user_preferences")
+		   		   .put("recommendations", new JSONObject().put("preferences", suggesteddPreferences));
+		
+		
+		return jsonProfile;
 	}
 
 	/**
@@ -218,18 +221,52 @@ public class RuleReasoner {
 	 * @throws IOException
 	 * @throws JSONException 
 	 */
-	private static JSONObject updateUserPreferences(JSONObject userProfile, JSONObject inferedPref) throws IOException, JSONException {
-		JSONObject jsonPreference = userProfile.getJSONObject("user_preferences")
-											   .getJSONObject("default")
-											   .getJSONObject("preferences");
+	private static JSONObject updateUserPreferences(JSONObject userPreferences, JSONObject inferedPref) throws IOException, JSONException {
 		
-		JSONObject pref = new JSONObject(inferedPref.toString());
-		String[] fields = JSONObject.getNames(pref);
+		JSONObject newPref = new JSONObject();
+		String[] fields = JSONObject.getNames(inferedPref);
 
-		for(int i = 0 ; i < fields.length; i++) 
-			jsonPreference.put(fields[i], pref.get(fields[i]));
+		for(String key : fields) { 
+			
+			Object value2 = inferedPref.get(key);
+			
+			if(!userPreferences.has(key)) {
+				newPref.put(key, value2);
+			} else {
+				
+				boolean add = false;
+				Object value1 = userPreferences.get(key);
+				
+				 if(Double.class.isInstance(value1)) {
+					double val1 = (double) value1;
+					double val2;
+					
+					if(Integer.class.isInstance(value2))
+						val2 = (Integer) value2 * 0.1;
+					else 
+						val2 = (double) value1;
+					
+					add = val1 != val2;	
+				} else if(Integer.class.isInstance(value1)) {
+					int val1 = (int) value1;
+					int val2;
+					
+					if(Double.class.isInstance(value2))
+						val2 = ((Double) value2).intValue();
+					else 
+						val2 = (int) value1;
+					
+					add = val1 != val2;				
+				 } else {
+					add = !value1.equals(value2);	
+				 } 
+				
+				if(add) newPref.put(key, value2);
+
+			}
+		}
 		
-		return userProfile;
+		return newPref;
 	}
 	
 	/**

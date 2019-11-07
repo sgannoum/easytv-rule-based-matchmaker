@@ -1,0 +1,14 @@
+@prefix easyTV: <http://www.owl-ontologies.com/OntologyEasyTV.owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns> .
+
+
+[Avatar_suggestion:
+ 	(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)
+ 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)
+ 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasMagnification ?mg)
+ 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)
+ 	greaterThan(?mg, 30, ?res)
+	->
+	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasFontSize 60)
+	print('Suggest a font size 60 to users with magnification level over 50')
+]	

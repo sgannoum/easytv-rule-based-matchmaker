@@ -8,16 +8,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import javax.ws.rs.core.Response;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.certh.iti.easytv.rbmm.reasoner.RuleReasoner;
-import com.certh.iti.easytv.rbmm.user.Content;
 import com.certh.iti.easytv.rbmm.user.OntProfile;
-import com.certh.iti.easytv.rbmm.user.OntUserContext;
-import com.certh.iti.easytv.rbmm.user.OntUserProfile;
+import com.certh.iti.easytv.rbmm.webservice.RBMM_config;
 import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 
 
@@ -30,8 +26,8 @@ public class main {
 	private static File _UserProfileFile = null;
 	
 	//Files 
-	private static final String ONTOLOGY_NAME = "EasyTV.owl";
-	private static final String RULES_FILE = "rules.txt";
+	private static final String ONTOLOGY_NAME = RBMM_config.ONTOLOGY_NAME;
+	private static final String[] RULES_FILE = RBMM_config.RULES_FILE;
 	
 	
 	public static void main(String[] args) throws IOException, JSONException, UserProfileParsingException {
@@ -63,15 +59,7 @@ public class main {
 			json = readFile(fileReader);
 		}
 		
-		//parse json
-		if(!json.has("user_profile")) {
-			System.err.println("CRITICAL: User profile ('" + json + "') does not exist.");
-			System.exit(-1);
-		}
-		
-		//read user profile
-		userProfile = json.getJSONObject("user_profile");
-		OntProfile profile = new OntProfile(userProfile);
+		OntProfile profile = new OntProfile(json);
 		
 		//initialize
 		RuleReasoner ruleReasoner = new RuleReasoner(ONTOLOGY_NAME, RULES_FILE);
