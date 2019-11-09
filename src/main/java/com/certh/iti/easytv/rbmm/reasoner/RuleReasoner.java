@@ -244,7 +244,7 @@ public class RuleReasoner {
 					if(Integer.class.isInstance(value2))
 						val2 = (Integer) value2 * 0.1;
 					else 
-						val2 = (double) value1;
+						val2 = (double) value2;
 					
 					add = val1 != val2;	
 				} else if(Integer.class.isInstance(value1)) {
@@ -254,13 +254,14 @@ public class RuleReasoner {
 					if(Double.class.isInstance(value2))
 						val2 = ((Double) value2).intValue();
 					else 
-						val2 = (int) value1;
+						val2 = (int) value2;
 					
-					add = val1 != val2;				
+					add = val1 != val2;		
 				 } else {
 					add = !value1.equals(value2);	
 				 } 
-				
+				 
+
 				if(add) newPref.put(key, value2);
 
 			}
