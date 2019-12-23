@@ -177,6 +177,7 @@ public class OntPreference implements Ontological {
 				preferenceIndividual.addProperty(property, literal);
 			}
 		}
+		
 
 		return preferenceIndividual;
 	}

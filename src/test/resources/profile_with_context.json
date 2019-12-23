@@ -11,7 +11,7 @@
                         "http://registry.easytv.eu/application/control/voice": true,
                         "http://registry.easytv.eu/application/cs/audio/track": "ca",
                         "http://registry.easytv.eu/application/cs/ui/language": "en",
-                        "http://registry.easytv.eu/application/cs/audio/volume": 33,
+                        "http://registry.easytv.eu/application/cs/audio/volume": 12,
                         "http://registry.easytv.eu/application/cs/ui/text/size": "20",
                         "http://registry.easytv.eu/application/tts/audio/speed": 0,
                         "http://registry.easytv.eu/application/tts/audio/voice": "male",

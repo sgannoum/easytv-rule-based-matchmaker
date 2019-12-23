@@ -29,15 +29,15 @@ public class NotEquals extends ComparatorBuiltin {
 	public boolean bodyCall(Node[] args, int length, RuleContext context) {
 		Node_Literal v1 = (Node_Literal) args[0];
 		Node_Literal v2 = (Node_Literal) args[1];
-		Node_RuleVariable v3 = (Node_RuleVariable) args[2];
+		Node_RuleVariable v3 = args.length == 3 ? (Node_RuleVariable) args[2] : null;
 		
 		BindingEnvironment env = context.getEnv();
 		
 		if(compareTo(v1, v2) == 0) {
-			env.bind(v3,NodeFactory.createLiteralByValue(false, XSDDatatype.XSDboolean));
+			if(v3 != null) env.bind(v3,NodeFactory.createLiteralByValue(false, XSDDatatype.XSDboolean));
 			return false;
 		} else {
-			env.bind(v3,NodeFactory.createLiteralByValue(true, XSDDatatype.XSDboolean));
+			if(v3 != null) env.bind(v3,NodeFactory.createLiteralByValue(true, XSDDatatype.XSDboolean));
 			return true;
 		}
 	}

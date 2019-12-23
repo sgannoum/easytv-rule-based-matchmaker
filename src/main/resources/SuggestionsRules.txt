@@ -1,14 +1,214 @@
 @prefix easyTV: <http://www.owl-ontologies.com/OntologyEasyTV.owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 
+[Avatar_suggestion_rule:
+ 	(?user rdf:type easyTV:User)
+ 	(?user easyTV:hasPreference ?pref)
+ 		
+ 	(?pref easyTV:hasAccessibilitySignLanguage 'false'^^http://www.w3.org/2001/XMLSchema#boolean)
+ 	
+ 	(?pref easyTV:hasVolume ?volume)
+ 	(?pref easyTV:hasTTSAudioVolume ?tts_volume)
+ 	(?pref easyTV:hasCSCCAudioSubtitle 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
+ 	(?pref easyTV:hasCSUIAudioAssistanceBasedOnTTS 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
+  	(?pref easyTV:hasAccessibilityAudioDescription 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
+ 
+ 	greaterThanEquals(?volume, '75'^^http://www.w3.org/2001/XMLSchema#integer)
+ 	greaterThanEquals(?tts_volume, '75'^^http://www.w3.org/2001/XMLSchema#integer) 	 
 
-[Avatar_suggestion:
- 	(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)
- 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasMagnification ?mg)
- 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)
- 	greaterThan(?mg, 30, ?res)
+ 	(?user easyTV:hasSuggestedPreferences ?sugPref)
+ 	
 	->
-	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasFontSize 60)
-	print('Suggest a font size 60 to users with magnification level over 50')
+	
+	(?sugPref easyTV:hasAccessibilitySignLanguage 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
+	print('Suggest sign language')
+]		
+
+
+[Face_detection_suggestion_rule:
+ 	(?user rdf:type easyTV:User)
+ 	(?user easyTV:hasPreference ?pref)
+ 	
+ 	(?pref easyTV:hasAccessibilityEnhancementImageType ?faceDetection)
+ 	
+ 	(?pref easyTV:hasCSSubtitlesFontSize ?sub_text_size)
+ 	(?pref easyTV:hasCursorSize ?cursor_size)
+ 	(?pref easyTV:hasCSUITestSize ?ui_text_size)
+
+	greaterThanEquals(?sub_text_size, '5'^^http://www.w3.org/2001/XMLSchema#integer)
+	equals(?cursor_size, '2.0'^^http://www.w3.org/2001/XMLSchema#double)
+	equals(?ui_text_size,  '23'^^http://www.w3.org/2001/XMLSchema#string)
+	equals(?faceDetection,  'false'^^http://www.w3.org/2001/XMLSchema#boolean)
+	
+	
+ 	(?user easyTV:hasSuggestedPreferences ?sugPref)
+
+	->	
+	
+	(?sugPref easyTV:hasAccessibilityEnhancementImageType 'face-detection'^^http://www.w3.org/2001/XMLSchema#string)
+	print('Suggest face detection')
 ]	
+
+
+[Face_detection_suggestion_rule_1:
+ 	(?user rdf:type easyTV:User)
+ 	(?user easyTV:hasPreference ?pref)
+ 	
+ 	noValue(?pref easyTV:hasAccessibilityEnhancementImageType)
+ 	
+ 	(?pref easyTV:hasCSSubtitlesFontSize ?sub_text_size)
+ 	(?pref easyTV:hasCursorSize ?cursor_size)
+ 	(?pref easyTV:hasCSUITestSize ?ui_text_size)
+
+	greaterThanEquals(?sub_text_size, '40'^^http://www.w3.org/2001/XMLSchema#integer)
+	equals(?cursor_size, '2.0'^^http://www.w3.org/2001/XMLSchema#double)
+	equals(?ui_text_size,  '23'^^http://www.w3.org/2001/XMLSchema#string)
+	
+ 	(?user easyTV:hasSuggestedPreferences ?sugPref)
+
+	->	
+	
+	(?sugPref easyTV:hasAccessibilityEnhancementImageType 'face-detection'^^http://www.w3.org/2001/XMLSchema#string)
+	print('Suggest face detection')
+]	
+
+
+[Sound_detection_suggestion_rule:
+ 	(?user rdf:type easyTV:User)
+ 	(?user easyTV:hasPreference ?pref)
+ 	
+ 	(?pref easyTV:hasAccessibilityDetectionSound 'false'^^http://www.w3.org/2001/XMLSchema#boolean)
+ 	(?pref easyTV:hasVolume ?general_volume)
+ 	(?pref easyTV:hasTTSAudioVolume ?tts_volume)
+ 	(?pref easyTV:hasCSAudioVolume ?cs_volume)	 
+ 	 
+ 	greaterThanEquals(?general_volume, '75'^^http://www.w3.org/2001/XMLSchema#int) 	
+ 	greaterThanEquals(?tts_volume, '75'^^http://www.w3.org/2001/XMLSchema#int) 	
+ 	greaterThanEquals(?cs_volume, '10'^^http://www.w3.org/2001/XMLSchema#int)  
+ 	
+ 	(?user easyTV:hasSuggestedPreferences ?sugPref)
+
+	->	
+	
+	(?sugPref easyTV:hasAccessibilityDetectionSound 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
+	print('Suggest sound detection')
+]	
+
+
+[Sound_detection_suggestion_rule_1:
+ 	(?user rdf:type easyTV:User)
+ 	(?user easyTV:hasPreference ?pref)
+ 	
+ 	noValue(?pref easyTV:hasAccessibilityDetectionSound)
+ 	(?pref easyTV:hasVolume ?general_volume)
+ 	(?pref easyTV:hasTTSAudioVolume ?tts_volume)
+ 	(?pref easyTV:hasCSAudioVolume ?cs_volume)	 
+ 	 
+ 	greaterThanEquals(?general_volume, '75'^^http://www.w3.org/2001/XMLSchema#int) 	
+ 	greaterThanEquals(?tts_volume, '75'^^http://www.w3.org/2001/XMLSchema#int) 	
+ 	greaterThanEquals(?cs_volume, '10'^^http://www.w3.org/2001/XMLSchema#int)  
+ 	
+ 	(?user easyTV:hasSuggestedPreferences ?sugPref)
+
+	->	
+	
+	(?sugPref easyTV:hasAccessibilityDetectionSound 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
+	print('Suggest sound detection')
+]	
+
+
+[Image_magnification_suggestion_rule:
+ 	(?user rdf:type easyTV:User)
+ 	(?user easyTV:hasPreference ?pref)
+ 	
+ 	(?pref easyTV:hasCSSubtitlesFontSize ?sub_text_size)
+ 	(?pref easyTV:hasCursorSize ?cursor_size)
+ 	(?pref easyTV:hasCSUITestSize ?ui_text_size)
+
+	(?pref easyTV:hasAccessibilityEnhancementImageType 'image-magnification'^^http://www.w3.org/2001/XMLSchema#string)
+	(?pref easyTV:hasAccessibilityMagnificationScale ?scale)
+	
+	greaterThanEquals(?sub_text_size, '75'^^http://www.w3.org/2001/XMLSchema#integer)
+	equals(?cursor_size, '2.0'^^http://www.w3.org/2001/XMLSchema#double)
+	equals(?ui_text_size,  '23'^^http://www.w3.org/2001/XMLSchema#string)
+	
+	lessThanEquals(?scale,  '3.0'^^http://www.w3.org/2001/XMLSchema#double)
+
+ 	(?user easyTV:hasSuggestedPreferences ?sugPref)
+
+	->	
+	
+	(?sugPref easyTV:hasAccessibilityEnhancementImageType 'image-magnification'^^http://www.w3.org/2001/XMLSchema#string)
+	(?sugPref easyTV:hasAccessibilityMagnificationScale '3.0'^^http://www.w3.org/2001/XMLSchema#double)
+	
+	print('Suggest Image magnification detection')
+]	
+
+
+//Suggestion font size Given the user magnification level 
+[Font_size_suggestion_rule:
+ 	(?user rdf:type easyTV:User)
+ 	(?user easyTV:hasPreference ?pref)
+ 	
+ 	//if image magnification level is large 
+	(?pref easyTV:hasAccessibilityEnhancementImageType 'image-magnification'^^http://www.w3.org/2001/XMLSchema#string)
+	(?pref easyTV:hasAccessibilityMagnificationScale ?scale)
+	greaterThanEquals(?scale, '3.0'^^http://www.w3.org/2001/XMLSchema#double)
+	lessThanEquals(?scale, '3.5'^^http://www.w3.org/2001/XMLSchema#double)
+	
+	//use has no UI text size
+	(?pref easyTV:hasCSUITestSize ?ui_text_size)	
+	notEquals(?ui_text_size,  '23'^^http://www.w3.org/2001/XMLSchema#string)
+
+ 	(?user easyTV:hasSuggestedPreferences ?sugPref)
+
+	->	
+		(?sugPref easyTV:hasCSSubtitlesFontSize '23'^^http://www.w3.org/2001/XMLSchema#integer)	
+	
+	(?sugPref easyTV:hasCSUITestSize '23'^^http://www.w3.org/2001/XMLSchema#string)	
+	print('Suggest Image magnification ', ?scale)
+]	
+
+
+[Font_size_suggestion_rule_2:
+ 	(?user rdf:type easyTV:User)
+ 	(?user easyTV:hasPreference ?pref)
+ 
+	(?pref easyTV:hasAccessibilityEnhancementImageType 'image-magnification'^^http://www.w3.org/2001/XMLSchema#string)
+	(?pref easyTV:hasAccessibilityMagnificationScale ?scale)
+	greaterThanEquals(?scale, '2.0'^^http://www.w3.org/2001/XMLSchema#double)
+	lessThan(?scale, '3.0'^^http://www.w3.org/2001/XMLSchema#double)
+
+	(?pref easyTV:hasCSUITestSize ?ui_text_size)	
+	notEquals(?ui_text_size,  '20'^^http://www.w3.org/2001/XMLSchema#string)
+
+ 	(?user easyTV:hasSuggestedPreferences ?sugPref)
+
+	->	
+	(?sugPref easyTV:hasCSSubtitlesFontSize '20'^^http://www.w3.org/2001/XMLSchema#integer)	
+	(?sugPref easyTV:hasCSUITestSize '20'^^http://www.w3.org/2001/XMLSchema#string)	
+	print('Suggest Image magnification ', ?scale)
+]	
+
+
+[Font_size_suggestion_rule_3:
+ 	(?user rdf:type easyTV:User)
+ 	(?user easyTV:hasPreference ?pref)
+ 	
+	(?pref easyTV:hasAccessibilityEnhancementImageType 'image-magnification'^^http://www.w3.org/2001/XMLSchema#string)
+	(?pref easyTV:hasAccessibilityMagnificationScale ?scale)
+	greaterThanEquals(?scale, '1.5'^^http://www.w3.org/2001/XMLSchema#double)
+	lessThan(?scale, '2.0'^^http://www.w3.org/2001/XMLSchema#double)
+		
+	(?pref easyTV:hasCSUITestSize ?ui_text_size)	
+	notEquals(?ui_text_size,  '1.5'^^http://www.w3.org/2001/XMLSchema#double)
+
+ 	(?user easyTV:hasSuggestedPreferences ?sugPref)
+
+	->	
+		(?sugPref easyTV:hasCSSubtitlesFontSize '15'^^http://www.w3.org/2001/XMLSchema#integer)	
+	
+	(?sugPref easyTV:hasCSUITestSize '15'^^http://www.w3.org/2001/XMLSchema#string)	
+	print('Suggest Image magnification ', ?scale)
+]	
+

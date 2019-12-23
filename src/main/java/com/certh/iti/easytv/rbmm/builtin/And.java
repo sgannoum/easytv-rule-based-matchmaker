@@ -24,16 +24,15 @@ public class And implements Builtin {
 	}
 
 	public boolean bodyCall(Node[] args, int length, RuleContext context) {
-		Node_Literal v1 = (Node_Literal) args[0];
-		Node_Literal v2 = (Node_Literal) args[1];
-		Node_RuleVariable v3 = (Node_RuleVariable) args[2];
-		
+		Node variable = args[args.length - 1];
 		BindingEnvironment env = context.getEnv();	
+		
+		boolean and_value = evaluate(args);
 
-		if(v1.getLiteralValue().equals(Boolean.TRUE) && v2.getLiteralValue().equals(Boolean.TRUE)) {
-			env.bind(v3,NodeFactory.createLiteralByValue(true, XSDDatatype.XSDboolean));
+		if(and_value) {
+			env.bind(variable, NodeFactory.createLiteralByValue(true, XSDDatatype.XSDboolean));
 		} else {		
-			env.bind(v3,NodeFactory.createLiteralByValue(false, XSDDatatype.XSDboolean));
+			env.bind(variable, NodeFactory.createLiteralByValue(false, XSDDatatype.XSDboolean));
 		}	
 		return true;
 	}
@@ -58,6 +57,16 @@ public class And implements Builtin {
 
 	public boolean isMonotonic() {
 		return false;
+	}
+	
+	private boolean evaluate(Node[] args) {
+		boolean and_value = ((Node_Literal) args[0]).getLiteralValue().equals(Boolean.TRUE) ? true : false;
+		
+		for(int i = 1; i < args.length - 1 ; i++ ) 
+			and_value &= ((Node_Literal) args[i]).getLiteralValue().equals(Boolean.TRUE) ? true : false;
+		
+		
+		return and_value;
 	}
 	
 

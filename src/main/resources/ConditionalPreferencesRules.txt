@@ -185,5 +185,5 @@
 ,(?user easyTV:hasPreference ?defPref)
 ->
 	print('Conditional preference', ?name,'is true')	
-	mergePref(?defPref, ?condPref)
+	//mergePref(?defPref, ?condPref)
 ]

@@ -9,27 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.certh.iti.easytv.rbmm.builtin.And;
-import com.certh.iti.easytv.rbmm.builtin.Equals;
-import com.certh.iti.easytv.rbmm.builtin.GreaterThan;
-import com.certh.iti.easytv.rbmm.builtin.GreaterThanEquals;
-import com.certh.iti.easytv.rbmm.builtin.LessThan;
-import com.certh.iti.easytv.rbmm.builtin.LessThanEquals;
-import com.certh.iti.easytv.rbmm.builtin.MergePreferences;
-import com.certh.iti.easytv.rbmm.builtin.NOT;
-import com.certh.iti.easytv.rbmm.builtin.NotEquals;
-import com.certh.iti.easytv.rbmm.builtin.OR;
-import com.certh.iti.easytv.rbmm.user.OntProfile;
-import com.certh.iti.easytv.rbmm.user.preference.OntPreference;
-import com.certh.iti.easytv.rbmm.webservice.RBMM_WebService;
-
-import org.apache.jena.atlas.json.JSON;
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
-import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
@@ -50,6 +31,22 @@ import org.apache.jena.reasoner.Reasoner;
 import org.apache.jena.reasoner.rulesys.BuiltinRegistry;
 import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
 import org.apache.jena.reasoner.rulesys.Rule;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.certh.iti.easytv.rbmm.builtin.And;
+import com.certh.iti.easytv.rbmm.builtin.Equals;
+import com.certh.iti.easytv.rbmm.builtin.GreaterThan;
+import com.certh.iti.easytv.rbmm.builtin.GreaterThanEquals;
+import com.certh.iti.easytv.rbmm.builtin.LessThan;
+import com.certh.iti.easytv.rbmm.builtin.LessThanEquals;
+import com.certh.iti.easytv.rbmm.builtin.MergePreferences;
+import com.certh.iti.easytv.rbmm.builtin.NOT;
+import com.certh.iti.easytv.rbmm.builtin.NotEquals;
+import com.certh.iti.easytv.rbmm.builtin.OR;
+import com.certh.iti.easytv.rbmm.user.OntProfile;
+import com.certh.iti.easytv.rbmm.user.preference.OntPreference;
+import com.certh.iti.easytv.rbmm.webservice.RBMM_WebService;
 
 public class RuleReasoner {
 
@@ -59,13 +56,7 @@ public class RuleReasoner {
 	private OntModel model;
 	private Reasoner reasoner;
 	
-	private String ontologyFile;
-	private String[] rulesFile;
-	
 	public RuleReasoner(String ontologyFile, String[] rulesFile) throws IOException {
-		this.ontologyFile = ontologyFile;
-		this.rulesFile = rulesFile;
-		
 		//load built in
 		loadBuiltIn();
 		
@@ -170,25 +161,18 @@ public class RuleReasoner {
 	 */
 	public JSONObject infer(OntProfile profile) throws IOException, JSONException {
 		
-		//load user into ontology
-		Individual UserProfileIndividual = profile.createOntologyInstance(model);
+		profile.createOntologyInstance(model);
 		
 		//run rules and get inferred model
 		InfModel infModel = ModelFactory.createInfModel(reasoner, model);
 		
 		//retrieve user preferences
-		JSONObject inferedPreferences = getUserPreferences(infModel);
+		JSONObject inferedPreferences = getConditionalPreferences(infModel);
 		
 		//retrieve user suggested preferences
 		JSONObject suggesteddPreferences = getSuggestedUserPreference(infModel);
 		
 		JSONObject jsonProfile = profile.getProfile().getJSONObject();
-		
-		//update user preferences
-		JSONObject newUserprofile = updateUserPreferences(jsonProfile.getJSONObject("user_profile")
-																     .getJSONObject("user_preferences")
-														   		     .getJSONObject("default")
-														   		     .getJSONObject("preferences"), inferedPreferences);
 		
 		//remove context if exists
 		jsonProfile.remove("user_context");
@@ -203,81 +187,19 @@ public class RuleReasoner {
 		jsonProfile.getJSONObject("user_profile")
 				   .getJSONObject("user_preferences")
 		   		   .getJSONObject("default")
-		   		   .put("preferences", newUserprofile);
+		   		   .put("preferences", inferedPreferences);
 		
 		//add recommendations
 		jsonProfile.getJSONObject("user_profile")
 		   		   .getJSONObject("user_preferences")
 		   		   .put("recommendations", new JSONObject().put("preferences", suggesteddPreferences));
 		
+
 		
 		return jsonProfile;
 	}
-
-	/**
-	 * 
-	 * @param json
-	 * @return
-	 * @throws IOException
-	 * @throws JSONException 
-	 */
-	private static JSONObject updateUserPreferences(JSONObject userPreferences, JSONObject inferedPref) throws IOException, JSONException {
-		
-		JSONObject newPref = new JSONObject();
-		String[] fields = JSONObject.getNames(inferedPref);
-
-		for(String key : fields) { 
-			
-			Object value2 = inferedPref.get(key);
-			
-			if(!userPreferences.has(key)) {
-				newPref.put(key, value2);
-			} else {
-				
-				boolean add = false;
-				Object value1 = userPreferences.get(key);
-				
-				 if(Double.class.isInstance(value1)) {
-					double val1 = (double) value1;
-					double val2;
-					
-					if(Integer.class.isInstance(value2))
-						val2 = (Integer) value2 * 0.1;
-					else 
-						val2 = (double) value2;
-					
-					add = val1 != val2;	
-				} else if(Integer.class.isInstance(value1)) {
-					int val1 = (int) value1;
-					int val2;
-					
-					if(Double.class.isInstance(value2))
-						val2 = ((Double) value2).intValue();
-					else 
-						val2 = (int) value2;
-					
-					add = val1 != val2;		
-				 } else {
-					add = !value1.equals(value2);	
-				 } 
-				 
-
-				if(add) newPref.put(key, value2);
-
-			}
-		}
-		
-		return newPref;
-	}
 	
-	/**
-	 * Makes a query to the data model and retrieve user preferences properties
-	 * 
-	 * @param model
-	 * @param property
-	 * @return
-	 */
-	private JSONObject getUserPreferences(Model model) {
+	private JSONObject getConditionalPreferences(Model model) {
 		
 		JSONObject json = new JSONObject();
 		
@@ -286,8 +208,10 @@ public class RuleReasoner {
 				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
 				+ "SELECT ?has ?result " 
 				+ "WHERE {"
-					+ "?pref rdf:type easyTV:UserPreferences ." 
-					+ "?pref ?has ?result ." 
+					+ "?condPref rdf:type easyTV:ConditionalPreference ."
+					+ "?condPref easyTV:hasConditions ?cond ." 
+					+ "?cond easyTV:isTrue true ." 
+					+ "?condPref ?has ?result ." 
 					+ "?has rdf:type  rdf:Property ." 
 				+ "}";
 		
@@ -295,7 +219,6 @@ public class RuleReasoner {
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet res = qe.execSelect();
 
-		Literal result = null;
 		while (res.hasNext()) {
 			QuerySolution s = res.next();
 			RDFNode result_node = s.get("result");
@@ -327,7 +250,8 @@ public class RuleReasoner {
 				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
 				+ "SELECT ?has ?result " 
 				+ "WHERE {"
-					+ "?pref  rdf:type easyTV:SuggestedPreferences ." 
+					+ "?user rdf:type easyTV:User ."
+					+ "?user easyTV:hasSuggestedPreferences ?pref ." 
 					+ "?pref ?has ?result ." 
 					+ "?has rdf:type  rdf:Property ."  
 				+ "}";
@@ -337,7 +261,6 @@ public class RuleReasoner {
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet res = qe.execSelect();
 
-		Literal result = null;
 		while (res.hasNext()) {
 			QuerySolution s = res.next();
 			RDFNode result_node = s.get("result");

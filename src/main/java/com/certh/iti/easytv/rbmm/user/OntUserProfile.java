@@ -20,7 +20,7 @@ public class OntUserProfile implements Ontological{
 	public static final String HAS_PREFERENCE_PROP = NAMESPACE + "hasPreference";
 	public static final String HAS_CONTEXT_PROP = NAMESPACE + "hasContext";
 	public static final String HAS_SUGGESTED_PREFERENCES_PROP = NAMESPACE + "hasSuggestedPreferences";
-	
+
 
 	
 	private UserProfile UserProfile = null;
@@ -58,8 +58,10 @@ public class OntUserProfile implements Ontological{
 		userIndividual.addProperty(hasPreferences, userPreferences.createOntologyInstance(model));	
 		
 		//Add suggested preferences
+		OntClass suggestedPreferences = model.getOntClass(NAMESPACE + "SuggestedPreferences");
 		Property hasSuggestedPreferences = model.getProperty(HAS_SUGGESTED_PREFERENCES_PROP);
-		userIndividual.addProperty(hasSuggestedPreferences, new SuggestedPreferences().createOntologyInstance(model));	
+		userIndividual.addProperty(hasSuggestedPreferences, suggestedPreferences.createIndividual());	
+		
 
 		return userIndividual;
 	}
