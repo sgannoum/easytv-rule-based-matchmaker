@@ -45,14 +45,37 @@ public class OntUserContext implements Ontological{
 	
 	@Override
 	public Individual createOntologyInstance(OntModel model, Individual userContextInstance) {
-		
 		Map<String, Object> context = userContext.getContext();
 		
-		Property hasTimeProperty = model.getProperty(HAS_TIME_PROP);
-		userContextInstance.addProperty(hasTimeProperty, model.createTypedLiteral(context.get("http://registry.easytv.eu/context/time")));
+		//TODO add all other preferences
 		
-		Property hasLocationProperty = model.getProperty(HAS_LOCATION_PROP);
-		userContextInstance.addProperty(hasLocationProperty, model.createTypedLiteral(context.get("http://registry.easytv.eu/context/location")));
+/*		if(context.containsKey("http://registry.easytv.eu/context/device")) {
+			Property hasTimeProperty = model.getProperty(HAS_TIME_PROP);
+			userContextInstance.addProperty(hasTimeProperty, model.createTypedLiteral(context.get("http://registry.easytv.eu/context/time")));
+		}
+*/
+		
+/*		if(context.containsKey("http://registry.easytv.eu/context/light")) {
+			Property hasTimeProperty = model.getProperty(HAS_TIME_PROP);
+			userContextInstance.addProperty(hasTimeProperty, model.createTypedLiteral(context.get("http://registry.easytv.eu/context/time")));
+		}
+*/
+		
+/*		if(context.containsKey("http://registry.easytv.eu/context/proximity")) {
+			Property hasTimeProperty = model.getProperty(HAS_TIME_PROP);
+			userContextInstance.addProperty(hasTimeProperty, model.createTypedLiteral(context.get("http://registry.easytv.eu/context/time")));
+		}
+*/
+		
+		if(context.containsKey("http://registry.easytv.eu/context/time")) {
+			Property hasTimeProperty = model.getProperty(HAS_TIME_PROP);
+			userContextInstance.addProperty(hasTimeProperty, model.createTypedLiteral(context.get("http://registry.easytv.eu/context/time")));
+		}
+		
+		if(context.containsKey("http://registry.easytv.eu/context/location")) {
+			Property hasLocationProperty = model.getProperty(HAS_LOCATION_PROP);
+			userContextInstance.addProperty(hasLocationProperty, model.createTypedLiteral(context.get("http://registry.easytv.eu/context/location")));
+		}
 		
 		return userContextInstance;
 	}
