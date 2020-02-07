@@ -7,11 +7,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
+import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
+import org.apache.jena.ontology.OntProperty;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
@@ -31,6 +34,7 @@ import org.apache.jena.reasoner.Reasoner;
 import org.apache.jena.reasoner.rulesys.BuiltinRegistry;
 import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
 import org.apache.jena.reasoner.rulesys.Rule;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,9 +48,16 @@ import com.certh.iti.easytv.rbmm.builtin.MergePreferences;
 import com.certh.iti.easytv.rbmm.builtin.NOT;
 import com.certh.iti.easytv.rbmm.builtin.NotEquals;
 import com.certh.iti.easytv.rbmm.builtin.OR;
+import com.certh.iti.easytv.rbmm.rules.RuleUtils;
+import com.certh.iti.easytv.rbmm.user.Content;
 import com.certh.iti.easytv.rbmm.user.OntProfile;
+import com.certh.iti.easytv.rbmm.user.OntUserContext;
 import com.certh.iti.easytv.rbmm.user.preference.OntPreference;
 import com.certh.iti.easytv.rbmm.webservice.RBMM_WebService;
+import com.certh.iti.easytv.user.UserContent;
+import com.certh.iti.easytv.user.UserContext;
+import com.certh.iti.easytv.user.preference.Preference;
+import com.certh.iti.easytv.user.preference.attributes.Attribute;
 
 public class RuleReasoner {
 
@@ -55,6 +66,8 @@ public class RuleReasoner {
 	protected RuleReasoner instance;
 	private OntModel model;
 	private Reasoner reasoner;
+	private List<Rule> otherRules;
+	private List<Rule> suggestionRules;
 	
 	public RuleReasoner(String ontologyFile, String[] rulesFile) throws IOException {
 		//load built in
@@ -63,31 +76,96 @@ public class RuleReasoner {
 		//load model
 		model = loadModel(ontologyFile);
 		
-		//load rules
-		reasoner = loadRules(rulesFile);
+		//load predicates
+		model = loadPredicates(model);
+		
+		//load other rules
+		this.otherRules = loadRules(rulesFile);
+		
+		//load suggestions rules
+		this.suggestionRules = loadRules("SuggestionsRules.txt");
+		
+		List<Rule> allRules = new ArrayList<Rule>();
+		allRules.addAll(otherRules);
+		allRules.addAll(suggestionRules);
+		
+		//Create generic reasoner 
+		this.reasoner = new GenericRuleReasoner(allRules);
+
+	}
+	
+	public RuleReasoner(String ontologyFile, String suggestionFile, String[] rulesFile) throws IOException {
+		//load built in
+		loadBuiltIn();
+		
+		//load model
+		model = loadModel(ontologyFile);
+		
+		//load predicates
+		model = loadPredicates(model);
+		
+		//load other rules
+		this.otherRules = loadRules(rulesFile);
+		
+		//load suggestions rules
+		this.suggestionRules = loadRules(suggestionFile);
+		
+		List<Rule> allRules = new ArrayList<Rule>();
+		allRules.addAll(otherRules);
+		allRules.addAll(suggestionRules);
+		
+		//Create generic reasoner 
+		this.reasoner = new GenericRuleReasoner(allRules);
+	}
+	
+
+	public OntModel getOntModel() {
+		return model;
+	}
+	
+	private void loadBuiltIn() {
+		//Register builds in functions
+		BuiltinRegistry.theRegistry.register("NE", new NotEquals());
+		BuiltinRegistry.theRegistry.register("EQ", new Equals());
+		BuiltinRegistry.theRegistry.register("GT", new GreaterThan());
+		BuiltinRegistry.theRegistry.register("GE", new GreaterThanEquals());
+		BuiltinRegistry.theRegistry.register("LT", new LessThan());
+		BuiltinRegistry.theRegistry.register("LE", new LessThanEquals());
+		BuiltinRegistry.theRegistry.register("and", new And());
+		BuiltinRegistry.theRegistry.register("or", new OR());
+		BuiltinRegistry.theRegistry.register("not", new NOT());
+		BuiltinRegistry.theRegistry.register(new MergePreferences());
+	}
+	
+	/**
+	 * Get current loaded rules
+	 * @return
+	 */
+	public JSONArray getRules() {
+		JSONArray jsonRules = new JSONArray();
+		for(Rule rule : suggestionRules) {
+			JSONObject jsonRule = RuleUtils.convert(rule);
+			jsonRules.put(jsonRule);
+		}
+		
+		return jsonRules;
 	}
 	
 	/**
 	 * Update rules
 	 */
-	public void updateRules() {
-		//TO-DO 
+	public void updateRules(JSONArray jsonRules) {
+		
+		this.suggestionRules = RuleUtils.convert(jsonRules);
+		
+		List<Rule> allRules = new ArrayList<Rule>();
+		allRules.addAll(otherRules);
+		allRules.addAll(suggestionRules);
+		
+		//Create generic reasoner 
+		this.reasoner = new GenericRuleReasoner(allRules);
 	}
 	
-	
-	private void loadBuiltIn() {
-		//Register builds in functions
-		BuiltinRegistry.theRegistry.register(new NotEquals());
-		BuiltinRegistry.theRegistry.register(new Equals());
-		BuiltinRegistry.theRegistry.register(new GreaterThan());
-		BuiltinRegistry.theRegistry.register(new GreaterThanEquals());
-		BuiltinRegistry.theRegistry.register(new LessThan());
-		BuiltinRegistry.theRegistry.register(new LessThanEquals());
-		BuiltinRegistry.theRegistry.register(new And());
-		BuiltinRegistry.theRegistry.register(new OR());
-		BuiltinRegistry.theRegistry.register(new NOT());
-		BuiltinRegistry.theRegistry.register(new MergePreferences());
-	}
 	
 	/**
 	 * Load OWL model from the give file.
@@ -123,6 +201,57 @@ public class RuleReasoner {
 		return model;
 	}
 	
+	
+	/**
+	 * Define predicate for preferences, context and content
+	 * @param ontModel
+	 */
+	public OntModel loadPredicates(OntModel ontModel) {
+		
+		OntClass userPreferences = ontModel.getOntClass("http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences");
+		OntClass userContext = ontModel.getOntClass("http://www.owl-ontologies.com/OntologyEasyTV.owl#UserContext");
+		OntClass content = ontModel.getOntClass("http://www.owl-ontologies.com/OntologyEasyTV.owl#Content");
+
+		//add preference predicates
+		for(Entry<String, Attribute> entry :  Preference.preferencesAttributes.entrySet()) {
+			Attribute value = entry.getValue();
+			String key = entry.getKey();
+			String uri =  OntPreference.getDataProperty(key);
+			OntProperty propertyImple =  ontModel.createOntProperty(uri);
+			Resource range = ontModel.getResource(value.getXMLDataTypeURI());
+			
+			propertyImple.addDomain(userPreferences);
+			propertyImple.setRange(range);
+		}
+		
+		//add context predicates
+		for(Entry<String, Attribute> entry :  UserContext.contextAttributes.entrySet()) {
+			Attribute value = entry.getValue();
+			String key = entry.getKey();
+			String uri =  OntUserContext.getDataProperty(key);
+			OntProperty propertyImple =  ontModel.createOntProperty(uri);
+			Resource range = ontModel.getResource(value.getXMLDataTypeURI());
+			
+			propertyImple.addDomain(userContext);
+			propertyImple.setRange(range);
+		}
+		
+		//add content
+		for(Entry<String, Attribute> entry :  UserContent.content_attributes.entrySet()) {
+			Attribute value = entry.getValue();
+			String key = entry.getKey();
+			String uri =  Content.getDataProperty(key);
+			OntProperty propertyImple =  ontModel.createOntProperty(uri);
+			Resource range = ontModel.getResource(value.getXMLDataTypeURI());
+			
+			propertyImple.addDomain(content);
+			propertyImple.setRange(range);
+		}
+		
+		return ontModel;
+		
+	}
+	
 	/**
 	 * Load rules from files.
 	 * 
@@ -130,25 +259,35 @@ public class RuleReasoner {
 	 * @return
 	 * @throws IOException
 	 */
-	public Reasoner loadRules(String[] rulesFile) throws IOException {
+	public List<Rule> loadRules(String[] rulesFile) throws IOException {
 		// load files with rules
+		List<Rule> rules = new ArrayList<Rule>();
+		
+		for(String fname : rulesFile) 
+			rules.addAll(loadRules(fname));
+		
+		return rules;
+	}
+	
+	/**
+	 * Load rules from files.
+	 * 
+	 * @param rulesFile
+	 * @return
+	 * @throws IOException
+	 */
+	public List<Rule> loadRules(String fname) throws IOException {
+
 		List<Rule> rules = new ArrayList<Rule>();
 		ClassLoader classLoader = getClass().getClassLoader();
 		
-		for(String fname : rulesFile) {
-			File file = new File(classLoader
-								.getResource(fname)
-								.getFile());
-			
-			logger.info("Loadeding rules file..."+file.getName());
-			
-			rules.addAll(Rule.rulesFromURL(file.getCanonicalPath()));
-		}
-
-		//Create generic reasoner 
-		Reasoner reasoner = new GenericRuleReasoner(rules);
+		File file = new File(classLoader
+							.getResource(fname)
+							.getFile());
 		
-		return reasoner;
+		logger.info("Loadeding rules file..."+file.getName());
+		rules.addAll(Rule.rulesFromURL(file.getCanonicalPath()));
+		return rules;
 	}
 	
 	/**

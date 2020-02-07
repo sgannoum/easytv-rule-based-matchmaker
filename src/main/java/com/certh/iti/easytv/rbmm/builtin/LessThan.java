@@ -15,6 +15,11 @@ public class LessThan extends ComparatorBuiltin {
 	public String getName() {
 		return "lessThan";
 	}
+	
+	@Override
+	public String toString() {
+		return "LT";
+	}
 
 	public String getURI() {
 		return null;

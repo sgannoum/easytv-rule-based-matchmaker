@@ -7,6 +7,8 @@ import org.apache.jena.rdf.model.Property;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.certh.iti.easytv.user.UserContent;
+
 public class Content implements Ontological {
 
 	private boolean faceDetection = false;  
@@ -18,18 +20,37 @@ public class Content implements Ontological {
     private JSONObject jsonObj = null;
 	
 	public static final String ONTOLOGY_CLASS_URI = NAMESPACE + "Content";
-	
-	//Object properties
-	public static final String HAS_FACE_DETECTION_PROP = NAMESPACE + "hasFaceDetection";
-	public static final String HAS_TEXT_DETECTION_PROP = NAMESPACE + "hasTextDetectuib";
-	public static final String HAS_SOUND_DETECTION_PROP = NAMESPACE + "hasSoundDetection";
-	public static final String HAS_CHARACTER_RECOGNITION_PROP = NAMESPACE + "hasCharacterRecognition";
-	public static final String HAS_SUBTITLE_LANGUAGE_PROP = NAMESPACE + "hasSubtitleLanguage";
-	public static final String HAS_AUDIO_LANGUAGE_PROP = NAMESPACE + "hasAudioLanguage";
+
 
 	
 	public Content(JSONObject json) {
 		setJSONObject(json);
+	}
+	
+	/**
+	 * 
+	 * @param dataProperty
+	 * @return
+	 */
+	public static String getURI(String dataProperty) {
+		String uri = dataProperty.replace(Ontological.NAMESPACE, "http://registry.easytv.eu/").replace("has_", "").replace("_", "/");
+		
+		if(!UserContent.content_attributes.containsKey(uri))
+			throw new IllegalArgumentException("Unknown context uri "+uri);
+		
+		return uri;
+	}
+	
+	/**
+	 * 
+	 * @param uri
+	 * @return
+	 */
+	public static String getDataProperty(String uri) {
+		if(!UserContent.content_attributes.containsKey(uri))
+			throw new IllegalArgumentException("Unknown context uri "+uri);
+		
+		return Ontological.NAMESPACE + uri.replaceAll("http://registry.easytv.eu/", "has_").replace("/","_");
 	}
 	
 	public JSONObject getJSONObject() {
@@ -129,31 +150,31 @@ public class Content implements Ontological {
 		
 		//add face detection
 		if(faceDetection) {
-			Property hasFaceDetectionProperty = model.getProperty(HAS_FACE_DETECTION_PROP);
+			Property hasFaceDetectionProperty = model.getProperty(getDataProperty("http://registry.easytv.eu/application/cs/accessibility/detection/face"));
 			individual.addProperty(hasFaceDetectionProperty, model.createTypedLiteral(faceDetection));
 		}
 		
 		//add text detection
 		if(textDetection) {
-			Property hasTextDetectionProperty = model.getProperty(HAS_TEXT_DETECTION_PROP);
+			Property hasTextDetectionProperty = model.getProperty(getDataProperty("http://registry.easytv.eu/application/cs/accessibility/detection/text"));
 			individual.addProperty(hasTextDetectionProperty, model.createTypedLiteral(textDetection));
 		}
 		
 		//add sound detection
 		if(soundDetection) {
-			Property hasSoundDetectionProperty = model.getProperty(HAS_SOUND_DETECTION_PROP);
+			Property hasSoundDetectionProperty = model.getProperty(getDataProperty("http://registry.easytv.eu/application/cs/accessibility/detection/sound"));
 			individual.addProperty(hasSoundDetectionProperty, model.createTypedLiteral(soundDetection));
 		}
 		
 		//add character recognition
 		if(characterRecognition) {
-			Property hasCharacterRecognitionProperty = model.getProperty(HAS_CHARACTER_RECOGNITION_PROP);
+			Property hasCharacterRecognitionProperty = model.getProperty(getDataProperty("http://registry.easytv.eu/application/cs/accessibility/detection/character"));
 			individual.addProperty(hasCharacterRecognitionProperty, model.createTypedLiteral(characterRecognition));
 		}
 		
 		//add subtitle language
 		if(subtitileLanguage != null) {
-			Property hasSubtitleLanguageProperty = model.getProperty(HAS_SUBTITLE_LANGUAGE_PROP);
+			Property hasSubtitleLanguageProperty = model.getProperty(getDataProperty("http://registry.easytv.eu/application/cs/cc/subtitles/language"));
 			
 			for(String lang : subtitileLanguage)
 				individual.addProperty(hasSubtitleLanguageProperty, model.createTypedLiteral(lang));
@@ -161,7 +182,7 @@ public class Content implements Ontological {
 		
 		//add audio language
 		if(audioLanguage != null) {
-			Property hasAudioLanguageProperty = model.getProperty(HAS_AUDIO_LANGUAGE_PROP);
+			Property hasAudioLanguageProperty = model.getProperty(getDataProperty("http://registry.easytv.eu/application/cs/audio/track"));
 			
 			for(String lang : audioLanguage)
 				individual.addProperty(hasAudioLanguageProperty, model.createTypedLiteral(lang));
@@ -169,7 +190,5 @@ public class Content implements Ontological {
 		
 		return individual;
 	}
-
-
 
 }

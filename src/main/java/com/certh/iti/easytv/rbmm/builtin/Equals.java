@@ -14,6 +14,11 @@ public class Equals extends ComparatorBuiltin {
 	public String getName() {
 		return "equals";
 	}
+	
+	@Override
+	public String toString() {
+		return "EQ";
+	}
 
 	public String getURI() {
 		return null;

@@ -41,7 +41,7 @@ public class NotEqualsRulesTest {
 		    ",(?user "+OntUserProfile.HAS_PREFERENCE_PROP+" ?pref)" + 
 		    ",(?pref ?type ?nodeValue)" + 
 		    "->" + 
-			"	notEquals(?nodeValue, ?value, ?res)"+
+			"	NE(?nodeValue, ?value, ?res)"+
 		    "	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?res)" +
 		    "	print('Not equals', ?nodeValue, ?value, ?res)"+
 		    "]" +
@@ -53,7 +53,7 @@ public class NotEqualsRulesTest {
 		    ",(?user "+OntUserProfile.HAS_CONTEXT_PROP+" ?context)" + 
 		    ",(?context ?type ?nodeValue)" + 
 		    "->" + 
-			"	notEquals(?nodeValue, ?value, ?res)"+
+			"	NE(?nodeValue, ?value, ?res)"+
 		    "	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?res)" +
 		    "	print('Not equals', ?nodeValue, ?value, ?res)"+
 		    "]"
@@ -66,14 +66,14 @@ public class NotEqualsRulesTest {
 		model = ModelFactory.createOntologyModel();
 		InputStream in = new FileInputStream(file);
 		model = (OntModel) model.read(in, null, "");
-		BuiltinRegistry.theRegistry.register(new NotEquals());
+		BuiltinRegistry.theRegistry.register("NE", new NotEquals());
 		System.out.println("Ontology was loaded");
 		
 		//user context
 		OntClass userContextClass = model.getOntClass(OntUserContext.ONTOLOGY_CLASS_URI);
 		Individual  userContextInstance = userContextClass.createIndividual();
 		
-		Property hasTimeProperty = model.getProperty(OntUserContext.HAS_TIME_PROP);
+		Property hasTimeProperty = model.getProperty(OntUserContext.getDataProperty("http://registry.easytv.eu/context/time"));
 		userContextInstance.addProperty(hasTimeProperty, model.createTypedLiteral("2019-05-30T09:47:47.619Z"));
 		
 		
@@ -81,7 +81,7 @@ public class NotEqualsRulesTest {
 		OntClass userPreferenceClass = model.getOntClass(OntUserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(OntPreference.hasVolume);
+		Property hasAudioVolumeProperty = model.getProperty(OntPreference.getDataProperty("http://registry.easytv.eu/common/volume"));
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
 		OntClass userClass = model.getOntClass(OntUserProfile.ONTOLOGY_CLASS_URI);
@@ -156,7 +156,7 @@ public class NotEqualsRulesTest {
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(OntCondition.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(OntPreference.getDataProperty("http://registry.easytv.eu/context/time")));
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(OntUserContext.getDataProperty("http://registry.easytv.eu/context/time")));
 				
 		Property hasValueProperty = model.getProperty(OntCondition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral("2019-06-30T09:47:47.619Z" ));
@@ -183,7 +183,7 @@ public class NotEqualsRulesTest {
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(OntCondition.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(OntPreference.getDataProperty("http://registry.easytv.eu/context/time")));
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(OntUserContext.getDataProperty("http://registry.easytv.eu/context/time")));
 				
 		Property hasValueProperty = model.getProperty(OntCondition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral("2019-05-30T09:47:47.619Z" ));

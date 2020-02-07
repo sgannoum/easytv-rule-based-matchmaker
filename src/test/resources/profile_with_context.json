@@ -15,8 +15,6 @@
                         "http://registry.easytv.eu/application/cs/ui/text/size": "20",
                         "http://registry.easytv.eu/application/tts/audio/speed": 0,
                         "http://registry.easytv.eu/application/tts/audio/voice": "male",
-                        "http://registry.easytv.eu/application/cs/audio/eq/bass": -4,
-                        "http://registry.easytv.eu/application/cs/audio/eq/mids": 5,
                         "http://registry.easytv.eu/application/tts/audio/volume": 90
 				}		
 			},

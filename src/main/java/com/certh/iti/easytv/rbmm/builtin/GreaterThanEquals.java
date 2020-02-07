@@ -16,6 +16,11 @@ public class GreaterThanEquals extends ComparatorBuiltin {
 		return "greaterThanEquals";
 	}
 
+	@Override
+	public String toString() {
+		return "GE";
+	}
+	
 	public String getURI() {
 		return null;
 	}

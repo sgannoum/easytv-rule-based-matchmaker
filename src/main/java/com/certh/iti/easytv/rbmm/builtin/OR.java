@@ -14,6 +14,11 @@ public class OR implements Builtin {
 	public String getName() {
 		return "or";
 	}
+	
+	@Override
+	public String toString() {
+		return "OR";
+	}
 
 	public String getURI() {
 		return null;

@@ -58,5 +58,10 @@ public class NOT implements Builtin {
 		return false;
 	}
 	
+	@Override
+	public String toString() {
+		return "NOT";
+	}
+	
 
 }

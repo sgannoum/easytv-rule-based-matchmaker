@@ -8,6 +8,7 @@ import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Property;
 
+import com.certh.iti.easytv.rbmm.user.OntUserContext;
 import com.certh.iti.easytv.rbmm.user.Ontological;
 import com.certh.iti.easytv.user.preference.Condition;
 
@@ -98,7 +99,7 @@ public class OntCondition implements Ontological {
 																			
 					//set type
 					Property hasTypeProperty = model.getProperty(HAS_TYPE_PROP);
-					operandInstance.addProperty(hasTypeProperty, model.createProperty(OntPreference.getDataProperty(uri)));
+					operandInstance.addProperty(hasTypeProperty, model.createProperty(OntUserContext.getDataProperty(uri)));
 					//set value
 					Property hasValueProperty = model.getProperty(HAS_VALUE_PROP);
 					operandInstance.addProperty(hasValueProperty, model.createTypedLiteral(value));

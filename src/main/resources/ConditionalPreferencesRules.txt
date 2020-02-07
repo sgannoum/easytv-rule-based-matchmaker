@@ -40,7 +40,7 @@
 ,(?user easyTV:hasPreference ?pref)
 ,(?pref ?type ?nodeValue)
 ->
-	equals(?nodeValue, ?value, ?res)	
+	EQ(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
 	print('Equals', ?nodeValue, ?value, ?res)
 ]
@@ -52,7 +52,7 @@
 ,(?user easyTV:hasContext ?context)
 ,(?context ?type ?nodeValue)
 ->
-	equals(?nodeValue, ?value, ?res)	
+	EQ(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
 	print('Equals', ?type, ?nodeValue, ?value, ?res)
 ]
@@ -64,7 +64,7 @@
 ,(?user easyTV:hasPreference ?pref)
 ,(?pref ?type ?nodeValue)
 ->
-	notEquals(?nodeValue, ?value, ?res)	
+	NE(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
 	print('Not equals', ?nodeValue, ?value, ?res)
 ]
@@ -76,7 +76,7 @@
 ,(?user easyTV:hasContext ?context)
 ,(?context ?type ?nodeValue)
 ->
-	notEquals(?nodeValue, ?value, ?res)	
+	NE(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
 	print('Not equals', ?nodeValue, ?value, ?res)
 ]
@@ -88,7 +88,7 @@
 ,(?user easyTV:hasPreference ?pref)
 ,(?pref ?type ?nodeValue)
 ->
-	greaterThan(?nodeValue, ?value, ?res)	
+	GT(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
 	print('Greater Than', ?nodeValue, ?value, ?res)
 ]
@@ -100,7 +100,7 @@
 ,(?user easyTV:hasContext ?context)
 ,(?context ?type ?nodeValue)
 ->
-	greaterThan(?nodeValue, ?value, ?res)	
+	GT(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
 	print('Greater Than', ?nodeValue, ?value, ?res)
 ]
@@ -112,7 +112,7 @@
 ,(?user easyTV:hasPreference ?pref)
 ,(?pref ?type ?nodeValue)
 ->
-	greaterThanEquals(?nodeValue, ?value, ?res)	
+	GE(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
 	print('Greater than equals', ?nodeValue, ?value, ?res)
 ]
@@ -124,7 +124,7 @@
 ,(?user easyTV:hasContext ?context)
 ,(?context ?type ?nodeValue)
 ->
-	greaterThanEquals(?nodeValue, ?value, ?res)	
+	GE(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
 	print('Greater than equals', ?nodeValue, ?value, ?res)
 ]
@@ -136,7 +136,7 @@
 ,(?user easyTV:hasPreference ?pref)
 ,(?pref ?type ?nodeValue)
 ->
-	lessThan(?nodeValue, ?value, ?res)	
+	LT(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
 	print('Less than', ?nodeValue, ?value, ?res)
 ]
@@ -148,7 +148,7 @@
 ,(?user easyTV:hasContext ?context)
 ,(?context ?type ?nodeValue)
 ->
-	lessThan(?nodeValue, ?value, ?res)	
+	LT(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
 	print('Less than', ?nodeValue, ?value, ?res)
 ]
@@ -160,7 +160,7 @@
 ,(?user easyTV:hasPreference ?pref)
 ,(?pref ?type ?nodeValue)
 ->
-	lessThanEquals(?nodeValue, ?value, ?res)	
+	LE(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
 	print('Less than equals', ?nodeValue, ?value, ?res)
 ]
@@ -172,7 +172,7 @@
 ,(?user easyTV:hasContext ?context)
 ,(?context ?type ?nodeValue)
 ->
-	lessThanEquals(?nodeValue, ?value, ?res)	
+	LE(?nodeValue, ?value, ?res)	
 	(?cond easyTV:isTrue ?res)	
 	print('Less than equals', ?nodeValue, ?value, ?res)
 ]

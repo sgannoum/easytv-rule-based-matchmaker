@@ -1,7 +1,10 @@
 package com.certh.iti.easytv.rbmm.webservice;
 
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -11,10 +14,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
+import org.apache.jena.reasoner.rulesys.Rule;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.certh.iti.easytv.rbmm.reasoner.RuleReasoner;
+import com.certh.iti.easytv.rbmm.rules.RuleUtils;
 import com.certh.iti.easytv.rbmm.user.OntProfile;
 import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 
@@ -42,21 +48,25 @@ public class RBMM_WebService
     @Path("personalize/rules")
     public Response getRules() throws IOException, JSONException
     {
-    	logger.info("personalize/rules request");
-    	
-/*    	char[] content = new char[1024 * 3];
-		File file = new File(this.getClass().getClassLoader().getResource(RULES_FILE).getFile());
-		FileReader reader = new FileReader(file);
-
-		reader.read(content);
-		reader.close();
+    	logger.info("get rules request...");
+		
+		//convert to json array
+		JSONArray jsonRules = ruleReasoner.getRules();
 				
-		GenericEntity<String> entity = new GenericEntity<String>(new String(content)) {};
-
-        return Response.status(200).entity(entity).build();*/
-        
+        return Response.status(200).entity(jsonRules).build();
+    }
+    
+    @POST
+    @Path("personalize/rules")
+    @Consumes("application/json")
+    public Response postRules(Object tmpInput) throws IOException, JSONException
+    {
+    	logger.info("post rules request...");
+    	
+    	JSONArray jsonRules = new JSONArray(tmpInput);
+    	ruleReasoner.updateRules(jsonRules);
+				
         return Response.status(200).build();
-
     }
 	
     @POST
@@ -64,7 +74,7 @@ public class RBMM_WebService
     @Consumes("application/json")
     public Response personalizeProfile(Object tmpInput) throws IOException, JSONException
     {
-    	logger.info("Personalize profile request");
+    	logger.info("Personalize profile request...");
     	
     	JSONObject response;
     	JSONObject json = new JSONObject((Map<?, ?>)tmpInput);	
@@ -116,7 +126,7 @@ public class RBMM_WebService
     public Response personalizeContext(Object tmpInput) throws IOException, JSONException
     {
     	
-    	logger.info("Personalize context request");
+    	logger.info("Personalize context request...");
 
     	
     	JSONObject response;
@@ -175,7 +185,7 @@ public class RBMM_WebService
     public Response personalizeContent(Object tmpInput) throws IOException, JSONException
     {
     	
-    	logger.info("Personalize content request");
+    	logger.info("Personalize content request...");
 
     	JSONObject response;
     	JSONObject json = new JSONObject((Map<?, ?>)tmpInput);	

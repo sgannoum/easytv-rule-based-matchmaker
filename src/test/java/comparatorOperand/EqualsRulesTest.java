@@ -23,6 +23,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.certh.iti.easytv.rbmm.builtin.Equals;
+import com.certh.iti.easytv.rbmm.user.OntUserContext;
 import com.certh.iti.easytv.rbmm.user.OntUserProfile;
 import com.certh.iti.easytv.rbmm.user.preference.OntCondition;
 import com.certh.iti.easytv.rbmm.user.preference.OntPreference;
@@ -40,7 +41,7 @@ public class EqualsRulesTest {
 		    ",(?user "+OntUserProfile.HAS_PREFERENCE_PROP+" ?pref)" + 
 		    ",(?pref ?type ?nodeValue)" + 
 		    "->" + 
-			"	equals(?nodeValue, ?value, ?res)"+
+			"	EQ(?nodeValue, ?value, ?res)"+
 		    "	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?res)" +
 		    "	print('Equals', ?nodeValue, ?value, ?res)"+
 		    "]" + 
@@ -52,7 +53,7 @@ public class EqualsRulesTest {
 		    ",(?user "+OntUserProfile.HAS_CONTEXT_PROP+" ?context)" + 
 		    ",(?context ?type ?nodeValue)" + 
 		    "->" + 
-			"	equals(?nodeValue, ?value, ?res)"+
+			"	EQ(?nodeValue, ?value, ?res)"+
 		    "	(?cond http://www.owl-ontologies.com/OntologyEasyTV.owl#isTrue ?res)" +
 		    "	print('Equals', ?type, ?nodeValue, ?value, ?res)"+
 		    "]"
@@ -65,7 +66,7 @@ public class EqualsRulesTest {
 		model = ModelFactory.createOntologyModel();
 		InputStream in = new FileInputStream(file);
 		model = (OntModel) model.read(in, null, "");
-		BuiltinRegistry.theRegistry.register(new Equals());
+		BuiltinRegistry.theRegistry.register("EQ", new Equals());
 		System.out.println("Ontology was loaded");
 		
 		//user context
@@ -96,9 +97,9 @@ public class EqualsRulesTest {
 		
 		//These statements replace the above ones
 		StringReader  str = new StringReader(
-				"_:userContextInstance <http://www.owl-ontologies.com/OntologyEasyTV.owl#hasTime> \"2019-05-30T09:47:47.619Z\" .\r\n" + 
+				"_:userContextInstance <"+OntUserContext.getDataProperty("http://registry.easytv.eu/context/time")+"> \"2019-05-30T09:47:47.619Z\" .\r\n" + 
 				"_:userContextInstance <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.owl-ontologies.com/OntologyEasyTV.owl#UserContext> .\r\n" + 
-				"_:userPreferenceInstance <http://www.owl-ontologies.com/OntologyEasyTV.owl#hasVolume> \"6\"^^<http://www.w3.org/2001/XMLSchema#int> .\r\n" + 
+				"_:userPreferenceInstance <"+OntPreference.getDataProperty("http://registry.easytv.eu/common/volume")+"> \"6\"^^<http://www.w3.org/2001/XMLSchema#int> .\r\n" + 
 				"_:userPreferenceInstance <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences> .\r\n" + 
 				"_:userInstance <http://www.owl-ontologies.com/OntologyEasyTV.owl#hasContext> _:userContextInstance .\r\n" + 
 				"_:userInstance <http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference> _:userPreferenceInstance .\r\n" + 
@@ -122,7 +123,7 @@ public class EqualsRulesTest {
 */
 		
 		StringReader  str = new StringReader(
-				"_:EqInstance <http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType> <http://www.owl-ontologies.com/OntologyEasyTV.owl#hasVolume> .\r\n" + 
+				"_:EqInstance <http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType> <"+OntPreference.getDataProperty("http://registry.easytv.eu/common/volume")+"> .\r\n" + 
 				"_:EqInstance <http://www.owl-ontologies.com/OntologyEasyTV.owl#hasValue> \"6\"^^<http://www.w3.org/2001/XMLSchema#int> .\r\n" + 
 				"_:EqInstance <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.owl-ontologies.com/OntologyEasyTV.owl#EQ> .\r\n");
 		model.read(str, null,"N-TRIPLE");
@@ -173,7 +174,7 @@ public class EqualsRulesTest {
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(OntCondition.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(OntPreference.getDataProperty("http://registry.easytv.eu/context/time")));
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(OntUserContext.getDataProperty("http://registry.easytv.eu/context/time")));
 				
 		Property hasValueProperty = model.getProperty(OntCondition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral("2019-05-30T09:47:47.619Z" ));
@@ -199,7 +200,7 @@ public class EqualsRulesTest {
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(OntCondition.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(OntPreference.getDataProperty("http://registry.easytv.eu/context/time")));
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(OntUserContext.getDataProperty("http://registry.easytv.eu/context/time")));
 				
 		Property hasValueProperty = model.getProperty(OntCondition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral("2014-12-12T10:39:40Z" ));

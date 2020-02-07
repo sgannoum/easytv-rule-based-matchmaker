@@ -14,6 +14,11 @@ public class GreaterThan extends ComparatorBuiltin {
 	public String getName() {
 		return "greaterThan";
 	}
+	
+	@Override
+	public String toString() {
+		return "GT";
+	}
 
 	public String getURI() {
 		return null;

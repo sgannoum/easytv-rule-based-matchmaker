@@ -16,6 +16,11 @@ public class LessThanEquals extends ComparatorBuiltin {
 		return "lessThanEquals";
 	}
 
+	@Override
+	public String toString() {
+		return "LE";
+	}
+	
 	public String getURI() {
 		return null;
 	}

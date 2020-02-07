@@ -4,7 +4,7 @@ import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
 
-public class SuggestedPreferences implements Ontological {
+public class OntSuggestedPreferences implements Ontological {
 	
 	private static final String NAMESPACE = "http://www.owl-ontologies.com/OntologyEasyTV.owl#";
 	public static final String ONTOLOGY_CLASS_URI = NAMESPACE + "SuggestedPreferences";

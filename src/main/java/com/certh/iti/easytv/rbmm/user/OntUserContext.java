@@ -1,6 +1,7 @@
 package com.certh.iti.easytv.rbmm.user;
 
 import java.util.Map;
+
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
@@ -16,10 +17,6 @@ public class OntUserContext implements Ontological{
 	
 	public static final String ONTOLOGY_CLASS_URI = NAMESPACE + "UserContext";
 	
-	//Object properties
-	public static final String HAS_TIME_PROP = NAMESPACE + "hasTime";
-	public static final String HAS_LOCATION_PROP = NAMESPACE + "hasLocation";
-	
 	
 	public OntUserContext(UserContext userContext) {
 		this.userContext = userContext;
@@ -31,6 +28,32 @@ public class OntUserContext implements Ontological{
 	
 	public UserContext getUserContext() {
 		return userContext;
+	}
+	
+	/**
+	 * 
+	 * @param dataProperty
+	 * @return
+	 */
+	public static String getURI(String dataProperty) {
+		String uri = dataProperty.replace(Ontological.NAMESPACE, "http://registry.easytv.eu/").replace("has_", "").replace("_", "/");
+		
+		if(!UserContext.contextAttributes.containsKey(uri))
+			throw new IllegalArgumentException("Unknown context uri "+uri);
+		
+		return uri;
+	}
+	
+	/**
+	 * 
+	 * @param uri
+	 * @return
+	 */
+	public static String getDataProperty(String uri) {
+		if(!UserContext.contextAttributes.containsKey(uri))
+			throw new IllegalArgumentException("Unknown context uri "+uri);
+		
+		return Ontological.NAMESPACE + uri.replaceAll("http://registry.easytv.eu/", "has_").replace("/","_");
 	}
 	
 	@Override
@@ -68,12 +91,12 @@ public class OntUserContext implements Ontological{
 */
 		
 		if(context.containsKey("http://registry.easytv.eu/context/time")) {
-			Property hasTimeProperty = model.getProperty(HAS_TIME_PROP);
+			Property hasTimeProperty = model.getProperty(getDataProperty("http://registry.easytv.eu/context/time"));
 			userContextInstance.addProperty(hasTimeProperty, model.createTypedLiteral(context.get("http://registry.easytv.eu/context/time")));
 		}
 		
 		if(context.containsKey("http://registry.easytv.eu/context/location")) {
-			Property hasLocationProperty = model.getProperty(HAS_LOCATION_PROP);
+			Property hasLocationProperty = model.getProperty(getDataProperty("http://registry.easytv.eu/context/location"));
 			userContextInstance.addProperty(hasLocationProperty, model.createTypedLiteral(context.get("http://registry.easytv.eu/context/location")));
 		}
 		

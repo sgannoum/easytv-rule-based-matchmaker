@@ -16,6 +16,11 @@ public class NotEquals extends ComparatorBuiltin {
 		return "notEquals";
 	}
 
+	@Override
+	public String toString() {
+		return "NE";
+	}
+	
 	public String getURI() {
 		return null;
 	}

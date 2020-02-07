@@ -69,5 +69,9 @@ public class And implements Builtin {
 		return and_value;
 	}
 	
+	@Override
+	public String toString() {
+		return "AND";
+	}
 
 }
