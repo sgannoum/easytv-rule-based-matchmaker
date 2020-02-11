@@ -49,8 +49,8 @@ public class UserContextTest {
 		    ",(?user "+OntUserProfile.HAS_PREFERENCE_PROP+" ?defPref)" +
 		    ",(?defPref "+OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/ui/text/size")+" ?audioVolume)" +
 		    ",(?defPref "+OntPreference.getDataProperty("http://registry.easytv.eu/common/display/screen/enhancement/cursor/size")+" ?cursorSize)" +
-			",equals(?audioVolume, '6'^^http://www.w3.org/2001/XMLSchema#integer, ?res1)" +
-			",equals(?cursorSize, '10'^^http://www.w3.org/2001/XMLSchema#integer, ?res2)" +
+			",EQ(?audioVolume, '6'^^http://www.w3.org/2001/XMLSchema#integer, ?res1)" +
+			",EQ(?cursorSize, '10'^^http://www.w3.org/2001/XMLSchema#integer, ?res2)" +
 			"->" + 
 			"	(?sugPref "+OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/cc/subtitles/background/color")+" '#ffffff'^^http://www.w3.org/2001/XMLSchema#string)" + 
 			"	(?sugPref "+OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/cc/subtitles/font/color")+" '#000000'^^http://www.w3.org/2001/XMLSchema#string)" + 
@@ -65,7 +65,7 @@ public class UserContextTest {
 		model = ModelFactory.createOntologyModel();
 		InputStream in = new FileInputStream(file);
 		model = (OntModel) model.read(in, null, "");
-		BuiltinRegistry.theRegistry.register(new Equals());
+		BuiltinRegistry.theRegistry.register("EQ", new Equals());
 		System.out.println("Ontology was loaded");
 		
 	}

@@ -56,7 +56,7 @@ public class UserTest {
 			" (?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)" + 
 			" (?pref "+OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/accessibility/magnification/scale")+" ?mg)" + 
 			" (?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" + 
-			" greaterThan(?mg, '1.0'^^http://www.w3.org/2001/XMLSchema#double, ?res)	" + 
+			" GT(?mg, '1.0'^^http://www.w3.org/2001/XMLSchema#double, ?res)	" + 
 			"->" + 
 			"	(?sugPref "+OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/ui/text/size")+" '60'^^http://www.w3.org/2001/XMLSchema#int)" + 
 	 "]";
@@ -79,15 +79,15 @@ public class UserTest {
 		in.close();
 		
 		//Add built in functions
-		BuiltinRegistry.theRegistry.register(new NotEquals());
-		BuiltinRegistry.theRegistry.register(new Equals());
-		BuiltinRegistry.theRegistry.register(new GreaterThan());
-		BuiltinRegistry.theRegistry.register(new GreaterThanEquals());
-		BuiltinRegistry.theRegistry.register(new LessThan());
-		BuiltinRegistry.theRegistry.register(new LessThanEquals());
-		BuiltinRegistry.theRegistry.register(new And());
-		BuiltinRegistry.theRegistry.register(new OR());
-		BuiltinRegistry.theRegistry.register(new NOT());
+		BuiltinRegistry.theRegistry.register("NE", new NotEquals());
+		BuiltinRegistry.theRegistry.register("EQ", new Equals());
+		BuiltinRegistry.theRegistry.register("GT", new GreaterThan());
+		BuiltinRegistry.theRegistry.register("GE", new GreaterThanEquals());
+		BuiltinRegistry.theRegistry.register("LT", new LessThan());
+		BuiltinRegistry.theRegistry.register("LE", new LessThanEquals());
+		BuiltinRegistry.theRegistry.register("and", new And());
+		BuiltinRegistry.theRegistry.register("or", new OR());
+		BuiltinRegistry.theRegistry.register("not", new NOT());
 		BuiltinRegistry.theRegistry.register(new MergePreferences());
 
 		System.out.println("Ontology was loaded");

@@ -64,20 +64,48 @@ public class RuleReasoner {
 	private final static Logger logger = java.util.logging.Logger.getLogger(RBMM_WebService.class.getName());
 
 	protected RuleReasoner instance;
+	private String ontologyFile;
 	private OntModel model;
 	private Reasoner reasoner;
 	private List<Rule> otherRules;
 	private List<Rule> suggestionRules;
+	
+	public RuleReasoner(String ontologyFile, List<Rule> suggestionRules, String[] rulesFile) throws IOException {
+		//load built in
+		loadBuiltIn();
+		
+		//load model
+		this.model = loadModel(ontologyFile);
+		
+		//load predicates
+		this.model = loadPredicates(model);
+		
+		//load other rules
+		this.otherRules = loadRules(rulesFile);
+		
+		//suggestions rules
+		this.suggestionRules = suggestionRules;
+		
+		List<Rule> allRules = new ArrayList<Rule>();
+		allRules.addAll(otherRules);
+		allRules.addAll(suggestionRules);
+		
+		//Create generic reasoner 
+		this.reasoner = new GenericRuleReasoner(allRules);
+		
+		this.ontologyFile = ontologyFile;
+	}
+	
 	
 	public RuleReasoner(String ontologyFile, String[] rulesFile) throws IOException {
 		//load built in
 		loadBuiltIn();
 		
 		//load model
-		model = loadModel(ontologyFile);
+		this.model = loadModel(ontologyFile);
 		
 		//load predicates
-		model = loadPredicates(model);
+		this.model = loadPredicates(model);
 		
 		//load other rules
 		this.otherRules = loadRules(rulesFile);
@@ -91,6 +119,8 @@ public class RuleReasoner {
 		
 		//Create generic reasoner 
 		this.reasoner = new GenericRuleReasoner(allRules);
+		
+		this.ontologyFile = ontologyFile;
 
 	}
 	
@@ -99,10 +129,10 @@ public class RuleReasoner {
 		loadBuiltIn();
 		
 		//load model
-		model = loadModel(ontologyFile);
+		this.model = loadModel(ontologyFile);
 		
 		//load predicates
-		model = loadPredicates(model);
+		this.model = loadPredicates(model);
 		
 		//load other rules
 		this.otherRules = loadRules(rulesFile);
@@ -116,6 +146,8 @@ public class RuleReasoner {
 		
 		//Create generic reasoner 
 		this.reasoner = new GenericRuleReasoner(allRules);
+		
+		this.ontologyFile = ontologyFile;
 	}
 	
 
@@ -290,6 +322,7 @@ public class RuleReasoner {
 		return rules;
 	}
 	
+	
 	/**
 	 * Personalize user profile 
 	 * 
@@ -302,7 +335,7 @@ public class RuleReasoner {
 		
 		profile.createOntologyInstance(model);
 		
-		//run rules and get inferred model
+		//Get inferre model
 		InfModel infModel = ModelFactory.createInfModel(reasoner, model);
 		
 		//retrieve user preferences
@@ -333,7 +366,8 @@ public class RuleReasoner {
 		   		   .getJSONObject("user_preferences")
 		   		   .put("recommendations", new JSONObject().put("preferences", suggesteddPreferences));
 		
-
+		//Reload model
+		this.model = loadModel(ontologyFile);
 		
 		return jsonProfile;
 	}

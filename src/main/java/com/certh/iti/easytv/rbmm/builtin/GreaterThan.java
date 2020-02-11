@@ -12,7 +12,7 @@ public class GreaterThan extends ComparatorBuiltin {
 
 	@Override
 	public String getName() {
-		return "greaterThan";
+		return "GT";
 	}
 	
 	@Override

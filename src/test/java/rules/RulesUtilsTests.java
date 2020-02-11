@@ -50,16 +50,16 @@ public class RulesUtilsTests {
 			"   \"xml-type\": \"http://www.w3.org/2001/XMLSchema#boolean\"," + 
 			"   \"value\": true" + 
 			"  }]," + 
-			"  \"prefence\": \"http://registry.easytv.eu/application/cs/accessibility/detection/sound\"," + 
-			"  \"type\": \"EQ\"" + 
+			"  \"preference\": \"http://registry.easytv.eu/application/cs/accessibility/detection/sound\"," + 
+			"  \"builtin\": \"EQ\"" + 
 			"  }," + 
 			"  {" + 
 			"   \"args\": [{" + 
 			"    \"xml-type\": \"http://www.w3.org/2001/XMLSchema#boolean\"," + 
 			"    \"value\": true" + 
 			"   }]," + 
-			"   \"prefence\": \"http://registry.easytv.eu/application/cs/accessibility/detection/text\"," + 
-			"   \"type\": \"EQ\"" + 
+			"   \"preference\": \"http://registry.easytv.eu/application/cs/accessibility/detection/text\"," + 
+			"   \"builtin\": \"EQ\"" + 
 			" }]," + 
 			" \"body\": [" + 
 			"  {" + 
@@ -67,24 +67,24 @@ public class RulesUtilsTests {
 			"    \"xml-type\": \"http://www.w3.org/2001/XMLSchema#integer\"," + 
 			"    \"value\": 0" + 
 			"   }]," + 
-			"   \"prefence\": \"http://registry.easytv.eu/common/volume\"," + 
-			"   \"type\": \"GE\"" + 
+			"   \"preference\": \"http://registry.easytv.eu/common/volume\"," + 
+			"   \"builtin\": \"GE\"" + 
 			"  }," + 
 			"  {" + 
 			"   \"args\": [{" + 
 			"    \"xml-type\": \"http://www.w3.org/2001/XMLSchema#integer\"," + 
 			"    \"value\": 4" + 
 			"   }]," + 
-			"   \"prefence\": \"http://registry.easytv.eu/common/volume\"," + 
-			"   \"type\": \"LE\"" + 
+			"   \"preference\": \"http://registry.easytv.eu/common/volume\"," + 
+			"   \"builtin\": \"LE\"" + 
 			"  }," +
 			"  {" + 
 			"   \"args\": [{" + 
 			"    \"xml-type\": \"http://www.w3.org/2001/XMLSchema#boolean\"," + 
 			"    \"value\": true" + 
 			"   }]," + 
-			"   \"prefence\": \"http://registry.easytv.eu/application/cs/accessibility/detection/character\"," + 
-			"   \"type\": \"EQ\"" + 
+			"   \"preference\": \"http://registry.easytv.eu/application/cs/accessibility/detection/character\"," + 
+			"   \"builtin\": \"EQ\"" + 
 			"  }" +
 			" ]" + 
 			"}" );
@@ -109,8 +109,8 @@ public class RulesUtilsTests {
 			"   \"xml-type\": \"http://www.w3.org/2001/XMLSchema#boolean\"," + 
 			"   \"value\": true" + 
 			"  }]," + 
-			"  \"prefence\": \"http://registry.easytv.eu/application/cs/accessibility/detection/sound\"," + 
-			"  \"type\": \"EQ\"" + 
+			"  \"preference\": \"http://registry.easytv.eu/application/cs/accessibility/detection/sound\"," + 
+			"  \"builtin\": \"EQ\"" + 
 			" }]," + 
 			" \"body\": [" + 
 			"  {" + 
@@ -118,16 +118,16 @@ public class RulesUtilsTests {
 			"    \"xml-type\": \"http://www.w3.org/2001/XMLSchema#integer\"," + 
 			"    \"value\": 0" + 
 			"   }]," + 
-			"   \"prefence\": \"http://registry.easytv.eu/common/volume\"," + 
-			"   \"type\": \"GE\"" + 
+			"   \"preference\": \"http://registry.easytv.eu/common/volume\"," + 
+			"   \"builtin\": \"GE\"" + 
 			"  }," + 
 			"  {" + 
 			"   \"args\": [{" + 
 			"    \"xml-type\": \"http://www.w3.org/2001/XMLSchema#integer\"," + 
 			"    \"value\": 4" + 
 			"   }]," + 
-			"   \"prefence\": \"http://registry.easytv.eu/common/volume\"," + 
-			"   \"type\": \"LE\"" + 
+			"   \"preference\": \"http://registry.easytv.eu/common/volume\"," + 
+			"   \"builtin\": \"LE\"" + 
 			"  }" + 
 			" ]" + 
 			"}" );
@@ -238,7 +238,33 @@ public class RulesUtilsTests {
 	}
 	
 	@Test
-	public void test_convert_suggestions_rules() throws IOException {
+	public void test_convert_suggestions_rule_1() {
+		
+		//A rule that is not convertable due to the existance of noValue(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_enhancement_image_type)" + 
+
+		Rule rule_1 = Rule.parseRule(
+				"[Face_detection_suggestion_rule_1:" + 
+				" 	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)" + 
+				" 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)" + 
+				" 	noValue(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_enhancement_image_type)" + 
+				" 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_size ?sub_text_size)" + 
+				" 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_display_screen_enhancement_cursor_size ?cursor_size)" + 
+				" 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_size ?ui_text_size)" + 
+				"	GE(?sub_text_size, '40'^^http://www.w3.org/2001/XMLSchema#integer)" + 
+				"	EQ(?cursor_size, '2.0'^^http://www.w3.org/2001/XMLSchema#double)" + 
+				"	EQ(?ui_text_size,  '23'^^http://www.w3.org/2001/XMLSchema#string)" + 
+				" 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" + 
+				"	->	" + 
+				"	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_enhancement_image_type 'face-detection'^^http://www.w3.org/2001/XMLSchema#string)" + 
+				"	print('Suggest face detection')" + 
+				"]");
+		
+		JSONObject actual = RuleUtils.convert(rule_1);
+		System.out.println(actual.toString(4));
+	}
+	
+	@Test
+	public void test_convert_all_suggestions_rules() throws IOException {
 		
 		List<Rule> rules = new ArrayList<Rule>();
 		ClassLoader classLoader = getClass().getClassLoader();
@@ -250,6 +276,29 @@ public class RulesUtilsTests {
 		rules.addAll(Rule.rulesFromURL(file.getCanonicalPath()));
 		JSONArray actual = RuleUtils.convert(rules);
 		System.out.println(actual.toString(4));
+
+	}
+	
+	@Test
+	public void test_() throws IOException {
+		
+		JSONArray jso = new JSONArray().put("[Face_detection_suggestion_rule_1:" + 
+				" 	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)" + 
+				" 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)" + 
+				" 	noValue(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_enhancement_image_type)" + 
+				" 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_size ?sub_text_size)" + 
+				" 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_display_screen_enhancement_cursor_size ?cursor_size)" + 
+				" 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_size ?ui_text_size)" + 
+				"	GE(?sub_text_size, '40'^^http://www.w3.org/2001/XMLSchema#integer)" + 
+				"	EQ(?cursor_size, '2.0'^^http://www.w3.org/2001/XMLSchema#double)" + 
+				"	EQ(?ui_text_size,  '23'^^http://www.w3.org/2001/XMLSchema#string)" + 
+				" 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" + 
+				"	->	" + 
+				"	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_enhancement_image_type 'face-detection'^^http://www.w3.org/2001/XMLSchema#string)" + 
+				"	print('Suggest face detection')" + 
+				"]");
+		
+		System.out.println(jso.getString(0));
 
 	}
 

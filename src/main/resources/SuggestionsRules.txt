@@ -52,9 +52,7 @@
 [Face_detection_suggestion_rule_1:
  	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)
  	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)
- 	
- 	noValue(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_enhancement_image_type)
- 	
+ 	 	
  	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_size ?sub_text_size)
  	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_display_screen_enhancement_cursor_size ?cursor_size)
  	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_size ?ui_text_size)
@@ -98,7 +96,6 @@
  	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)
  	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)
  	
- 	noValue(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_sound)
  	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_volume ?general_volume)
  	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_tts_audio_volume ?tts_volume)
  	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_audio_volume ?cs_volume)	 

@@ -10,6 +10,7 @@ import org.apache.jena.graph.Node;
 import org.apache.jena.graph.Node_Literal;
 import org.apache.jena.graph.Node_URI;
 import org.apache.jena.reasoner.TriplePattern;
+import org.apache.jena.reasoner.rulesys.Builtin;
 import org.apache.jena.reasoner.rulesys.ClauseEntry;
 import org.apache.jena.reasoner.rulesys.Functor;
 import org.apache.jena.reasoner.rulesys.Node_RuleVariable;
@@ -17,6 +18,7 @@ import org.apache.jena.reasoner.rulesys.Rule;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.certh.iti.easytv.rbmm.builtin.ComparatorBuiltin;
 import com.certh.iti.easytv.rbmm.user.Ontological;
 import com.certh.iti.easytv.rbmm.user.preference.OntPreference;
 import com.certh.iti.easytv.rbmm.webservice.RBMM_WebService;
@@ -69,9 +71,9 @@ public class RuleUtils {
 		for(int i = 0; i < body.length(); i++) {
 			JSONObject statement = body.getJSONObject(i);
 			
-			String preference = statement.getString("prefence");
+			String preference = statement.getString("preference");
 			String predicate = OntPreference.getDataProperty(preference);
-			String functor = statement.getString("type");
+			String functor = statement.getString("builtin");
 			JSONArray args = statement.getJSONArray("args");
 			for(int j = 0; j < args.length(); j++) {
 				JSONObject arg = args.getJSONObject(j);			
@@ -100,7 +102,7 @@ public class RuleUtils {
 		for(int i = 0; i < head.length(); i++) {
 			JSONObject statement = head.getJSONObject(i);
 			
-			String preference = statement.getString("prefence");
+			String preference = statement.getString("preference");
 			String predicate =  OntPreference.getDataProperty(preference);
 			JSONArray args = statement.getJSONArray("args");
 			for(int j = 0; j < args.length(); j++) {
@@ -139,7 +141,6 @@ public class RuleUtils {
 		JSONArray headOperands = convert(rule.getHead(), variableMpper);
 		jsonRule.put("head", headOperands);
 
-		
 		return jsonRule;
 	}
 	
@@ -151,8 +152,10 @@ public class RuleUtils {
 		for(ClauseEntry entry : entries) {
 			String preference = null;
 			
-			//TripelPattern case
+			
 			if(TriplePattern.class.isInstance(entry)) {
+				//TripelPattern handling case
+				
 				TriplePattern t = (TriplePattern) entry;
 				
 				Node_RuleVariable subject = (Node_RuleVariable) t.getSubject();
@@ -160,18 +163,22 @@ public class RuleUtils {
 				Node object = t.getObject();
 
 				//check that the predicate is a preference
-				if(!predicate.getURI().startsWith(Ontological.NAMESPACE) || 
-						!predicate.getURI().contains("has_"))
-					continue;
+				if(!predicate.getURI().startsWith(Ontological.NAMESPACE)) continue;
 					
-				//Convert to preference URI
-				preference = OntPreference.getURI(predicate.getURI());
+				//Convert to preference URI, just ignore unknown preferences
+				try {
+					preference = OntPreference.getURI(predicate.getURI());
+				} catch(IllegalArgumentException e ) {
+					System.out.println(e.getMessage());
+					logger.info(e.getMessage());
+					continue;
+				}
 				
 				if(object.isLiteral()) {
 					Node_Literal literal = (Node_Literal) object;
 					JSONObject operand = new JSONObject()
-											.put("type", "EQ")
-											.put("prefence", preference)
+											.put("builtin", "EQ")
+											.put("preference", preference)
 											.put("args", new JSONArray().put(new JSONObject()
 																			.put("value", literal.getLiteralValue())
 																			.put("xml-type", literal.getLiteralDatatypeURI())));
@@ -180,18 +187,23 @@ public class RuleUtils {
 					
 				} else if(object.isVariable()) {
 					Node_RuleVariable variable = (Node_RuleVariable) object;
-					//System.out.println("add: "+variable.getName());
 					variableMpper.put(variable.getName(), preference);
 				}
 				
 				
 			} else if(Functor.class.isInstance(entry)) {
-				
-				//TODO implement handling more than one argument
+				//Function handling case
 				
 				Functor functor = (Functor) entry;
 				JSONArray args = new JSONArray();
-						
+				String type = functor.getImplementor().toString();
+				
+				if(!(type.equalsIgnoreCase("EQ") || type.equalsIgnoreCase("NE") ||
+						type.equalsIgnoreCase("GE") || type.equalsIgnoreCase("LE") ||
+							type.equalsIgnoreCase("GT") || type.equalsIgnoreCase("LT") || 
+								type.equalsIgnoreCase("and") || type.equalsIgnoreCase("or") || type.equalsIgnoreCase("not")))  continue;
+
+				
 				for(Node arg: functor.getArgs())
 					if(arg.isVariable()) {
 						Node_RuleVariable variable = (Node_RuleVariable) arg;
@@ -209,8 +221,8 @@ public class RuleUtils {
 				
 				
 				JSONObject operand = new JSONObject()
-										.put("type", functor.getImplementor().toString())
-										.put("prefence", preference)
+										.put("builtin", type)
+										.put("preference", preference)
 										.put("args", args);
 								
 				bodyOperands.put(operand);
@@ -219,5 +231,79 @@ public class RuleUtils {
 
 		return bodyOperands;
 	}
+	
+/*
+	public static JSONArray convertAll(List<Rule> rules) {
+		
+		JSONArray jsonRules = new JSONArray();
+		for(Rule rule: rules)
+			jsonRules.put(convertAll(rule));
 
+		return jsonRules;
+	}
+	
+	
+	public static JSONObject convertAll(Rule rule) {
+		
+		System.out.println(rule.getName());
+		
+		JSONObject jsonRule = new JSONObject();
+		if(rule.getName() != null) jsonRule.put("name", rule.getName());
+		
+		JSONArray bodyOperands = convertAll(rule.getBody());
+		jsonRule.put("body", bodyOperands);
+		
+		JSONArray headOperands = convertAll(rule.getHead());
+		jsonRule.put("head", headOperands);
+
+		
+		return jsonRule;
+	}
+	
+	private static JSONArray convertAll(ClauseEntry[] entries) {
+		JSONArray bodyOperands = new JSONArray();
+
+		
+		for(ClauseEntry entry : entries) {
+			String preference = null;
+			JSONObject operand = null;
+			
+			
+			if(TriplePattern.class.isInstance(entry)) {
+				//TripelPattern handling case
+				
+				TriplePattern t = (TriplePattern) entry;
+				
+				Node_RuleVariable subject = (Node_RuleVariable) t.getSubject();
+				Node_URI predicate = (Node_URI) t.getPredicate();
+				Node object = t.getObject();
+				
+				operand = new JSONObject()
+						.put("subject", subject.toString())
+						.put("predicate", predicate.toString())
+						.put("object", object.toString());
+				
+				
+			} else if(Functor.class.isInstance(entry)) {
+				//Function handling case
+				
+				Functor functor = (Functor) entry;
+				JSONArray args = new JSONArray();
+				String type = functor.getImplementor().getName();
+								
+				for(Node arg: functor.getArgs()) 
+					args.put(arg.toString());
+				
+				
+				operand = new JSONObject()
+										.put("builtin", type)
+										.put("args", args);	
+			}
+			
+			bodyOperands.put(operand);
+		}
+
+		return bodyOperands;
+	}
+*/
 }

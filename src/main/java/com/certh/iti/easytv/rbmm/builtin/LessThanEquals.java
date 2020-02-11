@@ -5,7 +5,6 @@ import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.graph.Node_Literal;
 import org.apache.jena.reasoner.rulesys.BindingEnvironment;
-import org.apache.jena.reasoner.rulesys.Builtin;
 import org.apache.jena.reasoner.rulesys.Node_RuleVariable;
 import org.apache.jena.reasoner.rulesys.RuleContext;
 
@@ -13,7 +12,7 @@ public class LessThanEquals extends ComparatorBuiltin {
 
 	@Override
 	public String getName() {
-		return "lessThanEquals";
+		return "LE";
 	}
 
 	@Override

@@ -12,7 +12,7 @@ public class Equals extends ComparatorBuiltin {
 
 	@Override
 	public String getName() {
-		return "equals";
+		return "EQ";
 	}
 	
 	@Override
