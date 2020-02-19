@@ -174,13 +174,7 @@ public class RuleReasoner {
 	 * @return
 	 */
 	public JSONArray getRules() {
-		JSONArray jsonRules = new JSONArray();
-		for(Rule rule : suggestionRules) {
-			JSONObject jsonRule = RuleUtils.convert(rule);
-			jsonRules.put(jsonRule);
-		}
-		
-		return jsonRules;
+		return RuleUtils.convert(this.suggestionRules);
 	}
 	
 	/**
@@ -188,6 +182,7 @@ public class RuleReasoner {
 	 */
 	public void updateRules(JSONArray jsonRules) {
 		
+		this.suggestionRules.clear();
 		this.suggestionRules = RuleUtils.convert(jsonRules);
 		
 		List<Rule> allRules = new ArrayList<Rule>();
@@ -245,7 +240,7 @@ public class RuleReasoner {
 		OntClass content = ontModel.getOntClass("http://www.owl-ontologies.com/OntologyEasyTV.owl#Content");
 
 		//add preference predicates
-		for(Entry<String, Attribute> entry :  Preference.preferencesAttributes.entrySet()) {
+		for(Entry<String, Attribute> entry :  Preference.getAttributes().entrySet()) {
 			Attribute value = entry.getValue();
 			String key = entry.getKey();
 			String uri =  OntPreference.getDataProperty(key);
@@ -257,7 +252,7 @@ public class RuleReasoner {
 		}
 		
 		//add context predicates
-		for(Entry<String, Attribute> entry :  UserContext.contextAttributes.entrySet()) {
+		for(Entry<String, Attribute> entry :  UserContext.getAttributes().entrySet()) {
 			Attribute value = entry.getValue();
 			String key = entry.getKey();
 			String uri =  OntUserContext.getDataProperty(key);
@@ -269,7 +264,7 @@ public class RuleReasoner {
 		}
 		
 		//add content
-		for(Entry<String, Attribute> entry :  UserContent.content_attributes.entrySet()) {
+		for(Entry<String, Attribute> entry :  UserContent.getAttributes().entrySet()) {
 			Attribute value = entry.getValue();
 			String key = entry.getKey();
 			String uri =  Content.getDataProperty(key);

@@ -163,7 +163,8 @@ public class RuleUtils {
 				Node object = t.getObject();
 
 				//check that the predicate is a preference
-				if(!predicate.getURI().startsWith(Ontological.NAMESPACE)) continue;
+				if(!predicate.getURI().startsWith(Ontological.NAMESPACE) && 
+						!predicate.getURI().contains("has_")) continue;
 					
 				//Convert to preference URI, just ignore unknown preferences
 				try {

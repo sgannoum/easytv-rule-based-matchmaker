@@ -232,7 +232,7 @@ public class RuleReasonerTest {
 		OntClass content = ontModel.getOntClass("http://www.owl-ontologies.com/OntologyEasyTV.owl#Content");
 
 		//add preference predicates
-		for(Entry<String, Attribute> entry :  Preference.preferencesAttributes.entrySet()) {
+		for(Entry<String, Attribute> entry :  Preference.getAttributes().entrySet()) {
 			Attribute value = entry.getValue();
 			String key = entry.getKey();
 			String uri =  OntPreference.getDataProperty(key);
@@ -246,7 +246,7 @@ public class RuleReasonerTest {
 		}
 		
 		//add context predicates
-		for(Entry<String, Attribute> entry :  UserContext.contextAttributes.entrySet()) {
+		for(Entry<String, Attribute> entry :  UserContext.getAttributes().entrySet()) {
 			Attribute value = entry.getValue();
 			String key = entry.getKey();
 			String uri =  OntUserContext.getDataProperty(key);
@@ -260,7 +260,7 @@ public class RuleReasonerTest {
 		}
 		
 		//add content
-		for(Entry<String, Attribute> entry :  UserContent.content_attributes.entrySet()) {
+		for(Entry<String, Attribute> entry :  UserContent.getAttributes().entrySet()) {
 			Attribute value = entry.getValue();
 			String key = entry.getKey();
 			String uri =  Content.getDataProperty(key);

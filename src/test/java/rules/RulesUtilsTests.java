@@ -301,5 +301,71 @@ public class RulesUtilsTests {
 		System.out.println(jso.getString(0));
 
 	}
+	
+	@Test
+	public void test_convert_rule_equality3() {
+		List<Rule> actual = RuleUtils.convert(new JSONArray("[{\r\n" + 
+				"    \"head\": [\r\n" + 
+				"        {\r\n" + 
+				"            \"args\": [{\r\n" + 
+				"                \"xml-type\": \"http://www.w3.org/2001/XMLSchema#string\",\r\n" + 
+				"                \"value\": \"male\"\r\n" + 
+				"            }],\r\n" + 
+				"            \"preference\": \"http://registry.easytv.eu/application/tts/audio/voice\",\r\n" + 
+				"            \"builtin\": \"EQ\"\r\n" + 
+				"        },\r\n" + 
+				"        {\r\n" + 
+				"            \"args\": [{\r\n" + 
+				"                \"xml-type\": \"http://www.w3.org/2001/XMLSchema#boolean\",\r\n" + 
+				"                \"value\": false\r\n" + 
+				"            }],\r\n" + 
+				"            \"preference\": \"http://registry.easytv.eu/application/cs/ui/audioAssistanceBasedOnTTS\",\r\n" + 
+				"            \"builtin\": \"EQ\"\r\n" + 
+				"        },\r\n" + 
+				"        {\r\n" + 
+				"            \"args\": [{\r\n" + 
+				"                \"xml-type\": \"http://www.w3.org/2001/XMLSchema#boolean\",\r\n" + 
+				"                \"value\": true\r\n" + 
+				"            }],\r\n" + 
+				"            \"preference\": \"http://registry.easytv.eu/application/cs/accessibility/audio/description\",\r\n" + 
+				"            \"builtin\": \"EQ\"\r\n" + 
+				"        },\r\n" + 
+				"        {\r\n" + 
+				"            \"args\": [{\r\n" + 
+				"                \"xml-type\": \"http://www.w3.org/2001/XMLSchema#string\",\r\n" + 
+				"                \"value\": \"up\"\r\n" + 
+				"            }],\r\n" + 
+				"            \"preference\": \"http://registry.easytv.eu/application/hbbtv/cc/subtitles/position\",\r\n" + 
+				"            \"builtin\": \"EQ\"\r\n" + 
+				"        }\r\n" + 
+				"    ],\r\n" + 
+				"    \"body\": [\r\n" + 
+				"        {\r\n" + 
+				"            \"args\": [{\r\n" + 
+				"                \"xml-type\": \"http://www.w3.org/2001/XMLSchema#string\",\r\n" + 
+				"                \"value\": \"20\"\r\n" + 
+				"            }],\r\n" + 
+				"            \"preference\": \"http://registry.easytv.eu/application/cs/ui/text/size\",\r\n" + 
+				"            \"builtin\": \"EQ\"\r\n" + 
+				"        },\r\n" + 
+				"        {\r\n" + 
+				"            \"args\": [{\r\n" + 
+				"                \"xml-type\": \"http://www.w3.org/2001/XMLSchema#boolean\",\r\n" + 
+				"                \"value\": false\r\n" + 
+				"            }],\r\n" + 
+				"            \"preference\": \"http://registry.easytv.eu/application/cs/accessibility/detection/character\",\r\n" + 
+				"            \"builtin\": \"EQ\"\r\n" + 
+				"        }\r\n" + 
+				"    ]\r\n" + 
+				"}]"));
+		
+		for(Rule rule : actual)
+			System.out.println(rule.toString());
+		
+		JSONArray rules = RuleUtils.convert(actual);
+		System.out.println(rules.toString(4));
+
+		
+	}
 
 }

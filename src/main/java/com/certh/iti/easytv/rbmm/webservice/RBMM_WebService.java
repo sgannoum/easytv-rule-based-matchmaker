@@ -1,11 +1,10 @@
 package com.certh.iti.easytv.rbmm.webservice;
 
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
@@ -14,13 +13,11 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
-import org.apache.jena.reasoner.rulesys.Rule;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.certh.iti.easytv.rbmm.reasoner.RuleReasoner;
-import com.certh.iti.easytv.rbmm.rules.RuleUtils;
 import com.certh.iti.easytv.rbmm.user.OntProfile;
 import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 
@@ -33,15 +30,17 @@ public class RBMM_WebService
 	private static final String ONTOLOGY_NAME = RBMM_config.ONTOLOGY_NAME;
 	private static final String[] RULES_FILE = RBMM_config.RULES_FILE;
 
-	private RuleReasoner ruleReasoner;
+	private static RuleReasoner ruleReasoner = null;
 	
 	public RBMM_WebService() {
-		try {
-			ruleReasoner = new RuleReasoner(ONTOLOGY_NAME, RULES_FILE);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		
+		if(ruleReasoner == null) {
+			try {
+				ruleReasoner = new RuleReasoner(ONTOLOGY_NAME, RULES_FILE);
+			} catch (IOException e) {
+				logger.log(Level.SEVERE, e.getMessage());
+			}
+		}
 	}
 	
     @GET
@@ -63,7 +62,9 @@ public class RBMM_WebService
     {
     	logger.info("post rules request...");
     	
-    	JSONArray jsonRules = new JSONArray(tmpInput);
+    	JSONArray jsonRules = new JSONArray((Collection<?>)tmpInput);
+    	
+    	logger.info(jsonRules.toString(4));
     	ruleReasoner.updateRules(jsonRules);
 				
         return Response.status(200).build();

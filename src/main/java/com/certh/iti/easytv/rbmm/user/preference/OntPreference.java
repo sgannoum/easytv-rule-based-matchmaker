@@ -28,7 +28,7 @@ public class OntPreference implements Ontological {
 	public static String getURI(String dataProperty) {
 		String uri = dataProperty.replace(Ontological.NAMESPACE, "http://registry.easytv.eu/").replace("has_", "").replace("_", "/");
 		
-		if(!Preference.preferencesAttributes.containsKey(uri))
+		if(!Preference.getAttributes().containsKey(uri))
 			throw new IllegalArgumentException("Unknown preference uri "+uri);
 		
 		return uri;
@@ -40,7 +40,7 @@ public class OntPreference implements Ontological {
 	 * @return
 	 */
 	public static String getDataProperty(String uri) {
-		if(!Preference.preferencesAttributes.containsKey(uri))
+		if(!Preference.getAttributes().containsKey(uri))
 			throw new IllegalArgumentException("Unknown preference uri "+uri);
 		
 		return Ontological.NAMESPACE + uri.replaceAll("http://registry.easytv.eu/", "has_").replace("/","_");

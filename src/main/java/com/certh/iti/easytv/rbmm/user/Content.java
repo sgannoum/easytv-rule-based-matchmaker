@@ -33,7 +33,7 @@ public class Content implements Ontological {
 	public static String getURI(String dataProperty) {
 		String uri = dataProperty.replace(Ontological.NAMESPACE, "http://registry.easytv.eu/").replace("has_", "").replace("_", "/");
 		
-		if(!UserContent.content_attributes.containsKey(uri))
+		if(!UserContent.getAttributes().containsKey(uri))
 			throw new IllegalArgumentException("Unknown context uri "+uri);
 		
 		return uri;
@@ -45,7 +45,7 @@ public class Content implements Ontological {
 	 * @return
 	 */
 	public static String getDataProperty(String uri) {
-		if(!UserContent.content_attributes.containsKey(uri))
+		if(!UserContent.getAttributes().containsKey(uri))
 			throw new IllegalArgumentException("Unknown context uri "+uri);
 		
 		return Ontological.NAMESPACE + uri.replaceAll("http://registry.easytv.eu/", "has_").replace("/","_");
