@@ -22,11 +22,11 @@ public class OntPreference implements Ontological {
 	
 	/**
 	 * 
-	 * @param dataProperty
+	 * @param predicate
 	 * @return
 	 */
-	public static String getURI(String dataProperty) {
-		String uri = dataProperty.replace(Ontological.NAMESPACE, "http://registry.easytv.eu/").replace("has_", "").replace("_", "/");
+	public static String getURI(String predicate) {
+		String uri = predicate.replace(Ontological.NAMESPACE, "http://registry.easytv.eu/").replace("has_", "").replace("_", "/");
 		
 		if(!Preference.getAttributes().containsKey(uri))
 			return null;

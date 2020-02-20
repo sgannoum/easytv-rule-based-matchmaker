@@ -1,10 +1,11 @@
 package com.certh.iti.easytv.rbmm.user;
 
-import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
+import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Property;
 import org.json.JSONObject;
 
@@ -31,12 +32,12 @@ public class OntUserContext implements Ontological{
 	}
 	
 	/**
-	 * 
-	 * @param dataProperty
+	 * Get the contextual uri that corresponds to the given predicate
+	 * @param predicate
 	 * @return
 	 */
-	public static String getURI(String dataProperty) {
-		String uri = dataProperty.replace(Ontological.NAMESPACE, "http://registry.easytv.eu/").replace("has_", "").replace("_", "/");
+	public static String getURI(String predicate) {
+		String uri = predicate.replace(Ontological.NAMESPACE, "http://registry.easytv.eu/").replace("has_", "").replace("_", "/");
 		
 		if(!UserContext.getAttributes().containsKey(uri))
 			return null;
@@ -45,7 +46,7 @@ public class OntUserContext implements Ontological{
 	}
 	
 	/**
-	 * 
+	 * Get contextual predicate that corresponds to the give uri
 	 * @param uri
 	 * @return
 	 */
@@ -68,36 +69,14 @@ public class OntUserContext implements Ontological{
 	
 	@Override
 	public Individual createOntologyInstance(OntModel model, Individual userContextInstance) {
-		Map<String, Object> context = userContext.getContext();
-		
-		//TODO add all other preferences
-		
-/*		if(context.containsKey("http://registry.easytv.eu/context/device")) {
-			Property hasTimeProperty = model.getProperty(HAS_TIME_PROP);
-			userContextInstance.addProperty(hasTimeProperty, model.createTypedLiteral(context.get("http://registry.easytv.eu/context/time")));
-		}
-*/
-		
-/*		if(context.containsKey("http://registry.easytv.eu/context/light")) {
-			Property hasTimeProperty = model.getProperty(HAS_TIME_PROP);
-			userContextInstance.addProperty(hasTimeProperty, model.createTypedLiteral(context.get("http://registry.easytv.eu/context/time")));
-		}
-*/
-		
-/*		if(context.containsKey("http://registry.easytv.eu/context/proximity")) {
-			Property hasTimeProperty = model.getProperty(HAS_TIME_PROP);
-			userContextInstance.addProperty(hasTimeProperty, model.createTypedLiteral(context.get("http://registry.easytv.eu/context/time")));
-		}
-*/
-		
-		if(context.containsKey("http://registry.easytv.eu/context/time")) {
-			Property hasTimeProperty = model.getProperty(getPredicate("http://registry.easytv.eu/context/time"));
-			userContextInstance.addProperty(hasTimeProperty, model.createTypedLiteral(context.get("http://registry.easytv.eu/context/time")));
-		}
-		
-		if(context.containsKey("http://registry.easytv.eu/context/location")) {
-			Property hasLocationProperty = model.getProperty(getPredicate("http://registry.easytv.eu/context/location"));
-			userContextInstance.addProperty(hasLocationProperty, model.createTypedLiteral(context.get("http://registry.easytv.eu/context/location")));
+		String propertyUri = null;
+	
+		for(Entry<String, Object> entry : userContext.getContext().entrySet()) {
+			if((propertyUri = OntUserContext.getPredicate(entry.getKey())) != null) {
+				Property property = model.getProperty(propertyUri);
+				Literal literal = model.createTypedLiteral(entry.getValue());
+				userContextInstance.addProperty(property, literal);
+			}
 		}
 		
 		return userContextInstance;

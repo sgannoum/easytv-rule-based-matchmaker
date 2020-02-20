@@ -91,7 +91,6 @@ public class RuleReasonerTest {
 		Assert.assertTrue(expected.similar(actual));
 	}
 	
-	
 	@Test
 	public void test_infer_sound_detection_false_1() throws IOException, JSONException, UserProfileParsingException {
 	
@@ -158,68 +157,6 @@ public class RuleReasonerTest {
 		Assert.assertTrue(expected.similar(actual));
 	}
 	
-	@Test
-	public void test_infer_conditional_preferences() throws IOException, JSONException, UserProfileParsingException {
-	
-		 JSONObject profile1 = new JSONObject("{"
-				+ "\"user_id\":1," +
-				"user_context: {" + 
-				"    \"http://registry.easytv.eu/context/time\": \"10:00:00\" ," + 
-				"    \"http://registry.easytv.eu/context/location\": \"ca\"" + 
-				"}, "
-				+ "\"user_profile\":{" + 
-				"            \"user_preferences\": {" + 
-				"                \"default\": {" + 
-				"                    \"preferences\": {" + 
-				"                        \"http://registry.easytv.eu/common/volume\": 75" + 
-				"                    }" + 
-				"                }," + 
-				"                \"conditional\": [" + 
-				"                    {" + 
-				"                        \"name\": \"conditional preference 1\"," + 
-				"                        \"conditions\": [" + 
-				"                            {" + 
-				"                                \"type\": \"and\"," + 
-				"                                \"operands\": [" + 
-				"                                    {" + 
-				"                                        \"type\": \"ge\"," + 
-				"                                        \"operands\": [" + 
-				"                                            \"http://registry.easytv.eu/context/time\"," + 
-				"                                            \"09:00:00\"" + 
-				"                                        ]" + 
-				"                                    }," + 
-				"                                    {" + 
-				"                                        \"type\": \"le\"," + 
-				"                                        \"operands\": [" + 
-				"                                            \"http://registry.easytv.eu/context/time\"," + 
-				"                                            \"15:00:00\"" + 
-				"                                        ]" + 
-				"                                    }" + 
-				"                                ]" + 
-				"                            }" + 
-				"                        ]," + 
-				"                        \"preferences\": {" + 
-				"                            \"http://registry.easytv.eu/common/volume\": 22" + 
-				"                        }" + 
-				"                    }" + 
-				"                ]" + 
-				"            }" +
-				"  }" + 
-				"        }");
-		
-		JSONObject expected = new JSONObject("{" + 
-				"    \"user_id\": 1," + 
-				"    \"user_profile\": {\"user_preferences\": {" + 
-				"        \"default\": {\"preferences\": {\"http://registry.easytv.eu/common/volume\": 22}}," + 
-				"        \"recommendations\": {\"preferences\": {}}" + 
-				"    }}" + 
-				"}");
-		
-		JSONObject actual = ruleReasoner.infer(new OntProfile(profile1));		
-		Assert.assertTrue(expected.similar(actual));
-	}
-	
-
 	
 	//@Test
 	public void test_redefine_ontology() throws IOException {

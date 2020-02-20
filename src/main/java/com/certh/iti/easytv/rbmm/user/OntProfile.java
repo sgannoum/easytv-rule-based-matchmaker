@@ -90,8 +90,7 @@ public class OntProfile implements Ontological{
 			userPRofileIndividual.addProperty(hasContextAbility, contextIndividual);	
 		}
 		
-		//TODO
-		//Add content 
+		//TODO Add content 
 		
 		return userPRofileIndividual;
 	}
