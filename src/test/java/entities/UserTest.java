@@ -54,11 +54,11 @@ public class UserTest {
 	"[font_size_suggestion:" + 
 			" (?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#User) " + 
 			" (?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)" + 
-			" (?pref "+OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/accessibility/magnification/scale")+" ?mg)" + 
+			" (?pref "+OntPreference.getPredicate("http://registry.easytv.eu/application/cs/accessibility/magnification/scale")+" ?mg)" + 
 			" (?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" + 
 			" GT(?mg, '1.0'^^http://www.w3.org/2001/XMLSchema#double, ?res)	" + 
 			"->" + 
-			"	(?sugPref "+OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/ui/text/size")+" '60'^^http://www.w3.org/2001/XMLSchema#int)" + 
+			"	(?sugPref "+OntPreference.getPredicate("http://registry.easytv.eu/application/cs/ui/text/size")+" '60'^^http://www.w3.org/2001/XMLSchema#int)" + 
 	 "]";
 	
 	private String rules =  AndRulesTest.rules + OrRulesTest.rules + NotRulesTest.rules +
@@ -111,7 +111,7 @@ public class UserTest {
 		Resource userSuggestedPreferenceInstance = userList.next().getObject().asResource();
 		
 		StmtIterator userPreferenceList = inf.listStatements(userSuggestedPreferenceInstance, null, (RDFNode)null);
-		Property hasFontSizeProperty = model.getProperty(OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/ui/text/size"));
+		Property hasFontSizeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/application/cs/ui/text/size"));
 		 userPreferenceList = inf.listStatements(userSuggestedPreferenceInstance, hasFontSizeProperty, (RDFNode)null);
 		Assert.assertEquals(60, userPreferenceList.next().getObject().asLiteral().getInt());
 		Assert.assertFalse(userPreferenceList.hasNext());
@@ -136,12 +136,12 @@ public class UserTest {
 		Resource userPreferenceInstance = userList.next().getObject().asResource();
 		
 		StmtIterator userPreferenceList = inf.listStatements(userPreferenceInstance, null, (RDFNode)null);
-		Property hasAudioVolumeProperty = model.getProperty(OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/audio/volume"));
+		Property hasAudioVolumeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/application/cs/audio/volume"));
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasAudioVolumeProperty, (RDFNode)null);		
 		Assert.assertEquals(10, userPreferenceList.next().getObject().asLiteral().getInt());
 		Assert.assertFalse(userPreferenceList.hasNext());
 		
-		Property hasFontSizeProperty = model.getProperty(OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/ui/text/size"));
+		Property hasFontSizeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/application/cs/ui/text/size"));
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasFontSizeProperty, (RDFNode)null);
 		Assert.assertEquals(20, userPreferenceList.next().getObject().asLiteral().getInt());
 		Assert.assertFalse(userPreferenceList.hasNext());
@@ -167,7 +167,7 @@ public class UserTest {
 		Resource userPreferenceInstance = userList.next().getObject().asResource();
 		
 		StmtIterator userPreferenceList = inf.listStatements(userPreferenceInstance, null, (RDFNode)null);
-		Property hasAudioVolumeProperty = model.getProperty(OntPreference.getDataProperty("http://registry.easytv.eu/common/volume"));
+		Property hasAudioVolumeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/common/volume"));
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasAudioVolumeProperty, (RDFNode)null);
 		Assert.assertEquals(10, userPreferenceList.next().getObject().asLiteral().getInt());
 		Assert.assertFalse(userPreferenceList.hasNext());
@@ -192,12 +192,12 @@ public class UserTest {
 		Resource userPreferenceInstance = userList.next().getObject().asResource();
 		
 		StmtIterator userPreferenceList = inf.listStatements(userPreferenceInstance, null, (RDFNode)null);
-		Property hasAudioVolumeProperty = model.getProperty(OntPreference.getDataProperty("http://registry.easytv.eu/common/volume"));
+		Property hasAudioVolumeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/common/volume"));
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasAudioVolumeProperty, (RDFNode)null);
 		Assert.assertEquals(36, userPreferenceList.next().getObject().asLiteral().getInt());
 		Assert.assertFalse(userPreferenceList.hasNext());
 		
-		Property hasBackgroundProperty = model.getProperty(OntPreference.getDataProperty("http://registry.easytv.eu/common/display/screen/enhancement/cursor/color"));
+		Property hasBackgroundProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/common/display/screen/enhancement/cursor/color"));
 		userPreferenceList = inf.listStatements(userPreferenceInstance, hasBackgroundProperty, (RDFNode)null);
 		Assert.assertEquals("#222222", userPreferenceList.next().getObject().asLiteral().getString());
 		Assert.assertFalse(userPreferenceList.hasNext());

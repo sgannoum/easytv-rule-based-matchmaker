@@ -10,7 +10,6 @@ import org.apache.jena.graph.Node;
 import org.apache.jena.graph.Node_Literal;
 import org.apache.jena.graph.Node_URI;
 import org.apache.jena.reasoner.TriplePattern;
-import org.apache.jena.reasoner.rulesys.Builtin;
 import org.apache.jena.reasoner.rulesys.ClauseEntry;
 import org.apache.jena.reasoner.rulesys.Functor;
 import org.apache.jena.reasoner.rulesys.Node_RuleVariable;
@@ -18,10 +17,9 @@ import org.apache.jena.reasoner.rulesys.Rule;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.certh.iti.easytv.rbmm.builtin.ComparatorBuiltin;
+import com.certh.iti.easytv.rbmm.user.OntUserContext;
 import com.certh.iti.easytv.rbmm.user.Ontological;
 import com.certh.iti.easytv.rbmm.user.preference.OntPreference;
-import com.certh.iti.easytv.rbmm.webservice.RBMM_WebService;
 
 /**
  * A set of utils to convert a jena rule from and to JSON format
@@ -31,6 +29,34 @@ public class RuleUtils {
 	
 	private final static Logger logger = java.util.logging.Logger.getLogger(RuleUtils.class.getName());
 
+
+	public static JSONArray convert(List<Rule> rules) {
+		
+		JSONArray jsonRules = new JSONArray();
+		for(Rule rule: rules)
+			jsonRules.put(convert(rule));
+
+		return jsonRules;
+	}
+	
+	
+	public static JSONObject convert(Rule rule) {
+		
+		logger.info("Conver rule "+rule.getName());
+		
+		HashMap<String, String> variableMpper = new HashMap<String, String>();
+		JSONObject jsonRule = new JSONObject();
+		if(rule.getName() != null) jsonRule.put("name", rule.getName());
+		
+		JSONArray bodyOperands = convert(rule.getBody(), variableMpper);
+		jsonRule.put("body", bodyOperands);
+		
+		JSONArray headOperands = convert(rule.getHead(), variableMpper);
+		jsonRule.put("head", headOperands);
+
+		return jsonRule;
+	}
+	
 	/**
 	 * Convert JSON given rules to jena rules
 	 * @param jsonRules
@@ -64,6 +90,7 @@ public class RuleUtils {
 		if(rule.has("name")) buff.append(rule.getString("name")+":");
 		buff.append("(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)");
 		buff.append("(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)");
+		buff.append("(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasContext ?cnxt)");
 		buff.append("(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)");
 		
 		//Handle head
@@ -71,22 +98,28 @@ public class RuleUtils {
 		for(int i = 0; i < body.length(); i++) {
 			JSONObject statement = body.getJSONObject(i);
 			
-			String preference = statement.getString("preference");
-			String predicate = OntPreference.getDataProperty(preference);
+			String uri = statement.getString("preference");
 			String functor = statement.getString("builtin");
 			JSONArray args = statement.getJSONArray("args");
+			
+			String predicate = null;
+			if((predicate = RuleUtils.getPredicate(uri)) == null) 
+				throw new IllegalArgumentException("Unknown uri in rule head "+uri);
+			
+			String statment_var = uri.contains("context") ? "?cnxt":"?pref";
+			
 			for(int j = 0; j < args.length(); j++) {
 				JSONObject arg = args.getJSONObject(j);			
 	
 				if(functor.equalsIgnoreCase("eq"))
-					buff.append(String.format("(?pref %s '%s'^^%s)\n", predicate, arg.get("value"), arg.getString("xml-type")));
+					buff.append(String.format("(%s %s '%s'^^%s)\n", statment_var, predicate, arg.get("value"), arg.getString("xml-type")));
 				else {
 					//look for variable
 					String prefVar;
 					
 					if((prefVar = vars.get(predicate)) == null) {
 						prefVar = String.format("?var%d", var++);
-						buff.append(String.format("(?pref %s %s)\n", predicate, prefVar));						
+						buff.append(String.format("(%s %s %s)\n", statment_var, predicate, prefVar));						
 						vars.put(predicate, prefVar);
 					} 
 					
@@ -103,7 +136,10 @@ public class RuleUtils {
 			JSONObject statement = head.getJSONObject(i);
 			
 			String preference = statement.getString("preference");
-			String predicate =  OntPreference.getDataProperty(preference);
+			String predicate = null;
+			if((predicate = RuleUtils.getPredicate(preference)) == null) 
+				throw new IllegalArgumentException("Unknown uri in rule body "+preference);
+			
 			JSONArray args = statement.getJSONArray("args");
 			for(int j = 0; j < args.length(); j++) {
 				JSONObject arg = args.getJSONObject(j);				
@@ -116,41 +152,12 @@ public class RuleUtils {
 		return Rule.parseRule(buff.toString());
 	}
 	
-	
-	public static JSONArray convert(List<Rule> rules) {
-		
-		JSONArray jsonRules = new JSONArray();
-		for(Rule rule: rules)
-			jsonRules.put(convert(rule));
-
-		return jsonRules;
-	}
-	
-	
-	public static JSONObject convert(Rule rule) {
-		
-		System.out.println(rule.getName());
-		
-		HashMap<String, String> variableMpper = new HashMap<String, String>();
-		JSONObject jsonRule = new JSONObject();
-		if(rule.getName() != null) jsonRule.put("name", rule.getName());
-		
-		JSONArray bodyOperands = convert(rule.getBody(), variableMpper);
-		jsonRule.put("body", bodyOperands);
-		
-		JSONArray headOperands = convert(rule.getHead(), variableMpper);
-		jsonRule.put("head", headOperands);
-
-		return jsonRule;
-	}
-	
-	
 	private static JSONArray convert(ClauseEntry[] entries, HashMap<String, String> variableMpper) {
 		JSONArray bodyOperands = new JSONArray();
 
 		
 		for(ClauseEntry entry : entries) {
-			String preference = null;
+			String uri = null;
 			
 			
 			if(TriplePattern.class.isInstance(entry)) {
@@ -161,17 +168,15 @@ public class RuleUtils {
 				Node_RuleVariable subject = (Node_RuleVariable) t.getSubject();
 				Node_URI predicate = (Node_URI) t.getPredicate();
 				Node object = t.getObject();
+				String predicateURI = predicate.getURI();
 
 				//check that the predicate is a preference
-				if(!predicate.getURI().startsWith(Ontological.NAMESPACE) && 
-						!predicate.getURI().contains("has_")) continue;
+				if(!predicateURI.startsWith(Ontological.NAMESPACE) && 
+					 !predicateURI.contains("has_")) continue;
 					
-				//Convert to preference URI, just ignore unknown preferences
-				try {
-					preference = OntPreference.getURI(predicate.getURI());
-				} catch(IllegalArgumentException e ) {
-					System.out.println(e.getMessage());
-					logger.info(e.getMessage());
+				//Convert to preference or contextual URI, just ignore unknown preferences
+				if((uri = RuleUtils.getURI(predicateURI)) == null) {
+					logger.info("Unknown predicate "+predicateURI);
 					continue;
 				}
 				
@@ -179,7 +184,7 @@ public class RuleUtils {
 					Node_Literal literal = (Node_Literal) object;
 					JSONObject operand = new JSONObject()
 											.put("builtin", "EQ")
-											.put("preference", preference)
+											.put("preference", uri)
 											.put("args", new JSONArray().put(new JSONObject()
 																			.put("value", literal.getLiteralValue())
 																			.put("xml-type", literal.getLiteralDatatypeURI())));
@@ -188,7 +193,7 @@ public class RuleUtils {
 					
 				} else if(object.isVariable()) {
 					Node_RuleVariable variable = (Node_RuleVariable) object;
-					variableMpper.put(variable.getName(), preference);
+					variableMpper.put(variable.getName(), uri);
 				}
 				
 				
@@ -209,7 +214,7 @@ public class RuleUtils {
 					if(arg.isVariable()) {
 						Node_RuleVariable variable = (Node_RuleVariable) arg;
 												
-						if((preference = variableMpper.get(variable.getName())) == null)
+						if((uri = variableMpper.get(variable.getName())) == null)
 							throw new IllegalArgumentException("Unknwon variable name: "+variable.getName());
 						
 					} else if(arg.isLiteral()) {
@@ -223,7 +228,7 @@ public class RuleUtils {
 				
 				JSONObject operand = new JSONObject()
 										.put("builtin", type)
-										.put("preference", preference)
+										.put("preference", uri)
 										.put("args", args);
 								
 				bodyOperands.put(operand);
@@ -231,6 +236,24 @@ public class RuleUtils {
 		}
 
 		return bodyOperands;
+	}
+	
+	private static String getURI(String predicateURI) {
+		
+		String uri = null;
+		if((uri = OntPreference.getURI(predicateURI)) == null)
+			uri = OntUserContext.getURI(predicateURI);
+		
+		return uri;
+	}
+	
+	private static String getPredicate(String uri) {
+		
+		String predicate = null;
+		if((predicate = OntPreference.getPredicate(uri)) == null)
+			predicate = OntUserContext.getPredicate(uri);
+		
+		return predicate;
 	}
 	
 /*

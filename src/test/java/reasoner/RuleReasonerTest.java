@@ -36,7 +36,6 @@ public class RuleReasonerTest {
 	private static final String[] RULES_DIR =  new String[] {"ConditionalPreferencesRules.txt", "ContentAdaptationRules.txt"};
 
 	private RuleReasoner ruleReasoner;
-	private OntModel model;
 	Rule soun_detection_suggestion_rule = Rule.parseRule( 
 			"[soun_detection_suggestion_rule:" + 
 			" 	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)" + 
@@ -235,7 +234,7 @@ public class RuleReasonerTest {
 		for(Entry<String, Attribute> entry :  Preference.getAttributes().entrySet()) {
 			Attribute value = entry.getValue();
 			String key = entry.getKey();
-			String uri =  OntPreference.getDataProperty(key);
+			String uri =  OntPreference.getPredicate(key);
 			OntProperty propertyImple =  ontModel.createOntProperty(uri);
 			Resource range = ontModel.getResource(value.getXMLDataTypeURI());
 			
@@ -249,7 +248,7 @@ public class RuleReasonerTest {
 		for(Entry<String, Attribute> entry :  UserContext.getAttributes().entrySet()) {
 			Attribute value = entry.getValue();
 			String key = entry.getKey();
-			String uri =  OntUserContext.getDataProperty(key);
+			String uri =  OntUserContext.getPredicate(key);
 			OntProperty propertyImple =  ontModel.createOntProperty(uri);
 			Resource range = ontModel.getResource(value.getXMLDataTypeURI());
 			

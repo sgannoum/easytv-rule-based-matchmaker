@@ -74,7 +74,7 @@ public class GreaterThanRulesTest {
 		OntClass userContextClass = model.getOntClass(OntUserContext.ONTOLOGY_CLASS_URI);
 		Individual  userContextInstance = userContextClass.createIndividual();
 		
-		Property hasTimeProperty = model.getProperty(OntUserContext.getDataProperty("http://registry.easytv.eu/context/time"));
+		Property hasTimeProperty = model.getProperty(OntUserContext.getPredicate("http://registry.easytv.eu/context/time"));
 		userContextInstance.addProperty(hasTimeProperty, model.createTypedLiteral("2019-05-30T09:47:47.619Z"));
 		
 		
@@ -82,7 +82,7 @@ public class GreaterThanRulesTest {
 		OntClass userPreferenceClass = model.getOntClass(OntUserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(OntPreference.getDataProperty("http://registry.easytv.eu/common/volume"));
+		Property hasAudioVolumeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/common/volume"));
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
 		OntClass userClass = model.getOntClass(OntUserProfile.ONTOLOGY_CLASS_URI);
@@ -104,7 +104,7 @@ public class GreaterThanRulesTest {
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(OntCondition.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(OntPreference.getDataProperty("http://registry.easytv.eu/common/volume")));
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(OntPreference.getPredicate("http://registry.easytv.eu/common/volume")));
 				
 		Property hasValueProperty = model.getProperty(OntCondition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(5));
@@ -131,7 +131,7 @@ public class GreaterThanRulesTest {
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(OntCondition.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(OntPreference.getDataProperty("http://registry.easytv.eu/common/volume")));
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(OntPreference.getPredicate("http://registry.easytv.eu/common/volume")));
 				
 		Property hasValueProperty = model.getProperty(OntCondition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral(7));
@@ -157,7 +157,7 @@ public class GreaterThanRulesTest {
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(OntCondition.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(OntUserContext.getDataProperty("http://registry.easytv.eu/context/time")));
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(OntUserContext.getPredicate("http://registry.easytv.eu/context/time")));
 				
 		Property hasValueProperty = model.getProperty(OntCondition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral("2019-04-30T09:47:47.619Z" ));
@@ -184,7 +184,7 @@ public class GreaterThanRulesTest {
 		Individual gtInstance = gtClass.createIndividual();
 
 		Property hasTypeProperty = model.getProperty(OntCondition.HAS_TYPE_PROP);
-		gtInstance.addProperty(hasTypeProperty, model.createProperty(OntUserContext.getDataProperty("http://registry.easytv.eu/context/time")));
+		gtInstance.addProperty(hasTypeProperty, model.createProperty(OntUserContext.getPredicate("http://registry.easytv.eu/context/time")));
 				
 		Property hasValueProperty = model.getProperty(OntCondition.HAS_VALUE_PROP);
 		gtInstance.addProperty(hasValueProperty, model.createTypedLiteral("2019-05-30T09:47:47.619Z" ));

@@ -21,7 +21,9 @@
       <class name="logicalOperand.NotRulesTest"/>
       
       <class name="rules.AllRulesTests"/>
-      <class name="reasoner.RuleReasonerTest"/>
+      <class name="rules.RulesUtilsTests"/>
+      
+      <class name="reasoner.RuleReasonerTest"/> 
       
     </classes>
   </test>

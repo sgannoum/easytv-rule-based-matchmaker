@@ -99,7 +99,7 @@ public class OntCondition implements Ontological {
 																			
 					//set type
 					Property hasTypeProperty = model.getProperty(HAS_TYPE_PROP);
-					operandInstance.addProperty(hasTypeProperty, model.createProperty(OntUserContext.getDataProperty(uri)));
+					operandInstance.addProperty(hasTypeProperty, model.createProperty(OntUserContext.getPredicate(uri)));
 					//set value
 					Property hasValueProperty = model.getProperty(HAS_VALUE_PROP);
 					operandInstance.addProperty(hasValueProperty, model.createTypedLiteral(value));

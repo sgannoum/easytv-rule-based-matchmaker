@@ -47,13 +47,13 @@ public class UserContextTest {
 			"(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+OntUserProfile.ONTOLOGY_CLASS_URI+")" + 
 			",(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" + 
 		    ",(?user "+OntUserProfile.HAS_PREFERENCE_PROP+" ?defPref)" +
-		    ",(?defPref "+OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/ui/text/size")+" ?audioVolume)" +
-		    ",(?defPref "+OntPreference.getDataProperty("http://registry.easytv.eu/common/display/screen/enhancement/cursor/size")+" ?cursorSize)" +
+		    ",(?defPref "+OntPreference.getPredicate("http://registry.easytv.eu/application/cs/ui/text/size")+" ?audioVolume)" +
+		    ",(?defPref "+OntPreference.getPredicate("http://registry.easytv.eu/common/display/screen/enhancement/cursor/size")+" ?cursorSize)" +
 			",EQ(?audioVolume, '6'^^http://www.w3.org/2001/XMLSchema#integer, ?res1)" +
 			",EQ(?cursorSize, '10'^^http://www.w3.org/2001/XMLSchema#integer, ?res2)" +
 			"->" + 
-			"	(?sugPref "+OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/cc/subtitles/background/color")+" '#ffffff'^^http://www.w3.org/2001/XMLSchema#string)" + 
-			"	(?sugPref "+OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/cc/subtitles/font/color")+" '#000000'^^http://www.w3.org/2001/XMLSchema#string)" + 
+			"	(?sugPref "+OntPreference.getPredicate("http://registry.easytv.eu/application/cs/cc/subtitles/background/color")+" '#ffffff'^^http://www.w3.org/2001/XMLSchema#string)" + 
+			"	(?sugPref "+OntPreference.getPredicate("http://registry.easytv.eu/application/cs/cc/subtitles/font/color")+" '#000000'^^http://www.w3.org/2001/XMLSchema#string)" + 
 			"	print('Suggested preferences')"+
 			"]"
 			;
@@ -98,10 +98,10 @@ public class UserContextTest {
 		OntClass userPreferenceClass = model.getOntClass(OntUserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/ui/text/size"));
+		Property hasAudioVolumeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/application/cs/ui/text/size"));
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property cursorSizeProperty = model.getProperty(OntPreference.getDataProperty("http://registry.easytv.eu/common/display/screen/enhancement/cursor/size"));
+		Property cursorSizeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/common/display/screen/enhancement/cursor/size"));
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		Property hasPreferenceProperty = model.getProperty(OntUserProfile.HAS_PREFERENCE_PROP);
@@ -111,8 +111,8 @@ public class UserContextTest {
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 			
-		Property hasBackgroundColorProperty = model.getProperty(OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/cc/subtitles/background/color"));
-		Property hasFontColorProperty = model.getProperty(OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/cc/subtitles/font/color"));
+		Property hasBackgroundColorProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/application/cs/cc/subtitles/background/color"));
+		Property hasFontColorProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/application/cs/cc/subtitles/font/color"));
 
 		StmtIterator list = inf.listStatements(suggestedPreferencesnstance, hasBackgroundColorProperty, (RDFNode)null);
 		Assert.assertEquals(list.next().getObject().asLiteral().getString(), "#ffffff");
@@ -141,10 +141,10 @@ public class UserContextTest {
 		OntClass userPreferenceClass = model.getOntClass(OntUserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/ui/text/size"));
+		Property hasAudioVolumeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/application/cs/ui/text/size"));
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(5));
 		
-		Property cursorSizeProperty = model.getProperty(OntPreference.getDataProperty("http://registry.easytv.eu/common/display/screen/enhancement/cursor/size"));
+		Property cursorSizeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/common/display/screen/enhancement/cursor/size"));
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		Property hasPreferenceProperty = model.getProperty(OntUserProfile.HAS_PREFERENCE_PROP);
@@ -154,8 +154,8 @@ public class UserContextTest {
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 			
-		Property hasBackgroundColorProperty = model.getProperty(OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/cc/subtitles/background/color"));
-		Property hasFontColorProperty = model.getProperty(OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/cc/subtitles/font/color"));
+		Property hasBackgroundColorProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/application/cs/cc/subtitles/background/color"));
+		Property hasFontColorProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/application/cs/cc/subtitles/font/color"));
 
 		StmtIterator list = inf.listStatements(suggestedPreferencesnstance, hasBackgroundColorProperty, (RDFNode)null);
 		Assert.assertFalse(list.hasNext());

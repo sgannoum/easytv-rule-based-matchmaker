@@ -39,7 +39,7 @@ public class OntUserContext implements Ontological{
 		String uri = dataProperty.replace(Ontological.NAMESPACE, "http://registry.easytv.eu/").replace("has_", "").replace("_", "/");
 		
 		if(!UserContext.getAttributes().containsKey(uri))
-			throw new IllegalArgumentException("Unknown context uri "+uri);
+			return null;
 		
 		return uri;
 	}
@@ -49,9 +49,9 @@ public class OntUserContext implements Ontological{
 	 * @param uri
 	 * @return
 	 */
-	public static String getDataProperty(String uri) {
+	public static String getPredicate(String uri) {
 		if(!UserContext.getAttributes().containsKey(uri))
-			throw new IllegalArgumentException("Unknown context uri "+uri);
+			return null;
 		
 		return Ontological.NAMESPACE + uri.replaceAll("http://registry.easytv.eu/", "has_").replace("/","_");
 	}
@@ -91,12 +91,12 @@ public class OntUserContext implements Ontological{
 */
 		
 		if(context.containsKey("http://registry.easytv.eu/context/time")) {
-			Property hasTimeProperty = model.getProperty(getDataProperty("http://registry.easytv.eu/context/time"));
+			Property hasTimeProperty = model.getProperty(getPredicate("http://registry.easytv.eu/context/time"));
 			userContextInstance.addProperty(hasTimeProperty, model.createTypedLiteral(context.get("http://registry.easytv.eu/context/time")));
 		}
 		
 		if(context.containsKey("http://registry.easytv.eu/context/location")) {
-			Property hasLocationProperty = model.getProperty(getDataProperty("http://registry.easytv.eu/context/location"));
+			Property hasLocationProperty = model.getProperty(getPredicate("http://registry.easytv.eu/context/location"));
 			userContextInstance.addProperty(hasLocationProperty, model.createTypedLiteral(context.get("http://registry.easytv.eu/context/location")));
 		}
 		

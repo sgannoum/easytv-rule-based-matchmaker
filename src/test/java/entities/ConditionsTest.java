@@ -149,7 +149,7 @@ public class ConditionsTest {
 		OntClass userPreferenceClass = model.getOntClass(OntUserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(OntPreference.getDataProperty("http://registry.easytv.eu/common/volume"));
+		Property hasAudioVolumeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/common/volume"));
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
 		OntClass userClass = model.getOntClass(OntUserProfile.ONTOLOGY_CLASS_URI);
@@ -197,7 +197,7 @@ public class ConditionsTest {
 		Property hasNameProperty = model.getProperty(OntPreference.HAS_NAME_PROP);
 		conditionalPreferenceInstance.addProperty(hasNameProperty, "condition_1") ;
 	
-		Property hasFontSizeProperty = model.getProperty(OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/ui/text/size"));
+		Property hasFontSizeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/application/cs/ui/text/size"));
 		conditionalPreferenceInstance.addProperty(hasFontSizeProperty, model.createTypedLiteral(500)) ;
 
 		conditionalPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(600));
@@ -235,7 +235,7 @@ public class ConditionsTest {
 		OntClass userPreferenceClass = model.getOntClass(OntUserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
 		
-		Property hasAudioVolumeProperty = model.getProperty(OntPreference.getDataProperty("http://registry.easytv.eu/common/volume"));
+		Property hasAudioVolumeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/common/volume"));
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
 		OntClass userClass = model.getOntClass(OntUserProfile.ONTOLOGY_CLASS_URI);
@@ -283,7 +283,7 @@ public class ConditionsTest {
 		Property hasNameProperty = model.getProperty(OntPreference.HAS_NAME_PROP);
 		conditionalPreferenceInstance.addProperty(hasNameProperty, "condition_1") ;
 	
-		Property hasFontSizeProperty = model.getProperty(OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/ui/text/size"));
+		Property hasFontSizeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/application/cs/ui/text/size"));
 		conditionalPreferenceInstance.addProperty(hasFontSizeProperty, model.createTypedLiteral(500)) ;
 
 		conditionalPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(600));

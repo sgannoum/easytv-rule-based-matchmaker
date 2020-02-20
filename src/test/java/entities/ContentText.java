@@ -66,7 +66,7 @@ public class ContentText {
 		    ",(?defPref "+Content.getDataProperty("http://registry.easytv.eu/application/cs/accessibility/detection/character")+" 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" +
 		    ",(?content "+Content.getDataProperty("http://registry.easytv.eu/application/cs/accessibility/detection/character")+" 'false'^^http://www.w3.org/2001/XMLSchema#boolean)" +
 			"->" + 
-		    " (?defPref "+OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/ui/text/size")+" '30'^^http://www.w3.org/2001/XMLSchema#integer)" +
+		    " (?defPref "+OntPreference.getPredicate("http://registry.easytv.eu/application/cs/ui/text/size")+" '30'^^http://www.w3.org/2001/XMLSchema#integer)" +
 			"]"	+
 		    
 	"[suggest_face_detection_preference:" + 
@@ -75,7 +75,7 @@ public class ContentText {
 		    ",(?user "+OntUserProfile.HAS_PREFERENCE_PROP+" ?defPref)" +
 		    ",(?defPref "+Content.getDataProperty("http://registry.easytv.eu/application/cs/accessibility/detection/face")+" 'false'^^http://www.w3.org/2001/XMLSchema#boolean)" +
 		    ",(?content "+Content.getDataProperty("http://registry.easytv.eu/application/cs/accessibility/detection/face")+" 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" +
-		    ",(?defPref "+OntPreference.getDataProperty("http://registry.easytv.eu/application/cs/ui/text/size")+" ?magnification)" +
+		    ",(?defPref "+OntPreference.getPredicate("http://registry.easytv.eu/application/cs/ui/text/size")+" ?magnification)" +
 		    ",greaterThen(?magnification, 60, ?res)" +
 			"->" + 
 		    " (?defPref "+Content.getDataProperty("http://registry.easytv.eu/application/cs/accessibility/detection/face")+" 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" +

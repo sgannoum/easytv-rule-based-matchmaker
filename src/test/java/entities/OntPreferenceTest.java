@@ -41,7 +41,7 @@ public class OntPreferenceTest {
 		
 		String prefernceURI = "http://registry.easytv.eu/common/volume";
 		String excpected = Ontological.NAMESPACE + "has_common_volume";
-		String actual = OntPreference.getDataProperty(prefernceURI);
+		String actual = OntPreference.getPredicate(prefernceURI);
 	
 		Assert.assertEquals(excpected, actual);
 	}
@@ -51,7 +51,7 @@ public class OntPreferenceTest {
 		
 		String prefernceURI = "http://registry.easytv.eu/application/cs/audio/eq/low/shelf/frequency";
 		String excpected = Ontological.NAMESPACE + "has_application_cs_audio_eq_low_shelf_frequency";
-		String actual = OntPreference.getDataProperty(prefernceURI);
+		String actual = OntPreference.getPredicate(prefernceURI);
 	
 		Assert.assertEquals(excpected, actual);
 	}
@@ -61,7 +61,7 @@ public class OntPreferenceTest {
 		
 		String prefernceURI = "http://registry.easytv.eu/nothing";
 		String excpected = Ontological.NAMESPACE + "has_application_cs_audio_eq_low_shelf_frequency";
-		String actual = OntPreference.getDataProperty(prefernceURI);
+		String actual = OntPreference.getPredicate(prefernceURI);
 	
 		Assert.assertEquals(excpected, actual);
 	}
