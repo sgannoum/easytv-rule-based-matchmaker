@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -45,6 +46,7 @@ public class RBMM_WebService
 	
     @GET
     @Path("personalize/rules")
+    @Produces("application/json")
     public Response getRules() throws IOException, JSONException
     {
     	logger.info("get rules request...");
@@ -52,12 +54,13 @@ public class RBMM_WebService
 		//convert to json array
 		JSONArray jsonRules = ruleReasoner.getRules();
 				
-        return Response.status(200).entity(jsonRules).build();
+        return Response.status(200).entity(jsonRules.toString(4)).build();
     }
     
     @POST
     @Path("personalize/rules")
     @Consumes("application/json")
+    @Produces("application/json")
     public Response postRules(Object tmpInput) throws IOException, JSONException
     {
     	logger.info("post rules request...");
@@ -67,7 +70,7 @@ public class RBMM_WebService
     	logger.info(jsonRules.toString(4));
     	ruleReasoner.updateRules(jsonRules);
 				
-        return Response.status(200).build();
+        return Response.status(200).entity("OK").build();
     }
 	
     @POST
