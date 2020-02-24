@@ -14,7 +14,6 @@
             "http://registry.easytv.eu/application/cs/accessibility/audio/description": true,
             "http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiLanguage": "ca",
             "http://registry.easytv.eu/application/cs/audio/volume": 12,
-            "http://registry.easytv.eu/application/cs/accessibility/enhancement/image/type": "face-detection",
             "http://registry.easytv.eu/common/display/screen/enhancement/cursor/color": "#ffffff",
             "http://registry.easytv.eu/common/volume": 36,
             "http://registry.easytv.eu/application/cs/accessibility/magnification/scale": 2
