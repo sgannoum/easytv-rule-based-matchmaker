@@ -26,25 +26,21 @@
 
 [Face_detection_suggestion_rule:
  	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)
- 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)
- 	
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_enhancement_image_type ?faceDetection)
- 	
+ 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref) 	
+ 	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_face 'false'^^http://www.w3.org/2001/XMLSchema#string)
  	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_size ?sub_text_size)
  	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_display_screen_enhancement_cursor_size ?cursor_size)
  	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_size ?ui_text_size)
 
 	GE(?sub_text_size, '5'^^http://www.w3.org/2001/XMLSchema#integer)
 	EQ(?cursor_size, '2.0'^^http://www.w3.org/2001/XMLSchema#double)
-	EQ(?ui_text_size,  '23'^^http://www.w3.org/2001/XMLSchema#string)
-	EQ(?faceDetection,  'false'^^http://www.w3.org/2001/XMLSchema#boolean)
-	
+	EQ(?ui_text_size,  '23'^^http://www.w3.org/2001/XMLSchema#string)	
 	
  	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)
 
 	->	
 	
-	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_enhancement_image_type 'face-detection'^^http://www.w3.org/2001/XMLSchema#string)
+	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_face 'true'^^http://www.w3.org/2001/XMLSchema#string)
 	print('Suggest face detection')
 ]	
 
