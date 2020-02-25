@@ -1,43 +1,49 @@
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#Detection> <http://www.owl-ontologies.com/OntologyEasyTV.owl#excecutedBefore> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Convertion> . 
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#Detection> <http://www.owl-ontologies.com/OntologyEasyTV.owl#excecutedBefore> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Magnification> . 
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#Magnification> <http://www.owl-ontologies.com/OntologyEasyTV.owl#excecutedBefore> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Convertion> . 
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#Audio> <http://www.owl-ontologies.com/OntologyEasyTV.owl#contains> <http://www.owl-ontologies.com/OntologyEasyTV.owl#SpokenText> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#Audio> <http://www.owl-ontologies.com/OntologyEasyTV.owl#contains> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Sound> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#Video> <http://www.owl-ontologies.com/OntologyEasyTV.owl#contains> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Face> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#Video> <http://www.owl-ontologies.com/OntologyEasyTV.owl#contains> <http://www.owl-ontologies.com/OntologyEasyTV.owl#ImageText> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#Video> <http://www.owl-ontologies.com/OntologyEasyTV.owl#contains> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Context> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#AudioVisualContent> <http://www.owl-ontologies.com/OntologyEasyTV.owl#contains> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Video> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#AudioVisualContent> <http://www.owl-ontologies.com/OntologyEasyTV.owl#contains> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Audio> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#WrittenText> <http://www.owl-ontologies.com/OntologyEasyTV.owl#contains> <http://www.owl-ontologies.com/OntologyEasyTV.owl#IT> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#WrittenText> <http://www.owl-ontologies.com/OntologyEasyTV.owl#contains> <http://www.owl-ontologies.com/OntologyEasyTV.owl#GR> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#SpokenText> <http://www.owl-ontologies.com/OntologyEasyTV.owl#contains> <http://www.owl-ontologies.com/OntologyEasyTV.owl#IT> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#SpokenText> <http://www.owl-ontologies.com/OntologyEasyTV.owl#contains> <http://www.owl-ontologies.com/OntologyEasyTV.owl#ES> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#CharacterRecognition> <http://www.owl-ontologies.com/OntologyEasyTV.owl#applies> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Convertion> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#CharacterRecognition> <http://www.owl-ontologies.com/OntologyEasyTV.owl#onContent> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Face> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#CharacterRecognition> <http://www.owl-ontologies.com/OntologyEasyTV.owl#toContent> <http://www.owl-ontologies.com/OntologyEasyTV.owl#WrittenText> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#FaceDetection> <http://www.owl-ontologies.com/OntologyEasyTV.owl#applies> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Magnification> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#FaceDetection> <http://www.owl-ontologies.com/OntologyEasyTV.owl#applies> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Detection> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#FaceDetection> <http://www.owl-ontologies.com/OntologyEasyTV.owl#onContent> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Face> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#FaceDetection> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.owl-ontologies.com/OntologyEasyTV.owl#TransformalContentAccessibilityService> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#CustomMagnification> <http://www.owl-ontologies.com/OntologyEasyTV.owl#applies> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Magnification> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#CustomMagnification> <http://www.owl-ontologies.com/OntologyEasyTV.owl#onContent> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Video> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#SignLanguage> <http://www.owl-ontologies.com/OntologyEasyTV.owl#applies> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Convertion> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#SignLanguage> <http://www.owl-ontologies.com/OntologyEasyTV.owl#onContent> <http://www.owl-ontologies.com/OntologyEasyTV.owl#SpokenText> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#SignLanguage> <http://www.owl-ontologies.com/OntologyEasyTV.owl#toContent> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Video> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#Subtitles> <http://www.owl-ontologies.com/OntologyEasyTV.owl#applies> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Convertion> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#Subtitles> <http://www.owl-ontologies.com/OntologyEasyTV.owl#onContent> <http://www.owl-ontologies.com/OntologyEasyTV.owl#SpokenText> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#Subtitles> <http://www.owl-ontologies.com/OntologyEasyTV.owl#toContent> <http://www.owl-ontologies.com/OntologyEasyTV.owl#WrittenText> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#AudioSubtitles> <http://www.owl-ontologies.com/OntologyEasyTV.owl#applies> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Convertion> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#AudioSubtitles> <http://www.owl-ontologies.com/OntologyEasyTV.owl#onContent> <http://www.owl-ontologies.com/OntologyEasyTV.owl#WrittenText> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#AudioSubtitles> <http://www.owl-ontologies.com/OntologyEasyTV.owl#toContent> <http://www.owl-ontologies.com/OntologyEasyTV.owl#SpokenText> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#AudioDescription> <http://www.owl-ontologies.com/OntologyEasyTV.owl#applies> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Convertion> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#AudioDescription> <http://www.owl-ontologies.com/OntologyEasyTV.owl#onContent> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Context> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#AudioDescription> <http://www.owl-ontologies.com/OntologyEasyTV.owl#toContent> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Audio> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#TextDetection> <http://www.owl-ontologies.com/OntologyEasyTV.owl#applies> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Detection> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#TextDetection> <http://www.owl-ontologies.com/OntologyEasyTV.owl#applies> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Convertion> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#TextDetection> <http://www.owl-ontologies.com/OntologyEasyTV.owl#onContent> <http://www.owl-ontologies.com/OntologyEasyTV.owl#ImageText> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#TextDetection> <http://www.owl-ontologies.com/OntologyEasyTV.owl#toContent> <http://www.owl-ontologies.com/OntologyEasyTV.owl#WrittenText> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#SoundDetection> <http://www.owl-ontologies.com/OntologyEasyTV.owl#applies> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Detection> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#SoundDetection> <http://www.owl-ontologies.com/OntologyEasyTV.owl#applies> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Convertion> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#SoundDetection> <http://www.owl-ontologies.com/OntologyEasyTV.owl#onContent> <http://www.owl-ontologies.com/OntologyEasyTV.owl#Sound> .
-<http://www.owl-ontologies.com/OntologyEasyTV.owl#SoundDetection> <http://www.owl-ontologies.com/OntologyEasyTV.owl#toContent> <http://www.owl-ontologies.com/OntologyEasyTV.owl#WrittenText> .
+@prefix mfg: <http://www.WorkingOntologist.com/Examples/Chapter3/Manufacturing.rdf#>
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+@prefix easytv: <http://www.owl-ontologies.com/OntologyEasyTV.owl#>
+
+
+easytv:Detection easytv:excecutedBefore easytv:Convertion, easytv:Magnification . 
+easytv:Magnification easytv:excecutedBefore easytv:Convertion . 
+
+easytv:Audio easytv:contains easytv:SpokenText, easytv:Sound .
+easytv:Video easytv:contains easytv:Face, easytv:ImageText, easytv:Context  .
+easytv:AudioVisualContent easytv:contains easytv:Video, easytv:Audio .
+easytv:WrittenText easytv:contains easytv:IT, easytv:GR .
+easytv:SpokenText easytv:contains easytv:IT, easytv:ES .
+
+easytv:CharacterRecognition easytv:applies easytv:Convertion ;
+					        easytv:onContent easytv:Face ;
+					        easytv:toContent easytv:WrittenText .
+
+easytv:FaceDetection rdf:type easytv:TransformalContentAccessibilityService ;
+					 easytv:applies easytv:Detection, easytv:Magnification ;
+					 easytv:onContent easytv:Face .
+
+
+easytv:CustomMagnification easytv:applies easytv:Magnification ;
+					       easytv:onContent easytv:Video .
+
+easytv:SignLanguage easytv:applies easytv:Convertion ;
+					easytv:onContent easytv:SpokenText ;
+					easytv:toContent easytv:Video .
+
+easytv:Subtitles easytv:applies easytv:Convertion ;
+				 easytv:onContent easytv:SpokenText ;
+				 easytv:toContent easytv:WrittenText .
+
+easytv:AudioSubtitles easytv:applies easytv:Convertion ;
+					  easytv:onContent easytv:WrittenText ;
+					  easytv:toContent easytv:SpokenText .
+
+easytv:AudioDescription easytv:applies easytv:Convertion ;
+					    easytv:onContent easytv:Context ;
+					    easytv:toContent easytv:Audio .
+
+easytv:TextDetection easytv:applies easytv:Detection, easytv:Convertion ;
+					 easytv:onContent easytv:ImageText ;
+					 easytv:toContent easytv:WrittenText .
+
+easytv:SoundDetection easytv:applies easytv:Detection, easytv:Convertion ;
+					  easytv:onContent easytv:Sound ;
+					  easytv:toContent easytv:WrittenText .

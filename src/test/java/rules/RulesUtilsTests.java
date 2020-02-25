@@ -185,7 +185,7 @@ public class RulesUtilsTests {
 		Assert.assertTrue(jsonRule2.similar(actual));
 	}
 	
-	//@Test
+	@Test
 	public void test_convert_all_suggestions_rules() throws IOException {
 		
 		List<Rule> rules = new ArrayList<Rule>();

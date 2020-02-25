@@ -109,7 +109,7 @@ public class ContentAdaptationTests {
 		
 		FileReader reader = new FileReader(new File(getClass().getClassLoader().getResource("ContentServiceStatments.txt").getFile()));
 		//read the model
-		model.read(reader, null, "N-TRIPLE");
+		model.read(reader, null, "N3");
 		
 		//close
 		reader.close();
