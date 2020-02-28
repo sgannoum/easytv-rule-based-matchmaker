@@ -31,7 +31,7 @@ public class RuleReasonerContextualTest {
 			" 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_volume ?volume)" + 
 			" 	GE(?volume, '15'^^http://www.w3.org/2001/XMLSchema#integer)" + 
 			" 	LE(?volume, '20'^^http://www.w3.org/2001/XMLSchema#integer)" + 
-			"	(?cnxt http://www.owl-ontologies.com/OntologyEasyTV.owl#has_context_light '2'^^http://www.w3.org/2001/XMLSchema#integer)"+	
+			"	(?cnxt http://www.owl-ontologies.com/OntologyEasyTV.owl#has_context_light 'dark'^^http://www.w3.org/2001/XMLSchema#string)"+	
 			"	->" + 
 			"	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_sound 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" + 
 			"]	");
@@ -51,7 +51,7 @@ public class RuleReasonerContextualTest {
 		JSONObject profile1 = new JSONObject("{"
 				+ "\"user_id\":1," +
 				"user_context: {" + 
-				"    \"http://registry.easytv.eu/context/light\": 2" + 
+				"    \"http://registry.easytv.eu/context/light\": \"dark\"" + 
 				"}, "
 				+ "\"user_profile\":{" + 
 				"            \"user_preferences\": {" + 
@@ -83,7 +83,7 @@ public class RuleReasonerContextualTest {
 		JSONObject profile1 = new JSONObject("{"
 				+ "\"user_id\":1," +
 				"user_context: {" + 
-				"    \"http://registry.easytv.eu/context/light\": 3" + 
+				"    \"http://registry.easytv.eu/context/light\": \"home\"" + 
 				"}, "
 				+ "\"user_profile\":{" + 
 				"            \"user_preferences\": {" + 
@@ -115,7 +115,7 @@ public class RuleReasonerContextualTest {
 		JSONObject profile1 = new JSONObject("{"
 				+ "\"user_id\":1," +
 				"user_context: {" + 
-				"    \"http://registry.easytv.eu/context/light\": 2" + 
+				"    \"http://registry.easytv.eu/context/light\": \"theater\"" + 
 				"}, "
 				+ "\"user_profile\":{" + 
 				"            \"user_preferences\": {" + 
