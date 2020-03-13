@@ -6,8 +6,6 @@ import org.json.JSONObject;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import com.certh.iti.easytv.rbmm.user.OntUserPreferences;
-import com.certh.iti.easytv.rbmm.user.OntUserProfile;
 import com.certh.iti.easytv.rbmm.user.preference.OntPreference;
 import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 import com.fasterxml.jackson.core.JsonParseException;

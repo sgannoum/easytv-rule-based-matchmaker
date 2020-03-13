@@ -1,11 +1,7 @@
 package com.certh.iti.easytv.rbmm.reasoner;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -16,7 +12,6 @@ import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.ontology.DatatypeProperty;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
-import org.apache.jena.ontology.OntProperty;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
@@ -205,26 +200,15 @@ public class RuleReasoner {
 	 */
 	public OntModel loadModel(String ontologyFile) throws IOException {
 		
-		File file = new File(getClass()
-							.getClassLoader()
-							.getResource(ontologyFile)
-							.getFile());
-		
 		//Read model
 		OntModel model = ModelFactory.createOntologyModel();
-		InputStream in = new FileInputStream(file);
-		model = (OntModel) model.read(in, null, "");
 		
-		//reader
-		FileReader reader = new FileReader(new File(getClass().getClassLoader().getResource("ContentServiceStatments.txt").getFile()));
-		
-		//read the model
-		model.read(reader, null, "N3");
-		
-		//close
-		reader.close();
-		
+		//load ontology model
+		model.read(ClassLoader.getSystemResourceAsStream(ontologyFile), null, "");
 	
+		//load content adaptation service statements
+		model.read(ClassLoader.getSystemResourceAsStream("ContentServiceStatments.txt"), null, "N3");
+		
 		logger.info("Ontology was loaded");
 		
 		return model;
@@ -313,14 +297,9 @@ public class RuleReasoner {
 	public List<Rule> loadRules(String fname) throws IOException {
 
 		List<Rule> rules = new ArrayList<Rule>();
-		ClassLoader classLoader = getClass().getClassLoader();
-		
-		File file = new File(classLoader
-							.getResource(fname)
-							.getFile());
-		
-		logger.info("Loadeding rules file..."+file.getName());
-		rules.addAll(Rule.rulesFromURL(file.getCanonicalPath()));
+		URL url = ClassLoader.getSystemResource(fname);
+		logger.info("Loadeding rules file..."+url.getFile());
+		rules.addAll(Rule.rulesFromURL(url.toString()));
 		return rules;
 	}
 	

@@ -1,8 +1,6 @@
 package rules;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,13 +11,11 @@ import org.apache.jena.rdf.model.InfModel;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.reasoner.Reasoner;
 import org.apache.jena.reasoner.rulesys.BuiltinRegistry;
 import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
 import org.apache.jena.reasoner.rulesys.Rule;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.certh.iti.easytv.rbmm.builtin.NotEquals;
@@ -101,9 +97,8 @@ public class ContentAdaptationTests {
 	@Test
 	public void content_adpatation_contains_rule_Test() throws IOException {
 		
-		File file = new File(RBMMTestConfig.ONTOLOGY_File);
 		OntModel model = ModelFactory.createOntologyModel();
-		InputStream in = new FileInputStream(file);
+		InputStream in = ClassLoader.getSystemResourceAsStream(RBMMTestConfig.ONTOLOGY_File);
 		model = (OntModel) model.read(in, null, "");
 		BuiltinRegistry.theRegistry.register("NE", new NotEquals());
 		System.out.println("Ontology was loaded");
@@ -130,9 +125,9 @@ public class ContentAdaptationTests {
 	
 	@Test
 	public void content_adpatation_rule_test() throws IOException {
-		File file = new File(RBMMTestConfig.ONTOLOGY_File);
+
 		OntModel model = ModelFactory.createOntologyModel();
-		InputStream in = new FileInputStream(file);
+		InputStream in = ClassLoader.getSystemResourceAsStream(RBMMTestConfig.ONTOLOGY_File);
 		model = (OntModel) model.read(in, null, "");
 		BuiltinRegistry.theRegistry.register("NE", new NotEquals());
 		System.out.println("Ontology was loaded");

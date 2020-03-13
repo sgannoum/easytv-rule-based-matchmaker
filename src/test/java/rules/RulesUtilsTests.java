@@ -1,6 +1,5 @@
 package rules;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -188,14 +187,8 @@ public class RulesUtilsTests {
 	@Test
 	public void test_convert_all_suggestions_rules() throws IOException {
 		
-		List<Rule> rules = new ArrayList<Rule>();
-		ClassLoader classLoader = getClass().getClassLoader();
-		
-		File file = new File(classLoader
-							.getResource("SuggestionsRules.txt")
-							.getFile());
-		
-		rules.addAll(Rule.rulesFromURL(file.getCanonicalPath()));
+		List<Rule> rules = new ArrayList<Rule>();		
+		rules.addAll(Rule.rulesFromURL(ClassLoader.getSystemResource("SuggestionsRules.txt").toString()));
 		JSONArray actual = RuleUtils.convert(rules);
 		System.out.println(actual.toString(4));
 	}
