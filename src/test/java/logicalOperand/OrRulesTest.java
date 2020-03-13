@@ -1,7 +1,5 @@
 package logicalOperand;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
@@ -48,9 +46,8 @@ public class OrRulesTest {
 	@BeforeMethod
 	public void beforeMethod() throws FileNotFoundException {
 		
-		File file = new File(RBMMTestConfig.ONTOLOGY_File);
 		model = ModelFactory.createOntologyModel();
-		InputStream in = new FileInputStream(file);
+		InputStream in = ClassLoader.getSystemResourceAsStream(RBMMTestConfig.ONTOLOGY_File);
 		model = (OntModel) model.read(in, null, "");
 		BuiltinRegistry.theRegistry.register("or", new OR());
 		System.out.println("Ontology was loaded");

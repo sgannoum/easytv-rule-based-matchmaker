@@ -1,7 +1,5 @@
 package comparatorOperand;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
@@ -62,9 +60,8 @@ public class LessThanRulesTest {
 	@BeforeMethod
 	public void beforeMethod() throws FileNotFoundException {
 		
-		File file = new File(RBMMTestConfig.ONTOLOGY_File);
 		model = ModelFactory.createOntologyModel();
-		InputStream in = new FileInputStream(file);
+		InputStream in = ClassLoader.getSystemResourceAsStream(RBMMTestConfig.ONTOLOGY_File);
 		model = (OntModel) model.read(in, null, "");
 		BuiltinRegistry.theRegistry.register("LT", new LessThan());
 		System.out.println("Ontology was loaded");
