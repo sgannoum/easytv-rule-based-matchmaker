@@ -57,7 +57,7 @@ public class AllRulesTests {
 							EqualsRulesTest.rules + NotEqualsRulesTest.rules +
 							GreaterThanRulesTest.rules + GreaterThanEqualRulesTest.rules +
 							LessThanRulesTest.rules + LessThanEqualRulesTest.rules +
-							ConditionsTest.rules
+							ConditionsTest.rules + ContentAdaptationTests.rules
 							;
 	
 	@BeforeMethod

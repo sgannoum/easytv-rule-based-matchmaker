@@ -9,41 +9,48 @@ easytv:Magnification easytv:excecutedBefore easytv:Convertion .
 easytv:Audio easytv:contains easytv:SpokenText, easytv:Sound .
 easytv:Video easytv:contains easytv:Face, easytv:ImageText, easytv:Context  .
 easytv:AudioVisualContent easytv:contains easytv:Video, easytv:Audio .
-easytv:WrittenText easytv:contains easytv:IT, easytv:GR .
-easytv:SpokenText easytv:contains easytv:IT, easytv:ES .
+easytv:WrittenText easytv:contains easytv:EN, easytv:ES, easytv:CA, easytv:IT, easytv:GR .
+easytv:SpokenText easytv:contains easytv:EN, easytv:ES, easytv:CA, easytv:IT, easytv:GR .
 
-easytv:CharacterRecognition easytv:applies easytv:Convertion ;
+easytv:CharacterRecognition rdf:type easytv:TransformalContentAccessibilityService ;
+							easytv:applies easytv:Convertion ;
 					        easytv:onContent easytv:Face ;
 					        easytv:toContent easytv:WrittenText .
 
-easytv:FaceDetection rdf:type easytv:TransformalContentAccessibilityService ;
+easytv:FaceDetection rdf:type easytv:EnhancementContentAccessibilityService ;
 					 easytv:applies easytv:Detection, easytv:Magnification ;
 					 easytv:onContent easytv:Face .
 
-
-easytv:CustomMagnification easytv:applies easytv:Magnification ;
+easytv:CustomMagnification rdf:type easytv:EnhancementContentAccessibilityService ;
+						   easytv:applies easytv:Magnification ;
 					       easytv:onContent easytv:Video .
 
-easytv:SignLanguage easytv:applies easytv:Convertion ;
+easytv:SignLanguage rdf:type easytv:TransformalContentAccessibilityService ;
+					easytv:applies easytv:Convertion ;
 					easytv:onContent easytv:SpokenText ;
 					easytv:toContent easytv:Video .
 
-easytv:Subtitles easytv:applies easytv:Convertion ;
+easytv:Subtitles rdf:type easytv:TransformalContentAccessibilityService ;
+				 easytv:applies easytv:Convertion ;
 				 easytv:onContent easytv:SpokenText ;
 				 easytv:toContent easytv:WrittenText .
 
-easytv:AudioSubtitles easytv:applies easytv:Convertion ;
+easytv:AudioSubtitles rdf:type easytv:TransformalContentAccessibilityService ;
+					  easytv:applies easytv:Convertion ;
 					  easytv:onContent easytv:WrittenText ;
 					  easytv:toContent easytv:SpokenText .
 
-easytv:AudioDescription easytv:applies easytv:Convertion ;
+easytv:AudioDescription rdf:type easytv:TransformalContentAccessibilityService ;
+						easytv:applies easytv:Convertion ;
 					    easytv:onContent easytv:Context ;
 					    easytv:toContent easytv:Audio .
 
-easytv:TextDetection easytv:applies easytv:Detection, easytv:Convertion ;
+easytv:TextDetection rdf:type easytv:TransformalContentAccessibilityService ;
+					 easytv:applies easytv:Detection, easytv:Convertion ;
 					 easytv:onContent easytv:ImageText ;
 					 easytv:toContent easytv:WrittenText .
 
-easytv:SoundDetection easytv:applies easytv:Detection, easytv:Convertion ;
+easytv:SoundDetection rdf:type easytv:TransformalContentAccessibilityService ;
+					  easytv:applies easytv:Detection, easytv:Convertion ;
 					  easytv:onContent easytv:Sound ;
 					  easytv:toContent easytv:WrittenText .

@@ -2,6 +2,7 @@ package com.certh.iti.easytv.rbmm.reasoner;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +13,7 @@ import java.util.logging.Logger;
 
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
+import org.apache.jena.ontology.DatatypeProperty;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.ontology.OntProperty;
@@ -238,41 +240,46 @@ public class RuleReasoner {
 		OntClass userPreferences = ontModel.getOntClass("http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences");
 		OntClass userContext = ontModel.getOntClass("http://www.owl-ontologies.com/OntologyEasyTV.owl#UserContext");
 		OntClass content = ontModel.getOntClass("http://www.owl-ontologies.com/OntologyEasyTV.owl#Content");
-
+		
+		Attribute value;
+		String key, uri; 
+		DatatypeProperty datatypeProperty;
+		Resource range;
+		
 		//add preference predicates
 		for(Entry<String, Attribute> entry :  Preference.getAttributes().entrySet()) {
-			Attribute value = entry.getValue();
-			String key = entry.getKey();
-			String uri =  OntPreference.getPredicate(key);
-			OntProperty propertyImple =  ontModel.createOntProperty(uri);
-			Resource range = ontModel.getResource(value.getXMLDataTypeURI());
+			value = entry.getValue();
+			key = entry.getKey();
+			uri =  OntPreference.getPredicate(key);
+			datatypeProperty =  ontModel.createDatatypeProperty(uri);
+			range = ontModel.getResource(value.getXMLDataTypeURI());
 			
-			propertyImple.addDomain(userPreferences);
-			propertyImple.setRange(range);
+			datatypeProperty.addDomain(userPreferences);
+			datatypeProperty.setRange(range);
 		}
 		
 		//add context predicates
 		for(Entry<String, Attribute> entry :  UserContext.getAttributes().entrySet()) {
-			Attribute value = entry.getValue();
-			String key = entry.getKey();
-			String uri =  OntUserContext.getPredicate(key);
-			OntProperty propertyImple =  ontModel.createOntProperty(uri);
-			Resource range = ontModel.getResource(value.getXMLDataTypeURI());
+			value = entry.getValue();
+			key = entry.getKey();
+			uri =  OntUserContext.getPredicate(key);
+			datatypeProperty =  ontModel.createDatatypeProperty(uri);
+			range = ontModel.getResource(value.getXMLDataTypeURI());
 			
-			propertyImple.addDomain(userContext);
-			propertyImple.setRange(range);
+			datatypeProperty.addDomain(userContext);
+			datatypeProperty.setRange(range);
 		}
 		
 		//add content
 		for(Entry<String, Attribute> entry :  UserContent.getAttributes().entrySet()) {
-			Attribute value = entry.getValue();
-			String key = entry.getKey();
-			String uri =  Content.getDataProperty(key);
-			OntProperty propertyImple =  ontModel.createOntProperty(uri);
-			Resource range = ontModel.getResource(value.getXMLDataTypeURI());
+			value = entry.getValue();
+			key = entry.getKey();
+			uri =  Content.getDataProperty(key);
+			datatypeProperty =  ontModel.createDatatypeProperty(uri);
+			range = ontModel.getResource(value.getXMLDataTypeURI());
 			
-			propertyImple.addDomain(content);
-			propertyImple.setRange(range);
+			datatypeProperty.addDomain(content);
+			datatypeProperty.setRange(range);
 		}
 		
 		return ontModel;
@@ -330,8 +337,18 @@ public class RuleReasoner {
 		
 		profile.createOntologyInstance(model);
 		
+/*		File file = new File("C:\\Users\\salgan\\Desktop\\model.owl");
+		FileOutputStream out = new FileOutputStream(file);
+		model.write(out);
+*/
+		
 		//Get inferre model
 		InfModel infModel = ModelFactory.createInfModel(reasoner, model);
+		
+/*		file = new File("C:\\Users\\salgan\\Desktop\\infModel.owl");
+		out = new FileOutputStream(file);
+		infModel.write(out);
+*/
 		
 		//retrieve user preferences
 		JSONObject inferedPreferences = getConditionalPreferences(infModel);
@@ -360,9 +377,6 @@ public class RuleReasoner {
 		jsonProfile.getJSONObject("user_profile")
 		   		   .getJSONObject("user_preferences")
 		   		   .put("recommendations", new JSONObject().put("preferences", suggesteddPreferences));
-		
-		//Reload model
-		this.model = loadModel(ontologyFile);
 		
 		return jsonProfile;
 	}
