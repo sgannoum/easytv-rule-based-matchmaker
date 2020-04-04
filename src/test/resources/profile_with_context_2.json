@@ -3,7 +3,7 @@
     "user_profile": {"user_preferences": {
         "default": {"preferences": {
             "http://registry.easytv.eu/application/cs/audio/track": "en",
-            "http://registry.easytv.eu/common/display/screen/enhancement/cursor/size": 1.5,
+            "http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size": 1.5,
             "http://registry.easytv.eu/common/contrast": 100,
             "http://registry.easytv.eu/application/cs/ui/language": "en",
             "http://registry.easytv.eu/application/control/csGazeAndGestureControlType": "gaze_control",

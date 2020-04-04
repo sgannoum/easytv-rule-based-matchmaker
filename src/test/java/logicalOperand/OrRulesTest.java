@@ -59,7 +59,7 @@ public class OrRulesTest {
 		Property hasAudioVolumeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/common/volume"));
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property cursorSizeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/common/display/screen/enhancement/cursor/size"));
+		Property cursorSizeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size"));
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		OntClass userClass = model.getOntClass(OntUserProfile.ONTOLOGY_CLASS_URI);

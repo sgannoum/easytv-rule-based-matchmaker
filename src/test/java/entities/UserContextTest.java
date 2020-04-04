@@ -46,7 +46,7 @@ public class UserContextTest {
 			",(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" + 
 		    ",(?user "+OntUserProfile.HAS_PREFERENCE_PROP+" ?defPref)" +
 		    ",(?defPref "+OntPreference.getPredicate("http://registry.easytv.eu/application/cs/ui/text/size")+" ?audioVolume)" +
-		    ",(?defPref "+OntPreference.getPredicate("http://registry.easytv.eu/common/display/screen/enhancement/cursor/size")+" ?cursorSize)" +
+		    ",(?defPref "+OntPreference.getPredicate("http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size")+" ?cursorSize)" +
 			",EQ(?audioVolume, '6'^^http://www.w3.org/2001/XMLSchema#integer, ?res1)" +
 			",EQ(?cursorSize, '10'^^http://www.w3.org/2001/XMLSchema#integer, ?res2)" +
 			"->" + 
@@ -98,7 +98,7 @@ public class UserContextTest {
 		Property hasAudioVolumeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/application/cs/ui/text/size"));
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(6));
 		
-		Property cursorSizeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/common/display/screen/enhancement/cursor/size"));
+		Property cursorSizeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size"));
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		Property hasPreferenceProperty = model.getProperty(OntUserProfile.HAS_PREFERENCE_PROP);
@@ -141,7 +141,7 @@ public class UserContextTest {
 		Property hasAudioVolumeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/application/cs/ui/text/size"));
 		userPreferenceInstance.addProperty(hasAudioVolumeProperty, model.createTypedLiteral(5));
 		
-		Property cursorSizeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/common/display/screen/enhancement/cursor/size"));
+		Property cursorSizeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size"));
 		userPreferenceInstance.addProperty(cursorSizeProperty, model.createTypedLiteral(10));
 		
 		Property hasPreferenceProperty = model.getProperty(OntUserProfile.HAS_PREFERENCE_PROP);

@@ -28,8 +28,8 @@
  	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)
  	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref) 	
  	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_face 'false'^^http://www.w3.org/2001/XMLSchema#string)
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_Size ?sub_text_size)
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_display_screen_enhancement_cursor_size ?cursor_size)
+ 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_size ?sub_text_size)
+ 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_display_screen_enhancement_cursor_Size ?cursor_size)
  	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_size ?ui_text_size)
 
 	GE(?sub_text_size, '5'^^http://www.w3.org/2001/XMLSchema#integer)
@@ -49,8 +49,8 @@
  	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)
  	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)
  	 	
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_Size ?sub_text_size)
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_display_screen_enhancement_cursor_size ?cursor_size)
+ 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_size ?sub_text_size)
+ 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_display_screen_enhancement_cursor_Size ?cursor_size)
  	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_size ?ui_text_size)
 
 	GE(?sub_text_size, '40'^^http://www.w3.org/2001/XMLSchema#integer)
@@ -113,8 +113,8 @@
  	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)
  	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)
  	
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_Size ?sub_text_size)
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_display_screen_enhancement_cursor_size ?cursor_size)
+ 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_size ?sub_text_size)
+ 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_display_screen_enhancement_cursor_Size ?cursor_size)
  	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_size ?ui_text_size)
 
 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_enhancement_image_type 'image-magnification'^^http://www.w3.org/2001/XMLSchema#string)
@@ -155,7 +155,7 @@
  	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)
 
 	->	
-		(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_Size '23'^^http://www.w3.org/2001/XMLSchema#integer)	
+		(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_size '23'^^http://www.w3.org/2001/XMLSchema#integer)	
 	
 	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_size '23'^^http://www.w3.org/2001/XMLSchema#string)	
 	print('Suggest Image magnification ', ?scale)
@@ -177,7 +177,7 @@
  	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)
 
 	->	
-	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_Size '20'^^http://www.w3.org/2001/XMLSchema#integer)	
+	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_size '20'^^http://www.w3.org/2001/XMLSchema#integer)	
 	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_size '20'^^http://www.w3.org/2001/XMLSchema#string)	
 	print('Suggest Image magnification ', ?scale)
 ]	
@@ -198,7 +198,7 @@
  	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)
 
 	->	
-		(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_Size '15'^^http://www.w3.org/2001/XMLSchema#integer)	
+		(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_size '15'^^http://www.w3.org/2001/XMLSchema#integer)	
 	
 	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_size '15'^^http://www.w3.org/2001/XMLSchema#string)	
 	print('Suggest Image magnification ', ?scale)
