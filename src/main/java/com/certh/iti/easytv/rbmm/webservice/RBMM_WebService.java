@@ -67,7 +67,6 @@ public class RBMM_WebService
     	
     	JSONArray jsonRules = new JSONArray((Collection<?>)tmpInput);
     	
-    	logger.info(jsonRules.toString(4));
     	ruleReasoner.updateRules(jsonRules);
 				
         return Response.status(200).entity("OK").build();
