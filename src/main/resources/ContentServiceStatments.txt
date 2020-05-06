@@ -3,54 +3,30 @@
 @prefix easytv: <http://www.owl-ontologies.com/OntologyEasyTV.owl#>
 
 
-easytv:Detection easytv:excecutedBefore easytv:Convertion, easytv:Magnification . 
-easytv:Magnification easytv:excecutedBefore easytv:Convertion . 
+easytv:CharacterRecognition 
+			easytv:hasSubstitutions easytv:FaceDetection ;
+			easytv:refereToPredicate easytv:has_application_cs_accessibility_detection_character .
 
-easytv:Audio easytv:contains easytv:SpokenText, easytv:Sound .
-easytv:Video easytv:contains easytv:Face, easytv:ImageText, easytv:Context  .
-easytv:AudioVisualContent easytv:contains easytv:Video, easytv:Audio .
-easytv:WrittenText easytv:contains easytv:EN, easytv:ES, easytv:CA, easytv:IT, easytv:GR .
-easytv:SpokenText easytv:contains easytv:EN, easytv:ES, easytv:CA, easytv:IT, easytv:GR .
+easytv:FaceDetection 
+			easytv:hasSubstitutions easytv:CustomMagnification ;
+			easytv:refereToPredicate easytv:has_application_cs_accessibility_detection_face .
+				
+easytv:Subtitles 
+			easytv:hasSubstitutions easytv:AudioTrack, easytv:SignLanguage, easytv:AudioSubtitles;
+			easytv:refereToPredicate easytv:has_application_cs_cc_subtitles_language .
+				
+easytv:SignLanguage 
+			easytv:hasSubstitutions easytv:Subtitles ;
+			easytv:refereToPredicate easytv:has_application_cs_accessibility_detection_face .		
 
-easytv:CharacterRecognition rdf:type easytv:TransformalContentAccessibilityService ;
-							easytv:applies easytv:Convertion ;
-					        easytv:onContent easytv:Face ;
-					        easytv:toContent easytv:WrittenText .
-
-easytv:FaceDetection rdf:type easytv:EnhancementContentAccessibilityService ;
-					 easytv:applies easytv:Detection, easytv:Magnification ;
-					 easytv:onContent easytv:Face .
-
-easytv:CustomMagnification rdf:type easytv:EnhancementContentAccessibilityService ;
-						   easytv:applies easytv:Magnification ;
-					       easytv:onContent easytv:Video .
-
-easytv:SignLanguage rdf:type easytv:TransformalContentAccessibilityService ;
-					easytv:applies easytv:Convertion ;
-					easytv:onContent easytv:SpokenText ;
-					easytv:toContent easytv:Video .
-
-easytv:Subtitles rdf:type easytv:TransformalContentAccessibilityService ;
-				 easytv:applies easytv:Convertion ;
-				 easytv:onContent easytv:SpokenText ;
-				 easytv:toContent easytv:WrittenText .
-
-easytv:AudioSubtitles rdf:type easytv:TransformalContentAccessibilityService ;
-					  easytv:applies easytv:Convertion ;
-					  easytv:onContent easytv:WrittenText ;
-					  easytv:toContent easytv:SpokenText .
-
-easytv:AudioDescription rdf:type easytv:TransformalContentAccessibilityService ;
-						easytv:applies easytv:Convertion ;
-					    easytv:onContent easytv:Context ;
-					    easytv:toContent easytv:Audio .
-
-easytv:TextDetection rdf:type easytv:TransformalContentAccessibilityService ;
-					 easytv:applies easytv:Detection, easytv:Convertion ;
-					 easytv:onContent easytv:ImageText ;
-					 easytv:toContent easytv:WrittenText .
-
-easytv:SoundDetection rdf:type easytv:TransformalContentAccessibilityService ;
-					  easytv:applies easytv:Detection, easytv:Convertion ;
-					  easytv:onContent easytv:Sound ;
-					  easytv:toContent easytv:WrittenText .
+easytv:TextDetection 
+			easytv:hasSubstitutions easytv:Subtitles ;
+			easytv:refereToPredicate easytv:has_application_cs_accessibility_detection_text .
+					
+easytv:SoundDetection 
+			easytv:hasSubstitutions easytv:Subtitles ;
+			easytv:refereToPredicate easytv:has_application_cs_accessibility_detection_text .
+					
+easytv:AudioTrack
+			easytv:hasSubstitutions easytv:Subtitles ;
+			easytv:refereToPredicate easytv:has_application_cs_audio_track .

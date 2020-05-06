@@ -206,13 +206,6 @@ public class RBMM_WebService
 			logger.info(err.toString());
 			return Response.status(400).entity(err).build();
 		}
-	
-		//context
-		if(!json.has("user_context")) {
-			JSONObject err = new JSONObject().put("code", 400).put("msg", "Missing user_context element");
-			logger.info( err.toString());
-			return Response.status(400).entity(err).build();
-		}
 		
 		//content
 		if(!json.has("user_content")) {

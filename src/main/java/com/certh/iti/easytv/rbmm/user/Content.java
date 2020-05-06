@@ -11,6 +11,7 @@ import com.certh.iti.easytv.user.UserContent;
 
 public class Content implements Ontological {
 
+	private UserContent userContent;
 	private boolean faceDetection = false;  
 	private boolean textDetection = false;
 	private boolean soundDetection = false;
@@ -128,12 +129,7 @@ public class Content implements Ontological {
 		
 		jsonObj = json;
 	}
-	
-	public boolean isFaceDetection() {
-		return faceDetection;
-	}
-	
-	
+		
 	@Override
 	public Individual createOntologyInstance(OntModel model) {
 		//create the new user in the ontology
@@ -151,25 +147,25 @@ public class Content implements Ontological {
 			Property hasFaceDetectionProperty = model.getProperty(getDataProperty("http://registry.easytv.eu/application/cs/accessibility/detection/face"));
 			individual.addProperty(hasFaceDetectionProperty, model.createTypedLiteral(faceDetection));
 		}
-		
+
 		//add text detection
 		if(textDetection) {
 			Property hasTextDetectionProperty = model.getProperty(getDataProperty("http://registry.easytv.eu/application/cs/accessibility/detection/text"));
 			individual.addProperty(hasTextDetectionProperty, model.createTypedLiteral(textDetection));
 		}
-		
+
 		//add sound detection
 		if(soundDetection) {
 			Property hasSoundDetectionProperty = model.getProperty(getDataProperty("http://registry.easytv.eu/application/cs/accessibility/detection/sound"));
 			individual.addProperty(hasSoundDetectionProperty, model.createTypedLiteral(soundDetection));
 		}
-		
+
 		//add character recognition
 		if(characterRecognition) {
 			Property hasCharacterRecognitionProperty = model.getProperty(getDataProperty("http://registry.easytv.eu/application/cs/accessibility/detection/character"));
 			individual.addProperty(hasCharacterRecognitionProperty, model.createTypedLiteral(characterRecognition));
 		}
-		
+
 		//add subtitle language
 		if(subtitileLanguage != null) {
 			Property hasSubtitleLanguageProperty = model.getProperty(getDataProperty("http://registry.easytv.eu/application/cs/cc/subtitles/language"));

@@ -329,7 +329,13 @@ public class RuleReasoner {
 	 */
 	public JSONObject infer(OntProfile profile) throws IOException, JSONException {
 		
-		profile.createOntologyInstance(model);
+		
+		OntModel tmpModel = ModelFactory.createOntologyModel();
+		tmpModel.add(model);
+		profile.createOntologyInstance(tmpModel);
+		
+		//tmpModel.write(System.out, "N3");
+
 		
 /*		File file = new File("C:\\Users\\salgan\\Desktop\\model.owl");
 		FileOutputStream out = new FileOutputStream(file);
@@ -337,7 +343,7 @@ public class RuleReasoner {
 */
 		
 		//Get inferre model
-		InfModel infModel = ModelFactory.createInfModel(reasoner, model);
+		InfModel infModel = ModelFactory.createInfModel(reasoner, tmpModel);
 		
 /*		file = new File("C:\\Users\\salgan\\Desktop\\infModel.owl");
 		out = new FileOutputStream(file);
@@ -374,6 +380,54 @@ public class RuleReasoner {
 		
 		return jsonProfile;
 	}
+	
+	/**
+	 * Infer proper substitution for of a given content
+	 * @param profile
+	 * @return
+	 * @throws IOException
+	 * @throws JSONException
+	 */
+	public JSONObject inferContentSuggestions(OntProfile profile) throws IOException, JSONException {
+		
+		OntModel tmpModel = ModelFactory.createOntologyModel();
+		tmpModel.add(model);
+		profile.createOntologyInstance(tmpModel);
+				
+		//Get inferred model
+		InfModel infModel = ModelFactory.createInfModel(reasoner, tmpModel);
+		
+		//retrieve user preferences
+		JSONObject inferedPreferences = getConditionalPreferences(infModel);
+		
+		//retrieve user suggested preferences
+		JSONObject suggesteddPreferences = getSuggestedUserPreference(infModel);
+		
+		JSONObject jsonProfile = profile.getProfile().getJSONObject();
+		
+		//remove context if exists
+		jsonProfile.remove("user_context");
+		jsonProfile.remove("user_content");
+		
+		//remove conditional is exists
+		jsonProfile.getJSONObject("user_profile")
+				   .getJSONObject("user_preferences")
+				   .remove("conditional");
+		
+		//update preference
+		jsonProfile.getJSONObject("user_profile")
+				   .getJSONObject("user_preferences")
+		   		   .getJSONObject("default")
+		   		   .put("preferences", inferedPreferences);	
+		
+		//add recommendations
+		jsonProfile.getJSONObject("user_profile")
+		   		   .getJSONObject("user_preferences")
+		   		   .put("recommendations", new JSONObject().put("preferences", suggesteddPreferences));
+		
+		return jsonProfile;
+	}
+	
 	
 	private JSONObject getConditionalPreferences(Model model) {
 		

@@ -17,26 +17,24 @@ public class OntProfile implements Ontological{
 	
 	public static final String HAS_CONTEXT_PROP = NAMESPACE + "hasContext";
 	
-	private Profile contextualUserProfile;
+	private Profile profile;
 	private OntUserProfile OntUserProfile = null;
 	private OntUserContext OntUserContext = null;
+	private Content OntUserContent = null;
 	
 	//TODO
 	//private OntUserContent ontUserContent;
 
 	public OntProfile(JSONObject json) throws IOException, UserProfileParsingException {
 		
-		this.contextualUserProfile = new Profile(json);
-		OntUserProfile = new OntUserProfile(contextualUserProfile.getUserProfile());
+		this.profile = new Profile(json);
+		OntUserProfile = new OntUserProfile(profile.getUserProfile());
 		
-		if(contextualUserProfile.getUserContext() != null)
-			OntUserContext = new OntUserContext(contextualUserProfile.getUserContext());
+		if(profile.getUserContext() != null)
+			OntUserContext = new OntUserContext(profile.getUserContext());
 		
-		//TODO
-/*		if(contextualUserProfile.getUserContent() != null)
-			OntUserContext = new OntUserContent(contextualUserProfile.getUserContent());
-*/
-
+		if(profile.getUserContent() != null)
+			OntUserContent = new Content(profile.getUserContent().getJSONObject());
 	}
 	
 	public OntProfile(int userId, UserProfile userProfile) throws IOException, UserProfileParsingException {
@@ -44,36 +42,36 @@ public class OntProfile implements Ontological{
 		if(userProfile == null)
 			throw new NullPointerException("No userprofile");
 			
-		this.contextualUserProfile = new Profile(userId, userProfile, null,  null);
-		OntUserProfile = new OntUserProfile(contextualUserProfile.getUserProfile());
+		this.profile = new Profile(userId, userProfile, null,  null);
+		OntUserProfile = new OntUserProfile(profile.getUserProfile());
 	}
 	
 	public OntProfile(int userId, UserProfile userProfile, UserContext userContext) throws IOException, UserProfileParsingException {
 		
-		this.contextualUserProfile = new Profile(userId, userProfile, userContext, null);
-		OntUserProfile = new OntUserProfile(contextualUserProfile.getUserProfile());
-		OntUserContext = new OntUserContext(contextualUserProfile.getUserContext());
+		this.profile = new Profile(userId, userProfile, userContext, null);
+		OntUserProfile = new OntUserProfile(profile.getUserProfile());
+		OntUserContext = new OntUserContext(profile.getUserContext());
 	}
 	
 	public OntProfile(int userId, UserProfile userProfile, UserContext userContext, UserContent userContent) throws IOException, UserProfileParsingException {
-		this.contextualUserProfile = new Profile(userId, userProfile, userContext,  userContent);
+		this.profile = new Profile(userId, userProfile, userContext,  userContent);
 	}
 
 	
 	public Profile getProfile() {
-		return this.contextualUserProfile;
+		return this.profile;
 	}
 	
 	public UserProfile getUserProfile() {
-		return this.contextualUserProfile.getUserProfile();
+		return this.profile.getUserProfile();
 	}
 	
 	public UserContext getUserContext() {
-		return this.contextualUserProfile.getUserContext();
+		return this.profile.getUserContext();
 	}
 	
 	public UserContent getUserContent() {
-		return this.contextualUserProfile.getUserContent();
+		return this.profile.getUserContent();
 	}
 	
 	@Override
@@ -83,6 +81,7 @@ public class OntProfile implements Ontological{
 		
 		userPRofileIndividual = OntUserProfile.createOntologyInstance(model);
 		
+		//Add context
 		if(OntUserContext != null) {
 			contextIndividual = OntUserContext.createOntologyInstance(model);
 			
@@ -90,7 +89,10 @@ public class OntProfile implements Ontological{
 			userPRofileIndividual.addProperty(hasContextAbility, contextIndividual);	
 		}
 		
-		//TODO Add content 
+		//Add content 
+		if(OntUserContent != null) {
+			OntUserContent.createOntologyInstance(model);
+		}
 		
 		return userPRofileIndividual;
 	}
