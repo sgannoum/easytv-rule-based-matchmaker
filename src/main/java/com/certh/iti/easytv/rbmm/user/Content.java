@@ -7,6 +7,7 @@ import org.apache.jena.rdf.model.Property;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.certh.iti.easytv.rbmm.user.preference.OntPreference;
 import com.certh.iti.easytv.user.UserContent;
 
 public class Content implements Ontological {
@@ -45,7 +46,7 @@ public class Content implements Ontological {
 	 * @param uri
 	 * @return
 	 */
-	public static String getDataProperty(String uri) {
+	public static String getPredicate(String uri) {
 		if(!UserContent.getAttributes().containsKey(uri))
 			throw new IllegalArgumentException("Unknown context uri "+uri);
 		
@@ -142,41 +143,49 @@ public class Content implements Ontological {
 	@Override
 	public Individual createOntologyInstance(OntModel model, Individual individual) {
 		
+		//content always has audio subtitles
+		Property hasAudioSubtitilesProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/application/cs/cc/audio/subtitle"));
+		individual.addProperty(hasAudioSubtitilesProperty, model.createTypedLiteral(true));
+		
 		//add face detection
 		if(faceDetection) {
-			Property hasFaceDetectionProperty = model.getProperty(getDataProperty("http://registry.easytv.eu/application/cs/accessibility/detection/face"));
+			Property hasFaceDetectionProperty = model.getProperty(getPredicate("http://registry.easytv.eu/application/cs/accessibility/detection/face"));
 			individual.addProperty(hasFaceDetectionProperty, model.createTypedLiteral(faceDetection));
 		}
 
 		//add text detection
 		if(textDetection) {
-			Property hasTextDetectionProperty = model.getProperty(getDataProperty("http://registry.easytv.eu/application/cs/accessibility/detection/text"));
+			Property hasTextDetectionProperty = model.getProperty(getPredicate("http://registry.easytv.eu/application/cs/accessibility/detection/text"));
 			individual.addProperty(hasTextDetectionProperty, model.createTypedLiteral(textDetection));
 		}
 
 		//add sound detection
 		if(soundDetection) {
-			Property hasSoundDetectionProperty = model.getProperty(getDataProperty("http://registry.easytv.eu/application/cs/accessibility/detection/sound"));
+			Property hasSoundDetectionProperty = model.getProperty(getPredicate("http://registry.easytv.eu/application/cs/accessibility/detection/sound"));
 			individual.addProperty(hasSoundDetectionProperty, model.createTypedLiteral(soundDetection));
 		}
 
 		//add character recognition
 		if(characterRecognition) {
-			Property hasCharacterRecognitionProperty = model.getProperty(getDataProperty("http://registry.easytv.eu/application/cs/accessibility/detection/character"));
+			Property hasCharacterRecognitionProperty = model.getProperty(getPredicate("http://registry.easytv.eu/application/cs/accessibility/detection/character"));
 			individual.addProperty(hasCharacterRecognitionProperty, model.createTypedLiteral(characterRecognition));
 		}
 
 		//add subtitle language
 		if(subtitileLanguage != null) {
-			Property hasSubtitleLanguageProperty = model.getProperty(getDataProperty("http://registry.easytv.eu/application/cs/cc/subtitles/language"));
-			
-			for(String lang : subtitileLanguage)
+			Property hasSubtitleLanguageProperty = model.getProperty(getPredicate("http://registry.easytv.eu/application/cs/cc/subtitles/language"));
+			Property hasSignLanguageProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/application/cs/accessibility/sign/language"));
+
+			//Available sign lanugages are the same with available subtitles languages
+			for(String lang : subtitileLanguage) {
 				individual.addProperty(hasSubtitleLanguageProperty, model.createTypedLiteral(lang));
+				individual.addProperty(hasSignLanguageProperty, model.createTypedLiteral(lang));
+			}
 		}
 		
 		//add audio language
 		if(audioLanguage != null) {
-			Property hasAudioLanguageProperty = model.getProperty(getDataProperty("http://registry.easytv.eu/application/cs/audio/track"));
+			Property hasAudioLanguageProperty = model.getProperty(getPredicate("http://registry.easytv.eu/application/cs/audio/track"));
 			
 			for(String lang : audioLanguage)
 				individual.addProperty(hasAudioLanguageProperty, model.createTypedLiteral(lang));

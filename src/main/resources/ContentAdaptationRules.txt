@@ -45,9 +45,11 @@
 	strConcat(?referTo, ?referToStr)
 	EQ(?predicateStr, ?referToStr, ?res3)
 	
-	(?service easyTV:hasSubstitutions ?substitution)	
+	(?service easyTV:hasSubstitutionSet ?subSet)	
+	(?subSet easyTV:hasSubstitution ?substitution)	
 	(?substitution easyTV:refereToPredicate ?subPredicate)
 	(?content ?subPredicate ?value)
+	noValue(?sugPref ?predicate)
 	->  
 	print('**** Substitution match *************' ?subPredicate)
 	(?sugPref ?subPredicate ?value)  

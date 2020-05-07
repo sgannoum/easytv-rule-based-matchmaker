@@ -3,30 +3,49 @@
 @prefix easytv: <http://www.owl-ontologies.com/OntologyEasyTV.owl#>
 
 
-easytv:CharacterRecognition 
-			easytv:hasSubstitutions easytv:FaceDetection ;
-			easytv:refereToPredicate easytv:has_application_cs_accessibility_detection_character .
+_:audioTrackSubSet rdf:type easytv:SubstitutionSet ;
+		  easytv:hasSubstitution easytv:AudioTrack .
+
+_:signLanguageSubSet rdf:type easytv:SubstitutionSet ;
+		  easytv:hasSubstitution easytv:SignLanguage .
+
+_:subtitleAndAudioSubSet rdf:type easytv:SubstitutionSet ;
+		  easytv:hasSubstitution easytv:Subtitles ;
+		  easytv:hasSubstitution easytv:AudioSubtitles .	
+
+_:customMagnificationSubset rdf:type easytv:SubstitutionSet ;
+		  easytv:hasSubstitution easytv:CustomMagnification .
+
+_:subtitleSubSet rdf:type easytv:SubstitutionSet ;
+		  easytv:hasSubstitution easytv:Subtitles .
+	
+_:faceDetectionSubset rdf:type easytv:SubstitutionSet ;
+		  easytv:hasSubstitution easytv:FaceDetection .	
+
+		  		
+easytv:Subtitles 
+			easytv:hasSubstitutionSet _:audioTrackSubSet, _:signLanguageSubSet ;
+			easytv:refereToPredicate easytv:has_application_cs_cc_subtitles_language .
+
+easytv:AudioTrack
+			easytv:hasSubstitutionSet _:subtitleAndAudioSubSet, _:signLanguageSubSet ;
+			easytv:refereToPredicate easytv:has_application_cs_audio_track .
 
 easytv:FaceDetection 
-			easytv:hasSubstitutions easytv:CustomMagnification ;
+			easytv:hasSubstitutionSet _:customMagnificationSubset, _:subset6 ;
 			easytv:refereToPredicate easytv:has_application_cs_accessibility_detection_face .
-				
-easytv:Subtitles 
-			easytv:hasSubstitutions easytv:AudioTrack, easytv:SignLanguage, easytv:AudioSubtitles;
-			easytv:refereToPredicate easytv:has_application_cs_cc_subtitles_language .
-				
+			
 easytv:SignLanguage 
-			easytv:hasSubstitutions easytv:Subtitles ;
-			easytv:refereToPredicate easytv:has_application_cs_accessibility_detection_face .		
+			easytv:hasSubstitutions _:subtitleSubSet ;
+			easytv:refereToPredicate easytv:has_application_cs_accessibility_detection_face .
+	
+easytv:CharacterRecognition 
+			easytv:hasSubstitutionSet _:faceDetectionSubset ;
+			easytv:refereToPredicate easytv:has_application_cs_accessibility_detection_character .		
 
 easytv:TextDetection 
-			easytv:hasSubstitutions easytv:Subtitles ;
 			easytv:refereToPredicate easytv:has_application_cs_accessibility_detection_text .
 					
 easytv:SoundDetection 
-			easytv:hasSubstitutions easytv:Subtitles ;
-			easytv:refereToPredicate easytv:has_application_cs_accessibility_detection_text .
+			easytv:refereToPredicate easytv:has_application_cs_accessibility_detection_sound .
 					
-easytv:AudioTrack
-			easytv:hasSubstitutions easytv:Subtitles ;
-			easytv:refereToPredicate easytv:has_application_cs_audio_track .

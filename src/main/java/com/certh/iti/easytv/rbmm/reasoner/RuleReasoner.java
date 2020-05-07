@@ -273,7 +273,7 @@ public class RuleReasoner {
 		for(Entry<String, Attribute> entry :  UserContent.getAttributes().entrySet()) {
 			value = entry.getValue();
 			key = entry.getKey();
-			uri =  Content.getDataProperty(key);
+			uri =  Content.getPredicate(key);
 			datatypeProperty =  ontModel.createDatatypeProperty(uri);
 			range = ontModel.getResource(value.getXMLDataTypeURI());
 			

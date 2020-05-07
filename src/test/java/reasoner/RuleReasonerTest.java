@@ -199,7 +199,7 @@ public class RuleReasonerTest {
 		for(Entry<String, Attribute> entry :  UserContent.getAttributes().entrySet()) {
 			Attribute value = entry.getValue();
 			String key = entry.getKey();
-			String uri =  Content.getDataProperty(key);
+			String uri =  Content.getPredicate(key);
 			OntProperty propertyImple =  ontModel.createOntProperty(uri);
 			Resource range = ontModel.getResource(value.getXMLDataTypeURI());
 			
