@@ -329,13 +329,9 @@ public class RuleReasoner {
 	 */
 	public JSONObject infer(OntProfile profile) throws IOException, JSONException {
 		
-		
 		OntModel tmpModel = ModelFactory.createOntologyModel();
 		tmpModel.add(model);
 		profile.createOntologyInstance(tmpModel);
-		
-		//tmpModel.write(System.out, "N3");
-
 		
 /*		File file = new File("C:\\Users\\salgan\\Desktop\\model.owl");
 		FileOutputStream out = new FileOutputStream(file);
@@ -393,6 +389,9 @@ public class RuleReasoner {
 		OntModel tmpModel = ModelFactory.createOntologyModel();
 		tmpModel.add(model);
 		profile.createOntologyInstance(tmpModel);
+		
+		//tmpModel.write(System.out, "N3");
+
 				
 		//Get inferred model
 		InfModel infModel = ModelFactory.createInfModel(reasoner, tmpModel);
@@ -401,7 +400,7 @@ public class RuleReasoner {
 		JSONObject inferedPreferences = getConditionalPreferences(infModel);
 		
 		//retrieve user suggested preferences
-		JSONObject suggesteddPreferences = getSuggestedUserPreference(infModel);
+		JSONObject suggesteddPreferences = getContentSuggestions(infModel);
 		
 		JSONObject jsonProfile = profile.getProfile().getJSONObject();
 		
@@ -475,16 +474,24 @@ public class RuleReasoner {
 		
 		JSONObject json = new JSONObject();
 		
-		String req = ""
-				+ "PREFIX easyTV: <http://www.owl-ontologies.com/OntologyEasyTV.owl#>"
+		String req = 
+				  "PREFIX easyTV: <http://www.owl-ontologies.com/OntologyEasyTV.owl#>"
 				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "SELECT ?has ?result " 
+				+ "SELECT ?has ?value " 
 				+ "WHERE {"
-					+ "?user rdf:type easyTV:User ."
-					+ "?user easyTV:hasSuggestedPreferences ?pref ." 
-					+ "?pref ?has ?result ." 
-					+ "?has rdf:type  rdf:Property ."  
-				+ "}";
+					+ "?sugPref ?has ?value "
+				    + "FILTER (?has != rdf:type) "
+					+ "{"
+						+ "SELECT ?sugPref " 
+						+ "WHERE {"
+							+ "?ruleSug rdf:type easyTV:RuleSuggestion ; " 
+							+ "			easyTV:hasConfidence ?confidence ;"
+							+ "			easyTV:hasSuggestedPreferences ?sugPref." 
+						+ "}"
+						+ "ORDER BY DESC (?confidence)" 
+					+ "}"
+				+ "}"
+				;
 		
 		
 		Query query = QueryFactory.create(req);
@@ -493,7 +500,47 @@ public class RuleReasoner {
 
 		while (res.hasNext()) {
 			QuerySolution s = res.next();
-			RDFNode result_node = s.get("result");
+			RDFNode result_node = s.get("value");
+			RDFNode has_node = s.get("has");
+
+			if (result_node == null || has_node == null || !result_node.isLiteral())
+				continue;
+		
+			updateJson(result_node.asLiteral(), json, has_node.toString());
+		}
+		
+		return json;
+	}
+	
+	/**
+	 * Query for content suggestions
+	 * 
+	 * @param model
+	 * @param property
+	 * @return
+	 */
+	private JSONObject getContentSuggestions(Model model) {
+		
+		JSONObject json = new JSONObject();
+		
+		String req = 
+				  "PREFIX easyTV: <http://www.owl-ontologies.com/OntologyEasyTV.owl#>"
+				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+				+ "SELECT ?has ?value " 
+				+ "WHERE {"
+					+ " ?user rdf:type easyTV:User ;"
+					+ "		  easyTV:hasContentSuggestion ?contSug."
+					+ "?contSug ?has ?value ." 
+				+ "}"
+				;
+		
+		Query query = QueryFactory.create(req);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet res = qe.execSelect();
+
+		while (res.hasNext()) {
+			QuerySolution s = res.next();
+			RDFNode result_node = s.get("value");
 			RDFNode has_node = s.get("has");
 
 			if (result_node == null || has_node == null || !result_node.isLiteral())
@@ -519,6 +566,8 @@ public class RuleReasoner {
 			return json;
 		
 		String pref = OntPreference.getURI(propertyName);
+		
+		if(json.has(pref)) return json;
 		
 		RDFDatatype datatype = result.getDatatype();
 		if (datatype != null) {			

@@ -40,13 +40,65 @@ public class RuleReasonerTest {
 			"[soun_detection_suggestion_rule:" + 
 			" 	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)" + 
 			" 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)" + 
-			" 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" + 
+			" 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestionSet ?sugSet)" + 
 			" 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_sound 'false'^^http://www.w3.org/2001/XMLSchema#boolean)" + 
 			" 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_volume ?volume)" + 
 			" 	GE(?volume, '0'^^http://www.w3.org/2001/XMLSchema#integer)" + 
 			" 	LE(?volume, '10'^^http://www.w3.org/2001/XMLSchema#integer)" + 
-			"	->" + 
+			"	makeTemp(?ruleSug)" + 
+			"	makeTemp(?sugPref)" + 
+			"	->	" + 
+			"   (?sugSet http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestion ?ruleSug)" +
+			"   (?ruleSug http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#RuleSuggestion)" +
+			"   (?ruleSug http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConfidence '0.5'^^http://www.w3.org/2001/XMLSchema#double)" +
+			"   (?ruleSug http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" +
+			"   (?sugPref http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#SuggestedPreferences)" +
 			"	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_sound 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" + 
+			"	print('suggest sound')" + 
+			"]	");
+	
+	
+	Rule soun_detection_suggestion_rule_2 = Rule.parseRule( 
+			"[soun_detection_suggestion_rule:" + 
+			" 	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)" + 
+			" 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)" + 
+			" 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestionSet ?sugSet)" + 
+			" 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_sound 'false'^^http://www.w3.org/2001/XMLSchema#boolean)" + 
+			" 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_volume ?volume)" + 
+			" 	GE(?volume, '0'^^http://www.w3.org/2001/XMLSchema#integer)" + 
+			" 	LE(?volume, '10'^^http://www.w3.org/2001/XMLSchema#integer)" + 
+			"	makeTemp(?ruleSug)" + 
+			"	makeTemp(?sugPref)" + 
+			"	->	" + 
+			"   (?sugSet http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestion ?ruleSug)" +
+			"   (?ruleSug http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#RuleSuggestion)" +
+			"   (?ruleSug http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double)" +
+			"   (?ruleSug http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" +
+			"   (?sugPref http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#SuggestedPreferences)" +
+			"	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_face 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" + 
+			"	print('suggest face')" + 
+			"]	");
+	
+	
+	Rule soun_detection_suggestion_rule_3 = Rule.parseRule( 
+			"[soun_detection_suggestion_rule:" + 
+			" 	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)" + 
+			" 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)" + 
+			" 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestionSet ?sugSet)" + 
+			" 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_sound 'false'^^http://www.w3.org/2001/XMLSchema#boolean)" + 
+			" 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_volume ?volume)" + 
+			" 	GE(?volume, '0'^^http://www.w3.org/2001/XMLSchema#integer)" + 
+			" 	LE(?volume, '10'^^http://www.w3.org/2001/XMLSchema#integer)" + 
+			"	makeTemp(?ruleSug)" + 
+			"	makeTemp(?sugPref)" + 
+			"	->	" + 
+			"   (?sugSet http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestion ?ruleSug)" +
+			"   (?ruleSug http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#RuleSuggestion)" +
+			"   (?ruleSug http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConfidence '0.7'^^http://www.w3.org/2001/XMLSchema#double)" +
+			"   (?ruleSug http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" +
+			"   (?sugPref http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#SuggestedPreferences)" +
+			"	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_face 'false'^^http://www.w3.org/2001/XMLSchema#boolean)" + 
+			"	print('suggest face')" + 
 			"]	");
 	
 	
@@ -54,6 +106,9 @@ public class RuleReasonerTest {
 	public void before_test() throws IOException, JSONException, UserProfileParsingException {
 		List<Rule> suggestionRules = new ArrayList<Rule>();
 		suggestionRules.add(soun_detection_suggestion_rule);
+	//	suggestionRules.add(soun_detection_suggestion_rule_2);
+	//	suggestionRules.add(soun_detection_suggestion_rule_3);
+
 		
 		ruleReasoner = new RuleReasoner(ONTOLOGY_DIR, suggestionRules, RULES_DIR);		
 	}

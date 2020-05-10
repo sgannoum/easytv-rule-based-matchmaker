@@ -9,6 +9,7 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.reasoner.Reasoner;
 import org.apache.jena.reasoner.rulesys.BuiltinRegistry;
@@ -51,12 +52,16 @@ public class UserTest {
 	public static final String 	suggestionRule =  
 	"[font_size_suggestion:" + 
 			" (?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#User) " + 
-			" (?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)" + 
+			" (?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)" +
+			" (?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestionSet ?sugSet)" + 
 			" (?pref "+OntPreference.getPredicate("http://registry.easytv.eu/application/cs/accessibility/magnification/scale")+" ?mg)" + 
-			" (?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" + 
-			" GT(?mg, '1.0'^^http://www.w3.org/2001/XMLSchema#double, ?res)	" + 
+			" GT(?mg, '1.0'^^http://www.w3.org/2001/XMLSchema#double, ?res)	" +
+			" makeTemp(?sugPref)" + 
 			"->" + 
-			"	(?sugPref "+OntPreference.getPredicate("http://registry.easytv.eu/application/cs/ui/text/size")+" '60'^^http://www.w3.org/2001/XMLSchema#int)" + 
+			" (?sugSet http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestion ?sugPref)" +
+			" (?sugPref http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#SuggestedPreferences)" +
+			" (?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConfidence '0.5'^^http://www.w3.org/2001/XMLSchema#double)" +
+			" (?sugPref "+OntPreference.getPredicate("http://registry.easytv.eu/application/cs/ui/text/size")+" '60'^^http://www.w3.org/2001/XMLSchema#int)" + 
 	 "]";
 	
 	private String rules =  AndRulesTest.rules + OrRulesTest.rules + NotRulesTest.rules +
@@ -103,10 +108,12 @@ public class UserTest {
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 		
-		Property hasSuggestedPreferenceProperty = model.getProperty(OntUserProfile.HAS_SUGGESTED_PREFERENCES_PROP);
-		StmtIterator userList = inf.listStatements(userInstance, hasSuggestedPreferenceProperty, (RDFNode)null);
+		Property hasSuggestionSetProperty = model.getProperty(OntUserProfile.HAS_SUGGESTION_SET_PROPERTY);
+		Statement suggestionSet = inf.listStatements(userInstance, hasSuggestionSetProperty, (RDFNode)null).next();
+				
+		Property hasSuggestedPreferenceProperty = model.getProperty(OntUserProfile.HAS_SUGGESTION_PROPERTY);
+		StmtIterator userList = inf.listStatements(suggestionSet.getObject().asResource(), hasSuggestedPreferenceProperty, (RDFNode)null);
 		Resource userSuggestedPreferenceInstance = userList.next().getObject().asResource();
-		
 		StmtIterator userPreferenceList = inf.listStatements(userSuggestedPreferenceInstance, null, (RDFNode)null);
 		Property hasFontSizeProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/application/cs/ui/text/size"));
 		 userPreferenceList = inf.listStatements(userSuggestedPreferenceInstance, hasFontSizeProperty, (RDFNode)null);

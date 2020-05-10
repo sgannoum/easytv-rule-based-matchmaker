@@ -33,29 +33,25 @@ public class RuleReasonerContentAdaptationTest {
 	@Test
 	public void test_infer_content_adaptation_flat_match() throws IOException, JSONException, UserProfileParsingException {
 	
-		JSONObject profile1 = new JSONObject("{"
-				+ "\"user_id\":1," +
+		JSONObject profile1 = new JSONObject("{" +
+				"user_id:1," +
 				"user_content: {" + 
 				"    \"http://registry.easytv.eu/application/cs/accessibility/detection/sound\": true," + 
 				"    \"http://registry.easytv.eu/application/cs/cc/subtitles/language\": [\"ca\"]," + 
 				"    \"http://registry.easytv.eu/application/cs/audio/track\": [\"ca\"]" + 
-				"}, "
-				+ "\"user_profile\":{" + 
-				"            \"user_preferences\": {" + 
-				"                \"default\": {" + 
-				"                    \"preferences\": {" + 
+				"}, "+
+				"user_profile:{" + 
+				"            user_preferences: {" + 
+				"                default: {" + 
+				"                    preferences: {" + 
 				"                       \"http://registry.easytv.eu/application/cs/accessibility/detection/sound\": true" + 
-				"                    }" + 
-				"                }" + 
-				"            }" +
-				"  		   }" + 
-				"        }");
+				" }}}}}");
 		
 		JSONObject expected = new JSONObject("{" + 
-				"    \"user_id\": 1," + 
-				"    \"user_profile\": {\"user_preferences\": {" + 
-				"        \"default\": {\"preferences\": {}}," + 
-				"        \"recommendations\": {\"preferences\": {\"http://registry.easytv.eu/application/cs/accessibility/detection/sound\": true}}" + 
+				"    user_id: 1," + 
+				"    user_profile: {user_preferences: {" + 
+				"        default: {preferences: {}}," + 
+				"        recommendations: {preferences: {\"http://registry.easytv.eu/application/cs/accessibility/detection/sound\": true}}" + 
 				"    }}" + 
 				"}");
 		
@@ -66,30 +62,26 @@ public class RuleReasonerContentAdaptationTest {
 	@Test
 	public void test_infer_content_adaptation_substitution_match() throws IOException, JSONException, UserProfileParsingException {
 	
-		JSONObject profile1 = new JSONObject("{"
-				+ "\"user_id\":1," +
+		JSONObject profile1 = new JSONObject("{"+
+				"user_id:1," +
 				"user_content: {" + 
 				"    \"http://registry.easytv.eu/application/cs/accessibility/detection/character\": false," + 
 				"    \"http://registry.easytv.eu/application/cs/accessibility/detection/face\": true," + 
 				"    \"http://registry.easytv.eu/application/cs/cc/subtitles/language\": [\"ca\"]," + 
 				"    \"http://registry.easytv.eu/application/cs/audio/track\": [\"ca\"]" + 
-				"}, "
-				+ "\"user_profile\":{" + 
-				"            \"user_preferences\": {" + 
-				"                \"default\": {" + 
-				"                    \"preferences\": {" + 
+				"}, " +
+				" user_profile:{" + 
+				"            user_preferences: {" + 
+				"                default: {" + 
+				"                    preferences: {" + 
 				"    					\"http://registry.easytv.eu/application/cs/accessibility/detection/character\": true" + 
-				"                    }" + 
-				"                }" + 
-				"            }" +
-				"  		   }" + 
-				"        }");
+				" }}}}}");
 		
 		JSONObject expected = new JSONObject("{" + 
-				"    \"user_id\": 1," + 
-				"    \"user_profile\": {\"user_preferences\": {" + 
-				"        \"default\": {\"preferences\": {}}," + 
-				"        \"recommendations\": {\"preferences\": {\"http://registry.easytv.eu/application/cs/accessibility/detection/face\": true}}" + 
+				"    user_id: 1," + 
+				"    user_profile: {user_preferences: {" + 
+				"        default: {preferences: {}}," + 
+				"        recommendations: {preferences: {\"http://registry.easytv.eu/application/cs/accessibility/detection/face\": true}}" + 
 				"    }}" + 
 				"}");
 		
@@ -100,29 +92,25 @@ public class RuleReasonerContentAdaptationTest {
 	@Test
 	public void test_content_adaptation_language_flat_match() throws IOException, JSONException, UserProfileParsingException {
 	
-		JSONObject profile1 = new JSONObject("{"
-				+ "\"user_id\":1," +
+		JSONObject profile1 = new JSONObject("{"+
+				"user_id: 1," +
 				"user_content: {" + 
 				"    \"http://registry.easytv.eu/application/cs/accessibility/detection/face\": true," + 
 				"    \"http://registry.easytv.eu/application/cs/cc/subtitles/language\": [\"ca\",\"es\"]," + 
 				"    \"http://registry.easytv.eu/application/cs/audio/track\": [\"ca\",\"es\"]" + 
-				"}, "
-				+ "\"user_profile\":{" + 
-				"            \"user_preferences\": {" + 
-				"                \"default\": {" + 
-				"                    \"preferences\": {" + 
+				"}, " +
+				"user_profile:{" + 
+				"            user_preferences: {" + 
+				"                default: {" + 
+				"                    preferences: {" + 
 				"    					\"http://registry.easytv.eu/application/cs/cc/subtitles/language\": \"ca\"" + 
-				"                    }" + 
-				"                }" + 
-				"            }" +
-				"  		   }" + 
-				"        }");
+				" }}}}}");
 		
 		JSONObject expected = new JSONObject("{" + 
-				"    \"user_id\": 1," + 
-				"    \"user_profile\": {\"user_preferences\": {" + 
-				"        \"default\": {\"preferences\": {}}," + 
-				"        \"recommendations\": {\"preferences\": {\"http://registry.easytv.eu/application/cs/cc/subtitles/language\": \"ca\"}}" + 
+				"    user_id: 1," + 
+				"    user_profile: {user_preferences: {" + 
+				"        default: {preferences: {}}," + 
+				"        recommendations: {preferences: {\"http://registry.easytv.eu/application/cs/cc/subtitles/language\": \"ca\"}}" + 
 				"    }}" + 
 				"}");
 		
@@ -133,29 +121,28 @@ public class RuleReasonerContentAdaptationTest {
 	@Test
 	public void test_content_adaptation_language_substitution_match() throws IOException, JSONException, UserProfileParsingException {
 	
-		JSONObject profile1 = new JSONObject("{"
-				+ "\"user_id\":1," +
+		JSONObject profile1 = new JSONObject("{"+
+				"user_id: 1," +
 				"user_content: {" + 
 				"    \"http://registry.easytv.eu/application/cs/accessibility/detection/face\": true," + 
 				"    \"http://registry.easytv.eu/application/cs/cc/subtitles/language\": [\"ca\",\"es\"]," + 
 				"    \"http://registry.easytv.eu/application/cs/audio/track\": [\"es\"]" + 
 				"}, "
-				+ "\"user_profile\":{" + 
-				"            \"user_preferences\": {" + 
-				"                \"default\": {" + 
-				"                    \"preferences\": {" + 
+				+ "user_profile:{" + 
+				"            user_preferences: {" + 
+				"                default: {" + 
+				"                    preferences: {" + 
 				"    					\"http://registry.easytv.eu/application/cs/audio/track\": \"ca\"" + 
-				"                    }" + 
-				"                }" + 
-				"            }" +
-				"  		   }" + 
-				"        }");
+				" }}}}}");
 		
 		JSONObject expected = new JSONObject("{" + 
-				"    \"user_id\": 1," + 
-				"    \"user_profile\": {\"user_preferences\": {" + 
-				"        \"default\": {\"preferences\": {}}," + 
-				"        \"recommendations\": {\"preferences\": {\"http://registry.easytv.eu/application/cs/cc/subtitles/language\": \"ca\"}}" + 
+				"    user_id: 1," + 
+				"    user_profile: {user_preferences: {" + 
+				"        default: {preferences: {}}," + 
+				"        recommendations: {preferences: {" +
+				"    			\"http://registry.easytv.eu/application/cs/cc/subtitles/language\": \"ca\"," + 
+				"    			\"http://registry.easytv.eu/application/cs/cc/audio/subtitle\": true" + 
+				"}}" + 
 				"    }}" + 
 				"}");
 		
@@ -166,32 +153,27 @@ public class RuleReasonerContentAdaptationTest {
 	@Test
 	public void test_content_adaptation_no_match() throws IOException, JSONException, UserProfileParsingException {
 	
-		JSONObject profile1 = new JSONObject("{"
-				+ "\"user_id\":1," +
+		JSONObject profile1 = new JSONObject("{"+
+				"user_id: 1," +
 				"user_content: {" + 
 				"    \"http://registry.easytv.eu/application/cs/accessibility/detection/face\": true," + 
 				"    \"http://registry.easytv.eu/application/cs/cc/subtitles/language\": [\"ca\",\"es\"]," + 
 				"    \"http://registry.easytv.eu/application/cs/audio/track\": [\"es\"]" + 
-				"}, "
-				+ "\"user_profile\":{" + 
-				"            \"user_preferences\": {" + 
-				"                \"default\": {" + 
-				"                    \"preferences\": {" + 
+				"}, "+
+				"user_profile:{" + 
+				"            user_preferences: {" + 
+				"                default: {" + 
+				"                    preferences: {" + 
 				"    					\"http://registry.easytv.eu/application/cs/audio/track\": \"gr\"," + 
 				"        				\"http://registry.easytv.eu/application/control/voice\": true,\r\n" + 
-				"                    }" + 
-				"                }" + 
-				"            }" +
-				"  		   }" + 
-				"        }");
+				" }}}}}");
 		
 		JSONObject expected = new JSONObject("{" + 
-				"    \"user_id\": 1," + 
-				"    \"user_profile\": {\"user_preferences\": {" + 
-				"        \"default\": {\"preferences\": {}}," + 
-				"        \"recommendations\": {\"preferences\": {}}" + 
-				"    }}" + 
-				"}");
+				"    user_id: 1," + 
+				"    user_profile: {user_preferences: {" + 
+				"        default: {preferences: {}}," + 
+				"        recommendations: {preferences: {}}" + 
+				"    }}}");
 		
 		JSONObject actual = ruleReasoner.inferContentSuggestions(new OntProfile(profile1));				
 		Assert.assertTrue(expected.similar(actual));
@@ -200,8 +182,8 @@ public class RuleReasonerContentAdaptationTest {
 	@Test
 	public void test_content_adaptation_complex_example() throws IOException, JSONException, UserProfileParsingException {
 	
-		JSONObject profile1 = new JSONObject("{"
-				+ "\"user_id\":1," +
+		JSONObject profile1 = new JSONObject("{"+
+				"user_id: 1," +
 				"user_content: {" + 
 				"    \"http://registry.easytv.eu/application/cs/accessibility/detection/face\": false," + 
 				"    \"http://registry.easytv.eu/application/cs/accessibility/detection/sound\": false," +
@@ -209,75 +191,29 @@ public class RuleReasonerContentAdaptationTest {
 				"    \"http://registry.easytv.eu/application/cs/accessibility/detection/text\": true," + 
 				"    \"http://registry.easytv.eu/application/cs/cc/subtitles/language\": [\"es\"]," + 
 				"    \"http://registry.easytv.eu/application/cs/audio/track\": [\"ca\",\"es\"]" + 
-				"}, "
-				+ "\"user_profile\":{" + 
-				"            \"user_preferences\": {" + 
-				"                \"default\": {" + 
-				"                    \"preferences\": {" + 
+				"}, "+
+				"user_profile:{" + 
+				"            user_preferences: {" + 
+				"                default: {" + 
+				"                    preferences: {" + 
 				"    					\"http://registry.easytv.eu/application/cs/audio/track\": \"gr\"," + 
 				"    					\"http://registry.easytv.eu/application/cs/cc/subtitles/language\": \"ca\"," + 
 				"    					\"http://registry.easytv.eu/application/cs/accessibility/detection/character\": true," + 	
 				"                       \"http://registry.easytv.eu/application/cs/accessibility/detection/sound\": true," + 
 				"    					\"http://registry.easytv.eu/application/cs/accessibility/detection/face\": true" + 
-				"                    }" + 
-				"                }" + 
-				"            }" +
-				"  		   }" + 
-				"        }");
+				" }}}}}");
 		
 		JSONObject expected = new JSONObject("{" + 
-				"    \"user_id\": 1," + 
-				"    \"user_profile\": {\"user_preferences\": {" + 
-				"        \"default\": {\"preferences\": {}}," + 
-				"        \"recommendations\": {\"preferences\": {" +
+				"    user_id: 1," + 
+				"    user_profile: { user_preferences: {" + 
+				"        default: { preferences: {}}," + 
+				"        recommendations: { preferences: {" +
 				"    			\"http://registry.easytv.eu/application/cs/accessibility/detection/character\": true," +
 				"    			\"http://registry.easytv.eu/application/cs/audio/track\": \"ca\"" + 
-				"}}" + 
-				"    }}" + 
-				"}");
+				"    }}}}}");
 		
 		JSONObject actual = ruleReasoner.inferContentSuggestions(new OntProfile(profile1));				
 		Assert.assertTrue(expected.similar(actual));
 	}
-	
-	@Test
-	public void test_content_adaptation_audio_example() throws IOException, JSONException, UserProfileParsingException {
-	
-		JSONObject profile1 = new JSONObject("{"
-				+ "\"user_id\":1," +
-				"user_content: {" + 
-				"    \"http://registry.easytv.eu/application/cs/accessibility/detection/face\": false," + 
-				"    \"http://registry.easytv.eu/application/cs/accessibility/detection/sound\": false," +
-				"    \"http://registry.easytv.eu/application/cs/accessibility/detection/character\": true," + 
-				"    \"http://registry.easytv.eu/application/cs/accessibility/detection/text\": true," + 
-				"    \"http://registry.easytv.eu/application/cs/cc/subtitles/language\": [\"ca\",\"es\"]," + 
-				"    \"http://registry.easytv.eu/application/cs/audio/track\": [\"es\"]" + 
-				"}, "
-				+ "\"user_profile\":{" + 
-				"            \"user_preferences\": {" + 
-				"                \"default\": {" + 
-				"                    \"preferences\": {" + 
-				"    					\"http://registry.easytv.eu/application/cs/audio/track\": \"ca\"" + 
-				"                    }" + 
-				"                }" + 
-				"            }" +
-				"  		   }" + 
-				"        }");
-		
-		JSONObject expected = new JSONObject("{" + 
-				"    \"user_id\": 1," + 
-				"    \"user_profile\": {\"user_preferences\": {" + 
-				"        \"default\": {\"preferences\": {}}," + 
-				"        \"recommendations\": {\"preferences\": {" +
-				"    			\"http://registry.easytv.eu/application/cs/cc/subtitles/language\": \"ca\"," + 
-				"    			\"http://registry.easytv.eu/application/cs/cc/audio/subtitle\": \"ca\"" + 
-				"}}" + 
-				"    }}" + 
-				"}");
-		
-		JSONObject actual = ruleReasoner.inferContentSuggestions(new OntProfile(profile1));				
-		Assert.assertTrue(expected.similar(actual));
-	}
-	
 	
 }

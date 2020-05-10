@@ -53,6 +53,19 @@ public class RuleUtils {
 		
 		JSONArray headOperands = convert(rule.getHead(), variableMpper);
 		jsonRule.put("head", headOperands);
+		
+		//find the rule confidence
+		jsonRule.put("confidence", 0.0);
+		for(ClauseEntry entry : rule.getHead()) 
+			if(TriplePattern.class.isInstance(entry)) {
+				//TripelPattern handling case
+				
+				TriplePattern triple = (TriplePattern) entry;
+				if(triple.getPredicate().getURI().endsWith("hasConfidence")) {
+					jsonRule.put("confidence", triple.getObject().getLiteralValue());
+					break;
+				}
+			}
 
 		return jsonRule;
 	}
@@ -88,13 +101,14 @@ public class RuleUtils {
 	
 		buff.append("[");
 		if(rule.has("name")) buff.append(rule.getString("name")+":");
-		buff.append("(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)");
+		buff.append("(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)");
 		buff.append("(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)");
 		buff.append("(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasContext ?cnxt)");
-		buff.append("(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)");
+		buff.append("(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestionSet ?sugSet)");
 		
 		//Handle head
 		JSONArray body = rule.getJSONArray("body");
+		double confidence = rule.getDouble("confidence");
 		for(int i = 0; i < body.length(); i++) {
 			JSONObject statement = body.getJSONObject(i);
 			
@@ -128,7 +142,15 @@ public class RuleUtils {
 			}
 		}
 		
+		//create a new suggestion and connect it with suggestions set
+		buff.append("makeTemp(?ruleSug)");
+		buff.append("makeTemp(?sugPref)");
 		buff.append("->");
+		buff.append("(?sugSet http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestion ?ruleSug)");
+		buff.append("(?ruleSug http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#RuleSuggestion)");
+		buff.append("(?ruleSug http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConfidence "+String.format("'%.1f'^^http://www.w3.org/2001/XMLSchema#double)", confidence));
+		buff.append("(?ruleSug http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)");
+		buff.append("(?sugPref http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#SuggestedPreferences)");
 
 		//handle body
 		JSONArray head = rule.getJSONArray("head");

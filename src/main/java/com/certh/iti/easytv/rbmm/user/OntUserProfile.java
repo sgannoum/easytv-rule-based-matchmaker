@@ -19,8 +19,9 @@ public class OntUserProfile implements Ontological{
 	//Object properties
 	public static final String HAS_PREFERENCE_PROP = NAMESPACE + "hasPreference";
 	public static final String HAS_CONTEXT_PROP = NAMESPACE + "hasContext";
-	public static final String HAS_SUGGESTED_PREFERENCES_PROP = NAMESPACE + "hasSuggestedPreferences";
-
+	public static final String HAS_SUGGESTION_SET_PROPERTY = NAMESPACE + "hasSuggestionSet";
+	public static final String HAS_SUGGESTION_PROPERTY = NAMESPACE + "hasSuggestion";
+	public static final String HAS_CONTENT_SUGGESTION_PROP = NAMESPACE + "hasContentSuggestion";
 
 	
 	private UserProfile UserProfile = null;
@@ -57,12 +58,16 @@ public class OntUserProfile implements Ontological{
 		Property hasPreferences = model.getProperty(HAS_PREFERENCE_PROP);
 		userIndividual.addProperty(hasPreferences, userPreferences.createOntologyInstance(model));	
 		
-		//Add suggested preferences
-		OntClass suggestedPreferences = model.getOntClass(NAMESPACE + "SuggestedPreferences");
-		Property hasSuggestedPreferences = model.getProperty(HAS_SUGGESTED_PREFERENCES_PROP);
-		userIndividual.addProperty(hasSuggestedPreferences, suggestedPreferences.createIndividual());	
+		//Add preferences suggestion set 
+		OntClass suggestionSetClass = model.getOntClass(NAMESPACE + "SuggestionSet");
+		Property hasSuggestionSetProperty = model.getProperty(HAS_SUGGESTION_SET_PROPERTY);
+		userIndividual.addProperty(hasSuggestionSetProperty, suggestionSetClass.createIndividual());	
 		
-
+		//add content suggestions
+		OntClass suggestionPreferenceClass = model.getOntClass(OntSuggestedPreferences.ONTOLOGY_CLASS_URI);
+		Property hasContentSuggestion = model.getProperty(HAS_CONTENT_SUGGESTION_PROP);
+		userIndividual.addProperty(hasContentSuggestion, suggestionPreferenceClass.createIndividual());	
+		
 		return userIndividual;
 	}
 

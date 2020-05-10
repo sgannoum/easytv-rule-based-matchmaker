@@ -22,6 +22,8 @@ public class Content implements Ontological {
     private JSONObject jsonObj = null;
 	
 	public static final String ONTOLOGY_CLASS_URI = NAMESPACE + "Content";
+	
+
 
 	public Content(JSONObject json) {
 		setJSONObject(json);

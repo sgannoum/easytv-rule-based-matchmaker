@@ -7,7 +7,7 @@
 [flat_match:  
  	(?user rdf:type easyTV:User)  
  	(?user easyTV:hasPreference ?pref)  
- 	(?user easyTV:hasSuggestedPreferences ?sugPref) 
+ 	(?user easyTV:hasContentSuggestion ?contSug) 
  	
 	(?content rdf:type easyTV:Content) 
 	(?pref rdf:type easyTV:UserPreferences) 
@@ -18,16 +18,16 @@
  	(?pref ?predicate ?value)  	
 	(?content ?predicate ?value) 
 	
-	noValue(?sugPref ?predicate)
+	noValue(?contSug ?predicate)
 	->  	
-	print('**** Flat match *************' ?predicate ?value)
-	(?sugPref ?predicate ?value)  
+	print('************* Flat match with *************' ?predicate ?value)
+	(?contSug ?predicate ?value)  
 ]
 
 [subtitution_match:  
  	(?user rdf:type easyTV:User)  
  	(?user easyTV:hasPreference ?pref)  
- 	(?user easyTV:hasSuggestedPreferences ?sugPref) 
+ 	(?user easyTV:hasContentSuggestion ?contSug) 
  	
 	(?content rdf:type easyTV:Content) 
 	(?pref rdf:type easyTV:UserPreferences) 
@@ -46,11 +46,20 @@
 	EQ(?predicateStr, ?referToStr, ?res3)
 	
 	(?service easyTV:hasSubstitutionSet ?subSet)	
-	(?subSet easyTV:hasSubstitution ?substitution)	
+	(?subSet easyTV:hasSubstitution ?substitution)		
 	(?substitution easyTV:refereToPredicate ?subPredicate)
 	(?content ?subPredicate ?value)
-	noValue(?sugPref ?predicate)
+	noValue(?contSug ?predicate)
 	->  
-	print('**** Substitution match *************' ?subPredicate)
-	(?sugPref ?subPredicate ?value)  
-]		
+	print(?predicate ?value '**** Substitution match *************' ?substitution ?value)
+	(?contSug ?subPredicate ?value)
+
+	//check for more applies
+	[(?contSug ?subPredicate1 ?value1) <- 
+		(?subSet easyTV:applyAlso ?substitution1), 		
+		(?substitution1 easyTV:refereToPredicate ?subPredicate1), 		
+		(?content ?subPredicate1 ?value1), 
+		noValue(?contSug ?subPredicate1) 
+		print('**** Apply also *************' ?substitution1 ?value1)
+	]  
+]			

@@ -90,7 +90,7 @@ public class OntProfile implements Ontological{
 		}
 		
 		//Add content 
-		if(OntUserContent != null) {
+		if(OntUserContent != null) {			
 			OntUserContent.createOntologyInstance(model);
 		}
 		

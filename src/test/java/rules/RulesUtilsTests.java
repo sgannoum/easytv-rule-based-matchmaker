@@ -32,18 +32,26 @@ public class RulesUtilsTests {
 			" 	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)" + 
 			" 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)" + 
 			"	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasContext ?cnxt)"+
-			"	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" + 
+			"	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestionSet ?sugSet)" + 
 			"	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_volume ?var0)" + 
 			"	GE(?var0, '0'^^http://www.w3.org/2001/XMLSchema#integer)" + 
 			"	LE(?var0, '4'^^http://www.w3.org/2001/XMLSchema#integer)" + 
-			"	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_character 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" + 
+			"	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_character 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" +
+			"	makeTemp(?ruleSug)" + 
+			"	makeTemp(?sugPref)" + 
 			"	->	" + 
+			"   (?sugSet http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestion ?ruleSug)" +
+			"   (?ruleSug http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#RuleSuggestion)" +
+			"   (?ruleSug http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConfidence '0.5'^^http://www.w3.org/2001/XMLSchema#double)" +
+			"   (?ruleSug http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" +
+			"   (?sugPref http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#SuggestedPreferences)" +
 			"	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_sound 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" + 
 			"	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_text 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" + 
 			"]	");
 	
 	JSONObject jsonRule1 = new JSONObject("{" + 
 			" \"name\": \"rule_1\"," + 
+			" \"confidence\": 0.5," + 
 			" \"head\": [{" + 
 			"  \"args\": [{" + 
 			"   \"xml-type\": \"http://www.w3.org/2001/XMLSchema#boolean\"," + 
@@ -94,18 +102,25 @@ public class RulesUtilsTests {
 			" 	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)" + 
 			" 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)" + 
 			"	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasContext ?cnxt)"+
-			"	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" + 
+			"	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestionSet ?sugSet)" + 
 			"	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_volume ?var0)" + 
 			"	GE(?var0, '0'^^http://www.w3.org/2001/XMLSchema#integer)" + 
 			"	LE(?var0, '4'^^http://www.w3.org/2001/XMLSchema#integer)" + 
 			"	(?cnxt http://www.owl-ontologies.com/OntologyEasyTV.owl#has_context_light '2'^^http://www.w3.org/2001/XMLSchema#integer)"+	
-
+			"	makeTemp(?ruleSug)" + 
+			"	makeTemp(?sugPref)" + 
 			"	->	" + 
+			"   (?sugSet http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestion ?ruleSug)" +
+			"   (?ruleSug http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#RuleSuggestion)" +
+			"   (?ruleSug http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConfidence '0.5'^^http://www.w3.org/2001/XMLSchema#double)" +
+			"   (?ruleSug http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" +
+			"   (?sugPref http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#SuggestedPreferences)" +
 			"	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_sound 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" + 
 			"]	");
 	
 	JSONObject jsonRule2 = new JSONObject("{" + 
-			" \"name\": \"rule_1\"," + 
+			" \"name\": \"rule_1\"," +
+			" \"confidence\": 0.5," + 
 			" \"head\": [{" + 
 			"  \"args\": [{" + 
 			"   \"xml-type\": \"http://www.w3.org/2001/XMLSchema#boolean\"," + 

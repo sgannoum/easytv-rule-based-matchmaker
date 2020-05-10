@@ -26,6 +26,7 @@
       <class name="reasoner.RuleReasonerTest"/> 
       <class name="reasoner.RuleReasonerContextualTest"/> 
       <class name="reasoner.RuleReasonerConditionalTest"/> 
+      <class name="reasoner.RuleReasonerContentAdaptationTest"/> 
       
     </classes>
   </test>

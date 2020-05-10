@@ -11,6 +11,8 @@ import org.apache.jena.rdf.model.InfModel;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.reasoner.Reasoner;
 import org.apache.jena.reasoner.rulesys.BuiltinRegistry;
@@ -22,6 +24,7 @@ import org.testng.annotations.Test;
 
 import com.certh.iti.easytv.rbmm.builtin.Equals;
 import com.certh.iti.easytv.rbmm.user.OntSuggestedPreferences;
+import com.certh.iti.easytv.rbmm.user.OntSuggestedSet;
 import com.certh.iti.easytv.rbmm.user.OntUserProfile;
 import com.certh.iti.easytv.rbmm.user.OntUserContext;
 import com.certh.iti.easytv.rbmm.user.OntUserPreferences;
@@ -42,17 +45,20 @@ public class UserContextTest {
 	
 	
 	public final String rules = "[user_rule_1:" + 
-			"(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+OntUserProfile.ONTOLOGY_CLASS_URI+")" + 
-			",(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" + 
-		    ",(?user "+OntUserProfile.HAS_PREFERENCE_PROP+" ?defPref)" +
-		    ",(?defPref "+OntPreference.getPredicate("http://registry.easytv.eu/application/cs/ui/text/size")+" ?audioVolume)" +
-		    ",(?defPref "+OntPreference.getPredicate("http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size")+" ?cursorSize)" +
-			",EQ(?audioVolume, '6'^^http://www.w3.org/2001/XMLSchema#integer, ?res1)" +
-			",EQ(?cursorSize, '10'^^http://www.w3.org/2001/XMLSchema#integer, ?res2)" +
+			"	(?user http://www.w3.org/1999/02/22-rdf-syntax-ns#type "+OntUserProfile.ONTOLOGY_CLASS_URI+")" + 
+			" 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestionSet ?sugSet)" + 
+		    " 	(?user "+OntUserProfile.HAS_PREFERENCE_PROP+" ?defPref)" +
+		    "	(?defPref "+OntPreference.getPredicate("http://registry.easytv.eu/application/cs/ui/text/size")+" ?audioVolume)" +
+		    "	(?defPref "+OntPreference.getPredicate("http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size")+" ?cursorSize)" +
+			"	EQ(?audioVolume, '6'^^http://www.w3.org/2001/XMLSchema#integer, ?res1)" +
+			"	EQ(?cursorSize, '10'^^http://www.w3.org/2001/XMLSchema#integer, ?res2)" +
+			" 	makeTemp(?sugPref)" + 
 			"->" + 
+			" 	(?sugSet http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestion ?sugPref)" +
+			" 	(?sugPref http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#SuggestedPreferences)" +
+			" 	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConfidence '0.5'^^http://www.w3.org/2001/XMLSchema#double)" +
 			"	(?sugPref "+OntPreference.getPredicate("http://registry.easytv.eu/application/cs/cc/subtitles/background/color")+" '#ffffff'^^http://www.w3.org/2001/XMLSchema#string)" + 
 			"	(?sugPref "+OntPreference.getPredicate("http://registry.easytv.eu/application/cs/cc/subtitles/font/color")+" '#000000'^^http://www.w3.org/2001/XMLSchema#string)" + 
-			"	print('Suggested preferences')"+
 			"]"
 			;
 	
@@ -72,8 +78,6 @@ public class UserContextTest {
 	  throws JsonParseException, IOException, UserContextParsingException {
 		
 		OntUserContext userContext = new OntUserContext(jsonProfile1);
-	 
-		System.out.println(userContext.toString());
 	    Assert.assertNotNull(userContext);
 	}
 	
@@ -85,12 +89,10 @@ public class UserContextTest {
 		OntClass userClass = model.getOntClass(OntUserProfile.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
-		OntClass suggestedPreferencesClass = model.getOntClass(OntSuggestedPreferences.ONTOLOGY_CLASS_URI);
-		Individual  suggestedPreferencesnstance = suggestedPreferencesClass.createIndividual();
-		
-		Property hasSuggestedPreferencesnstanceProperty = model.getProperty(OntUserProfile.HAS_SUGGESTED_PREFERENCES_PROP);
-		userInstance.addProperty(hasSuggestedPreferencesnstanceProperty, suggestedPreferencesnstance);
-		
+		OntClass suggestionSet = model.getOntClass(OntSuggestedSet.ONTOLOGY_CLASS_URI);
+		Individual suggestionSetInstanve = suggestionSet.createIndividual();
+		Property hasSuggestionSetProperty = model.getProperty(OntUserProfile.HAS_SUGGESTION_SET_PROPERTY);
+		userInstance.addProperty(hasSuggestionSetProperty, suggestionSetInstanve);
 		
 		OntClass userPreferenceClass = model.getOntClass(OntUserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
@@ -110,7 +112,8 @@ public class UserContextTest {
 			
 		Property hasBackgroundColorProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/application/cs/cc/subtitles/background/color"));
 		Property hasFontColorProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/application/cs/cc/subtitles/font/color"));
-
+				
+		Resource suggestedPreferencesnstance = inf.listStatements(suggestionSetInstanve, model.getProperty(OntUserProfile.HAS_SUGGESTION_PROPERTY), (RDFNode)null).next().getObject().asResource();
 		StmtIterator list = inf.listStatements(suggestedPreferencesnstance, hasBackgroundColorProperty, (RDFNode)null);
 		Assert.assertEquals(list.next().getObject().asLiteral().getString(), "#ffffff");
 		Assert.assertFalse(list.hasNext());
@@ -118,7 +121,6 @@ public class UserContextTest {
 		list = inf.listStatements(suggestedPreferencesnstance, hasFontColorProperty, (RDFNode)null);
 		Assert.assertEquals(list.next().getObject().asLiteral().getString(), "#000000");
 		Assert.assertFalse(list.hasNext());
-		
 	}
 	
 	@Test
@@ -128,12 +130,10 @@ public class UserContextTest {
 		OntClass userClass = model.getOntClass(OntUserProfile.ONTOLOGY_CLASS_URI);
 		Individual userInstance = userClass.createIndividual();
 		
-		OntClass suggestedPreferencesClass = model.getOntClass(OntSuggestedPreferences.ONTOLOGY_CLASS_URI);
-		Individual  suggestedPreferencesnstance = suggestedPreferencesClass.createIndividual();
-		
-		Property hasSuggestedPreferencesnstanceProperty = model.getProperty(OntUserProfile.HAS_SUGGESTED_PREFERENCES_PROP);
-		userInstance.addProperty(hasSuggestedPreferencesnstanceProperty, suggestedPreferencesnstance);
-		
+		OntClass suggestionSet = model.getOntClass(OntSuggestedSet.ONTOLOGY_CLASS_URI);
+		Individual suggestionSetInstanve = suggestionSet.createIndividual();
+		Property hasSuggestionSetProperty = model.getProperty(OntUserProfile.HAS_SUGGESTION_SET_PROPERTY);
+		userInstance.addProperty(hasSuggestionSetProperty, suggestionSetInstanve);
 		
 		OntClass userPreferenceClass = model.getOntClass(OntUserPreferences.ONTOLOGY_CLASS_URI);
 		Individual  userPreferenceInstance = userPreferenceClass.createIndividual();
@@ -151,14 +151,7 @@ public class UserContextTest {
 		Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
 		InfModel inf = ModelFactory.createInfModel(reasoner, model);
 			
-		Property hasBackgroundColorProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/application/cs/cc/subtitles/background/color"));
-		Property hasFontColorProperty = model.getProperty(OntPreference.getPredicate("http://registry.easytv.eu/application/cs/cc/subtitles/font/color"));
-
-		StmtIterator list = inf.listStatements(suggestedPreferencesnstance, hasBackgroundColorProperty, (RDFNode)null);
-		Assert.assertFalse(list.hasNext());
-
-		list = inf.listStatements(suggestedPreferencesnstance, hasFontColorProperty, (RDFNode)null);
-		Assert.assertFalse(list.hasNext());
-		
+		StmtIterator suggestedPreferencesnstance = inf.listStatements(suggestionSetInstanve, model.getProperty(OntUserProfile.HAS_SUGGESTION_PROPERTY), (RDFNode)null);
+		Assert.assertFalse(suggestedPreferencesnstance.hasNext());
 	}
 }

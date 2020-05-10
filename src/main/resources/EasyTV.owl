@@ -42,6 +42,15 @@
     
 
 
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#applyAlso -->
+
+    <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#applyAlso">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#SubstitutionSet"/>
+        <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#Service"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConditionalPreferences -->
 
     <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConditionalPreferences">
@@ -57,6 +66,15 @@
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#ConditionalPreference"/>
         <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#Operand"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasContentSuggestion -->
+
+    <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasContentSuggestion">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#User"/>
+        <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#SuggestedPreferences"/>
     </owl:ObjectProperty>
     
 
@@ -112,6 +130,15 @@
     
 
 
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSubstitution -->
+
+    <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSubstitution">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#SubstitutionSet"/>
+        <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#Service"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSubstitutionSet -->
 
     <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSubstitutionSet">
@@ -121,20 +148,29 @@
     
 
 
-    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSubstitutions -->
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences -->
 
-    <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSubstitutions">
-        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#SubstitutionSet"/>
-        <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#Service"/>
+    <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#RuleSuggestion"/>
+        <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#SuggestedPreferences"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences -->
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestion -->
 
-    <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences">
+    <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestion">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#SuggestionSet"/>
+        <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#RuleSuggestion"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestionSet -->
+
+    <owl:ObjectProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestionSet">
         <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#User"/>
-        <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#SuggestedPreferences"/>
+        <rdfs:range rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#SuggestionSet"/>
     </owl:ObjectProperty>
     
 
@@ -177,6 +213,15 @@
     
 
 
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConfidence -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConfidence">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#RuleSuggestion"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType -->
 
     <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasType">
@@ -203,6 +248,15 @@
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#ComparatorOpreand"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#hasWeight -->
+
+    <owl:DatatypeProperty rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#hasWeight">
+        <rdfs:domain rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#RuleSuggestion"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
     </owl:DatatypeProperty>
     
 
@@ -593,6 +647,12 @@
     
 
 
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#RuleSuggestion -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#RuleSuggestion"/>
+    
+
+
     <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#Service -->
 
     <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#Service"/>
@@ -610,6 +670,12 @@
     <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#SuggestedPreferences">
         <rdfs:subClassOf rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#UserPreferences"/>
     </owl:Class>
+    
+
+
+    <!-- http://www.owl-ontologies.com/OntologyEasyTV.owl#SuggestionSet -->
+
+    <owl:Class rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#SuggestionSet"/>
     
 
 
@@ -740,7 +806,7 @@
 
     <owl:NamedIndividual rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#CustomMagnification">
         <rdf:type rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#EnhancementContentAccessibilityService"/>
-        <hasSubstitutions rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#FaceDetection"/>
+        <hasSubstitution rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#FaceDetection"/>
     </owl:NamedIndividual>
     
 
@@ -765,7 +831,7 @@
 
     <owl:NamedIndividual rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#SignLanguage">
         <rdf:type rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#TransformalContentAccessibilityService"/>
-        <hasSubstitutions rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#Subtitles"/>
+        <hasSubstitution rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#Subtitles"/>
     </owl:NamedIndividual>
     
 
@@ -782,8 +848,8 @@
 
     <owl:NamedIndividual rdf:about="http://www.owl-ontologies.com/OntologyEasyTV.owl#Subtitles">
         <rdf:type rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#TransformalContentAccessibilityService"/>
-        <hasSubstitutions rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#AudioSubtitles"/>
-        <hasSubstitutions rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#SignLanguage"/>
+        <hasSubstitution rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#AudioSubtitles"/>
+        <hasSubstitution rdf:resource="http://www.owl-ontologies.com/OntologyEasyTV.owl#SignLanguage"/>
     </owl:NamedIndividual>
     
 
@@ -805,5 +871,5 @@
 
 
 
-<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+<!-- Generated by the OWL API (version 4.5.6.2018-09-06T00:27:41Z) https://github.com/owlcs/owlapi -->
 

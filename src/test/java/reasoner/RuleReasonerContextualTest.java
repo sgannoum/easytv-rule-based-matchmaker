@@ -26,13 +26,20 @@ public class RuleReasonerContextualTest {
 			" 	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)" + 
 			" 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)" + 
 			"	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasContext ?cnxt)"+
-			" 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" + 
+			" 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestionSet ?sugSet)" + 
 			" 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_sound 'false'^^http://www.w3.org/2001/XMLSchema#boolean)" + 
 			" 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_volume ?volume)" + 
 			" 	GE(?volume, '15'^^http://www.w3.org/2001/XMLSchema#integer)" + 
 			" 	LE(?volume, '20'^^http://www.w3.org/2001/XMLSchema#integer)" + 
 			"	(?cnxt http://www.owl-ontologies.com/OntologyEasyTV.owl#has_context_light 'dark'^^http://www.w3.org/2001/XMLSchema#string)"+	
-			"	->" + 
+			"	makeTemp(?ruleSug)" + 
+			"	makeTemp(?sugPref)" + 
+			"	->	" + 
+			"   (?sugSet http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestion ?ruleSug)" +
+			"   (?ruleSug http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#RuleSuggestion)" +
+			"   (?ruleSug http://www.owl-ontologies.com/OntologyEasyTV.owl#hasConfidence '0.7'^^http://www.w3.org/2001/XMLSchema#double)" +
+			"   (?ruleSug http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)" +
+			"   (?sugPref http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#SuggestedPreferences)" +
 			"	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_sound 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" + 
 			"]	");
 	

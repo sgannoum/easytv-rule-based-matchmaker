@@ -11,7 +11,7 @@ _:signLanguageSubSet rdf:type easytv:SubstitutionSet ;
 
 _:subtitleAndAudioSubSet rdf:type easytv:SubstitutionSet ;
 		  easytv:hasSubstitution easytv:Subtitles ;
-		  easytv:hasSubstitution easytv:AudioSubtitles .	
+		  easytv:applyAlso easytv:AudioSubtitles .	
 
 _:customMagnificationSubset rdf:type easytv:SubstitutionSet ;
 		  easytv:hasSubstitution easytv:CustomMagnification .
@@ -28,7 +28,7 @@ easytv:Subtitles
 			easytv:refereToPredicate easytv:has_application_cs_cc_subtitles_language .
 
 easytv:AudioTrack
-			easytv:hasSubstitutionSet _:subtitleAndAudioSubSet, _:signLanguageSubSet ;
+			easytv:hasSubstitutionSet _:subtitleAndAudioSubSet ;
 			easytv:refereToPredicate easytv:has_application_cs_audio_track .
 
 easytv:FaceDetection 
@@ -48,4 +48,6 @@ easytv:TextDetection
 					
 easytv:SoundDetection 
 			easytv:refereToPredicate easytv:has_application_cs_accessibility_detection_sound .
-					
+	
+easytv:AudioSubtitles 
+			easytv:refereToPredicate easytv:has_application_cs_cc_audio_subtitle .			
