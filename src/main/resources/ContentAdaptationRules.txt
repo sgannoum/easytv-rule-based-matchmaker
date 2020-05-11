@@ -20,7 +20,7 @@
 	
 	noValue(?contSug ?predicate)
 	->  	
-	print('************* Flat match with *************' ?predicate ?value)
+	print('Flat match with: ' ?predicate ?value)
 	(?contSug ?predicate ?value)  
 ]
 

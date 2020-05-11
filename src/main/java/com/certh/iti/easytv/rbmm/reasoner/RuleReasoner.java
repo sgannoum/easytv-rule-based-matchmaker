@@ -96,7 +96,6 @@ public class RuleReasoner {
 		this.ontologyFile = ontologyFile;
 	}
 	
-	
 	public RuleReasoner(String ontologyFile, String[] rulesFile) throws IOException {
 		//load built in
 		loadBuiltIn();
@@ -150,7 +149,6 @@ public class RuleReasoner {
 		this.ontologyFile = ontologyFile;
 	}
 	
-
 	public OntModel getOntModel() {
 		return model;
 	}
@@ -338,7 +336,7 @@ public class RuleReasoner {
 		model.write(out);
 */
 		
-		//Get inferre model
+		//Get inferred model
 		InfModel infModel = ModelFactory.createInfModel(reasoner, tmpModel);
 		
 /*		file = new File("C:\\Users\\salgan\\Desktop\\infModel.owl");
@@ -390,9 +388,6 @@ public class RuleReasoner {
 		tmpModel.add(model);
 		profile.createOntologyInstance(tmpModel);
 		
-		//tmpModel.write(System.out, "N3");
-
-				
 		//Get inferred model
 		InfModel infModel = ModelFactory.createInfModel(reasoner, tmpModel);
 		
@@ -492,7 +487,6 @@ public class RuleReasoner {
 					+ "}"
 				+ "}"
 				;
-		
 		
 		Query query = QueryFactory.create(req);
 		QueryExecution qe = QueryExecutionFactory.create(query, model);

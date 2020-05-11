@@ -216,4 +216,44 @@ public class RuleReasonerContentAdaptationTest {
 		Assert.assertTrue(expected.similar(actual));
 	}
 	
+	@Test
+	public void test_content_adaptation_complex_example_2() throws IOException, JSONException, UserProfileParsingException {
+	
+		JSONObject profile1 = new JSONObject("{"+
+				"user_id: 1," +
+				"user_content: {" + 
+				"		\"http://registry.easytv.eu/application/cs/accessibility/detection/face\":true,\r\n" + 
+				"		\"http://registry.easytv.eu/application/cs/accessibility/detection/text\":false,\r\n" + 
+				"		\"http://registry.easytv.eu/application/cs/accessibility/detection/sound\":true,\r\n" + 
+				"		\"http://registry.easytv.eu/application/cs/accessibility/detection/character\":true,\r\n" + 
+				"		\"http://registry.easytv.eu/application/cs/audio/track\":[\"ca\"],\r\n" + 
+				"		\"http://registry.easytv.eu/application/cs/cc/subtitles/language\":[\"ca\"]"+
+				"}, "+
+				"user_profile:{" + 
+				"            user_preferences: {" + 
+				"                default: {" + 
+				"                    preferences: {" + 
+				"        			\"http://registry.easytv.eu/application/cs/accessibility/detection/face\": true,\r\n" + 
+				"        			\"http://registry.easytv.eu/application/cs/accessibility/detection/sound\": true,\r\n" + 
+				"        			\"http://registry.easytv.eu/application/cs/accessibility/detection/text\": false,\r\n" + 
+				"        			\"http://registry.easytv.eu/application/cs/accessibility/detection/character\": false,\r\n" + 
+				"       		 	\"http://registry.easytv.eu/application/cs/cc/audio/subtitle\": false,\r\n" + 
+				"        			\"http://registry.easytv.eu/application/cs/accessibility/magnification/scale\": 2.5,\r\n" + 
+				"        			\"http://registry.easytv.eu/application/cs/audio/track\": \"ca\""+
+				" }}}}}");
+		
+		JSONObject expected = new JSONObject("{" + 
+				"    user_id: 1," + 
+				"    user_profile: { user_preferences: {" + 
+				"        default: { preferences: {}}," + 
+				"        recommendations: { preferences: {" +
+				"    			\"http://registry.easytv.eu/application/cs/accessibility/detection/face\": true," +
+				"    			\"http://registry.easytv.eu/application/cs/accessibility/detection/sound\": true," +
+				"    			\"http://registry.easytv.eu/application/cs/audio/track\": \"ca\"" + 
+				"    }}}}}");
+		
+		JSONObject actual = ruleReasoner.inferContentSuggestions(new OntProfile(profile1));				
+		Assert.assertTrue(expected.similar(actual));
+	}
+	
 }

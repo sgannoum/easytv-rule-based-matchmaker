@@ -232,7 +232,7 @@ public class RBMM_WebService
 		
 
 		//personalize context
-		JSONObject personalized_profile = ruleReasoner.infer(ontProfile);
+		JSONObject personalized_profile = ruleReasoner.inferContentSuggestions(ontProfile);
 
 		
 		//log
