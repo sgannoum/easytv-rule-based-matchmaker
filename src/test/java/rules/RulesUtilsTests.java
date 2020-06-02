@@ -37,6 +37,8 @@ public class RulesUtilsTests {
 			"	GE(?var0, '0'^^http://www.w3.org/2001/XMLSchema#integer)" + 
 			"	LE(?var0, '4'^^http://www.w3.org/2001/XMLSchema#integer)" + 
 			"	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_character 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" +
+			"   noValue(?pref <http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_sound> 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" +
+			"   noValue(?pref <http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_text> 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" + 
 			"	makeTemp(?ruleSug)" + 
 			"	makeTemp(?sugPref)" + 
 			"	->	" + 
@@ -107,6 +109,7 @@ public class RulesUtilsTests {
 			"	GE(?var0, '0'^^http://www.w3.org/2001/XMLSchema#integer)" + 
 			"	LE(?var0, '4'^^http://www.w3.org/2001/XMLSchema#integer)" + 
 			"	(?cnxt http://www.owl-ontologies.com/OntologyEasyTV.owl#has_context_light '2'^^http://www.w3.org/2001/XMLSchema#integer)"+	
+			"   noValue(?pref <http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_sound> 'true'^^http://www.w3.org/2001/XMLSchema#boolean)" + 
 			"	makeTemp(?ruleSug)" + 
 			"	makeTemp(?sugPref)" + 
 			"	->	" + 
@@ -178,6 +181,7 @@ public class RulesUtilsTests {
 	@Test
 	public void test_convert_rule_equality1() {
 		Rule actual = RuleUtils.convert(jsonRule2);
+		System.out.println(actual.toString());
 		Assert.assertEquals(actual, rule2);
 	}
 	

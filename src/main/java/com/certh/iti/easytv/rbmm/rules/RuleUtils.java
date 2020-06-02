@@ -142,6 +142,25 @@ public class RuleUtils {
 			}
 		}
 		
+		
+		//handle body
+		JSONArray head = rule.getJSONArray("head");
+		for(int i = 0; i < head.length(); i++) {
+			JSONObject statement = head.getJSONObject(i);
+			
+			String preference = statement.getString("preference");
+			String predicate = null;
+			if((predicate = RuleUtils.getPredicate(preference)) == null) 
+				throw new IllegalArgumentException("Unknown uri in rule body "+preference);
+			
+			JSONArray args = statement.getJSONArray("args");
+			for(int j = 0; j < args.length(); j++) {
+				JSONObject arg = args.getJSONObject(j);				
+				buff.append(String.format("noValue(?pref %s '%s'^^%s)\n", predicate, arg.get("value"), arg.getString("xml-type")));
+			}
+		}
+		
+		
 		//create a new suggestion and connect it with suggestions set
 		buff.append("makeTemp(?ruleSug)");
 		buff.append("makeTemp(?sugPref)");
@@ -153,7 +172,6 @@ public class RuleUtils {
 		buff.append("(?sugPref http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://www.owl-ontologies.com/OntologyEasyTV.owl#SuggestedPreferences)");
 
 		//handle body
-		JSONArray head = rule.getJSONArray("head");
 		for(int i = 0; i < head.length(); i++) {
 			JSONObject statement = head.getJSONObject(i);
 			
