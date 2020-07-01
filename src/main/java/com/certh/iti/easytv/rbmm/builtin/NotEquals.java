@@ -36,14 +36,13 @@ public class NotEquals extends ComparatorBuiltin {
 		Node_RuleVariable v3 = args.length == 3 ? (Node_RuleVariable) args[2] : null;
 		
 		BindingEnvironment env = context.getEnv();
-		
-		if(compareTo(v1, v2) == 0) {
-			if(v3 != null) env.bind(v3,NodeFactory.createLiteralByValue(false, XSDDatatype.XSDboolean));
-			return false;
-		} else {
-			if(v3 != null) env.bind(v3,NodeFactory.createLiteralByValue(true, XSDDatatype.XSDboolean));
+		boolean val = compareTo(v1, v2) != 0;		
+		if(v3 != null) {
+			env.bind(v3,NodeFactory.createLiteralByValue(val, XSDDatatype.XSDboolean));
 			return true;
-		}
+		} 
+		
+		return val;
 	}
 
 	@Override

@@ -13,7 +13,7 @@
 	(?pref rdf:type easyTV:UserPreferences) 
 	strConcat(?pref, ?prefStr)
 	strConcat(?content, ?contentStr)
-	NE(?prefStr, ?contentStr, ?res)
+	NE(?prefStr, ?contentStr)
 
  	(?pref ?predicate ?value)  	
 	(?content ?predicate ?value) 
@@ -33,7 +33,7 @@
 	(?pref rdf:type easyTV:UserPreferences) 
 	strConcat(?pref, ?prefStr)
 	strConcat(?content, ?contentStr)
-	NE(?prefStr, ?contentStr, ?res)
+	NE(?prefStr, ?contentStr)
 	
  	(?pref ?predicate ?value) 
 	noValue(?content ?predicate ?value)
@@ -43,7 +43,7 @@
 	(?service easyTV:refereToPredicate ?referTo)
 	strConcat(?predicate, ?predicateStr)
 	strConcat(?referTo, ?referToStr)
-	EQ(?predicateStr, ?referToStr, ?res3)
+	EQ(?predicateStr, ?referToStr)
 	
 	(?service easyTV:hasSubstitutionSet ?subSet)	
 	(?subSet easyTV:hasSubstitution ?substitution)		

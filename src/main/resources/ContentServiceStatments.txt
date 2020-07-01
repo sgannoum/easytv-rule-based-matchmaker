@@ -1,4 +1,3 @@
-@prefix mfg: <http://www.WorkingOntologist.com/Examples/Chapter3/Manufacturing.rdf#>
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 @prefix easytv: <http://www.owl-ontologies.com/OntologyEasyTV.owl#>
 

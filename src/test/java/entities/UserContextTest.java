@@ -50,8 +50,8 @@ public class UserContextTest {
 		    " 	(?user "+OntUserProfile.HAS_PREFERENCE_PROP+" ?defPref)" +
 		    "	(?defPref "+OntPreference.getPredicate("http://registry.easytv.eu/application/cs/ui/text/size")+" ?audioVolume)" +
 		    "	(?defPref "+OntPreference.getPredicate("http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size")+" ?cursorSize)" +
-			"	EQ(?audioVolume, '6'^^http://www.w3.org/2001/XMLSchema#integer, ?res1)" +
-			"	EQ(?cursorSize, '10'^^http://www.w3.org/2001/XMLSchema#integer, ?res2)" +
+			"	EQ(?audioVolume, '6'^^http://www.w3.org/2001/XMLSchema#integer)" +
+			"	EQ(?cursorSize, '10'^^http://www.w3.org/2001/XMLSchema#integer)" +
 			" 	makeTemp(?sugPref)" + 
 			"->" + 
 			" 	(?sugSet http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestion ?sugPref)" +
