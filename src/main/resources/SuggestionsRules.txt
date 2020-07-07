@@ -1,124 +1,198 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix easytv: <http://www.owl-ontologies.com/OntologyEasyTV.owl#> .
 
-[Avatar_suggestion_rule:
- 	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)
- 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)
- 		
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_sign_language 'false'^^http://www.w3.org/2001/XMLSchema#boolean)
- 	
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_volume ?volume)
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_tts_audio_volume ?tts_volume)
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_audio_subtitle 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_audioAssistanceBasedOnTTS 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
-  	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_audio_description 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
+
+//**************************************************//
+//													//
+//				Avatar suggestions					//
+//													//
+//**************************************************//
+
+[Avatar_suggestion_rule_1:
+ 	(?user rdf:type easytv:User)
+ 	(?user easytv:hasPreference ?pref)
+ 	(?pref easytv:has_application_cs_accessibility_sign_language 'false'^^http://www.w3.org/2001/XMLSchema#boolean)
+ 	(?pref easytv:has_common_volume ?volume)
+ 	(?pref easytv:has_application_tts_audio_volume ?tts_volume)
+ 	(?pref easytv:has_application_cs_cc_audio_subtitle 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
+ 	(?pref easytv:has_application_cs_ui_audioAssistanceBasedOnTTS 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
+  	(?pref easytv:has_application_cs_accessibility_audio_description 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
  
  	GE(?volume, '75'^^http://www.w3.org/2001/XMLSchema#integer)
  	GE(?tts_volume, '75'^^http://www.w3.org/2001/XMLSchema#integer) 	 
-
- 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)
  	
-	->
-	
-	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_sign_language 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
-	print('Suggest sign language')
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.8'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_application_cs_accessibility_sign_language 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
+	print('Suggest sign language', 'with confidence', 0.8)  
+]		
+
+[Avatar_suggestion_rule_2:
+ 	(?user rdf:type easytv:User)
+ 	(?user easytv:hasPreference ?pref)
+ 	(?pref easytv:has_application_cs_accessibility_sign_language 'false'^^http://www.w3.org/2001/XMLSchema#boolean)
+ 	(?pref easytv:has_common_volume ?volume)
+ 	(?pref easytv:has_application_tts_audio_volume ?tts_volume)
+ 	(?pref easytv:has_application_cs_cc_audio_subtitle 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
+ 	(?pref easytv:has_application_cs_ui_audioAssistanceBasedOnTTS 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
+  	(?pref easytv:has_application_cs_accessibility_audio_description 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
+ 
+ 	EQ(?volume, '0'^^http://www.w3.org/2001/XMLSchema#integer) 	
+ 	GE(?tts_volume, '75'^^http://www.w3.org/2001/XMLSchema#integer) 	 
+ 	
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.8'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_application_cs_accessibility_sign_language 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
+	print('Suggest sign language', 'with confidence', 0.8)  
 ]		
 
 
+//**************************************************//
+//													//
+//		    Face detection suggestions				//
+//													//
+//**************************************************//
+
 [Face_detection_suggestion_rule:
- 	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)
- 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref) 	
- 	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_face 'false'^^http://www.w3.org/2001/XMLSchema#string)
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_size ?sub_text_size)
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_display_screen_enhancement_cursor_Size ?cursor_size)
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_size ?ui_text_size)
+ 	(?user rdf:type easytv:User)
+ 	(?user easytv:hasPreference ?pref) 	
+ 	(?sugPref easytv:has_application_cs_accessibility_detection_face 'false'^^http://www.w3.org/2001/XMLSchema#string)
+ 	(?pref easytv:has_application_cs_cc_subtitles_font_size ?sub_text_size)
+ 	(?pref easytv:has_common_display_screen_enhancement_cursor_Size ?cursor_size)
+ 	(?pref easytv:has_application_cs_ui_text_size ?ui_text_size)
 
 	GE(?sub_text_size, '5'^^http://www.w3.org/2001/XMLSchema#integer)
 	EQ(?cursor_size, '2.0'^^http://www.w3.org/2001/XMLSchema#double)
 	EQ(?ui_text_size,  '23'^^http://www.w3.org/2001/XMLSchema#string)	
 	
- 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)
-
-	->	
-	
-	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_face 'true'^^http://www.w3.org/2001/XMLSchema#string)
-	print('Suggest face detection')
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.8'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_application_cs_accessibility_detection_face 'true'^^http://www.w3.org/2001/XMLSchema#string)
+	print('Suggest face detection', 'with confidence', 0.8)  
 ]	
 
 
 [Face_detection_suggestion_rule_1:
- 	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)
- 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)
+ 	(?user rdf:type easytv:User)
+ 	(?user easytv:hasPreference ?pref)
  	 	
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_size ?sub_text_size)
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_display_screen_enhancement_cursor_Size ?cursor_size)
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_size ?ui_text_size)
+ 	(?pref easytv:has_application_cs_cc_subtitles_font_size ?sub_text_size)
+ 	(?pref easytv:has_common_display_screen_enhancement_cursor_Size ?cursor_size)
+ 	(?pref easytv:has_application_cs_ui_text_size ?ui_text_size)
 
 	GE(?sub_text_size, '40'^^http://www.w3.org/2001/XMLSchema#integer)
 	EQ(?cursor_size, '2.0'^^http://www.w3.org/2001/XMLSchema#double)
 	EQ(?ui_text_size,  '23'^^http://www.w3.org/2001/XMLSchema#string)
 	
- 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)
-
-	->	
-	
-	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_enhancement_image_type 'face-detection'^^http://www.w3.org/2001/XMLSchema#string)
-	print('Suggest face detection')
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.8'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_application_cs_accessibility_enhancement_image_type 'face-detection'^^http://www.w3.org/2001/XMLSchema#string)
+	print('Suggest face detection', 'with confidence', 0.8)  
 ]	
 
+//**************************************************//
+//													//
+//		    sound detection suggestions				//
+//													//
+//**************************************************//
 
 [Sound_detection_suggestion_rule:
- 	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)
- 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)
+ 	(?user rdf:type easytv:User)
+ 	(?user easytv:hasPreference ?pref)
  	
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_sound 'false'^^http://www.w3.org/2001/XMLSchema#boolean)
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_volume ?general_volume)
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_tts_audio_volume ?tts_volume)
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_audio_volume ?cs_volume)	 
+ 	(?pref easytv:has_application_cs_accessibility_detection_sound 'false'^^http://www.w3.org/2001/XMLSchema#boolean)
+ 	(?pref easytv:has_common_volume ?general_volume)
+ 	(?pref easytv:has_application_tts_audio_volume ?tts_volume)
+ 	(?pref easytv:has_application_cs_audio_volume ?cs_volume)	 
  	 
  	GE(?general_volume, '75'^^http://www.w3.org/2001/XMLSchema#int) 	
  	GE(?tts_volume, '75'^^http://www.w3.org/2001/XMLSchema#int) 	
  	GE(?cs_volume, '10'^^http://www.w3.org/2001/XMLSchema#int)  
  	
- 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)
-
-	->	
-	
-	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_sound 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
-	print('Suggest sound detection')
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.8'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_application_cs_accessibility_detection_sound 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
+	print('Suggest sound detection', 'with confidence', 0.8)  
 ]	
 
 
 [Sound_detection_suggestion_rule_1:
- 	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)
- 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)
+ 	(?user rdf:type easytv:User)
+ 	(?user easytv:hasPreference ?pref)
  	
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_volume ?general_volume)
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_tts_audio_volume ?tts_volume)
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_audio_volume ?cs_volume)	 
+ 	(?pref easytv:has_common_volume ?general_volume)
+ 	(?pref easytv:has_application_tts_audio_volume ?tts_volume)
+ 	(?pref easytv:has_application_cs_audio_volume ?cs_volume)	 
  	 
  	GE(?general_volume, '75'^^http://www.w3.org/2001/XMLSchema#int) 	
  	GE(?tts_volume, '75'^^http://www.w3.org/2001/XMLSchema#int) 	
  	GE(?cs_volume, '10'^^http://www.w3.org/2001/XMLSchema#int)  
  	
- 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)
-
-	->	
-	
-	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_detection_sound 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
-	print('Suggest sound detection')
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.8'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_application_cs_accessibility_detection_sound 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
+	print('Suggest sound detection', 'with confidence', 0.8)  
 ]	
 
+//**************************************************//
+//													//
+//		    image detection suggestions				//
+//													//
+//**************************************************//
 
 [Image_magnification_suggestion_rule:
- 	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)
- 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)
+ 	(?user rdf:type easytv:User)
+ 	(?user easytv:hasPreference ?pref)
  	
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_size ?sub_text_size)
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_common_display_screen_enhancement_cursor_Size ?cursor_size)
- 	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_size ?ui_text_size)
+ 	(?pref easytv:has_application_cs_cc_subtitles_font_size ?sub_text_size)
+ 	(?pref easytv:has_common_display_screen_enhancement_cursor_Size ?cursor_size)
+ 	(?pref easytv:has_application_cs_ui_text_size ?ui_text_size)
 
-	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_enhancement_image_type 'image-magnification'^^http://www.w3.org/2001/XMLSchema#string)
-	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_magnification_scale ?scale)
+	(?pref easytv:has_application_cs_accessibility_enhancement_image_type 'image-magnification'^^http://www.w3.org/2001/XMLSchema#string)
+	(?pref easytv:has_application_cs_ui_text_magnification_scale ?scale)
 	
 	GE(?sub_text_size, '75'^^http://www.w3.org/2001/XMLSchema#integer)
 	EQ(?cursor_size, '2.0'^^http://www.w3.org/2001/XMLSchema#double)
@@ -126,81 +200,107 @@
 	
 	LE(?scale,  '3.0'^^http://www.w3.org/2001/XMLSchema#double)
 
- 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)
-
-	->	
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.8'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_application_cs_accessibility_enhancement_image_type 'image-magnification'^^http://www.w3.org/2001/XMLSchema#string)
+	(?sugPref easytv:has_application_cs_ui_text_magnification_scale '3.0'^^http://www.w3.org/2001/XMLSchema#double)
 	
-	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_enhancement_image_type 'image-magnification'^^http://www.w3.org/2001/XMLSchema#string)
-	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_magnification_scale '3.0'^^http://www.w3.org/2001/XMLSchema#double)
-	
-	print('Suggest Image magnification detection')
+	print('Suggest Image magnification detection', 'with confidence', 0.8)  
 ]	
 
 
-//Suggestion font size Given the user magnification level 
+//**************************************************//
+//													//
+//		    	Font size suggestions				//
+//													//
+//**************************************************//
+
 [Font_size_suggestion_rule:
- 	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)
- 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)
+ 	(?user rdf:type easytv:User)
+ 	(?user easytv:hasPreference ?pref)
  	
  	//if image magnification level is large 
-	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_enhancement_image_type 'image-magnification'^^http://www.w3.org/2001/XMLSchema#string)
-	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_magnification_scale ?scale)
+	(?pref easytv:has_application_cs_accessibility_enhancement_image_type 'image-magnification'^^http://www.w3.org/2001/XMLSchema#string)
+	(?pref easytv:has_application_cs_ui_text_magnification_scale ?scale)
 	GE(?scale, '3.0'^^http://www.w3.org/2001/XMLSchema#double)
 	LE(?scale, '3.5'^^http://www.w3.org/2001/XMLSchema#double)
 	
 	//use has no UI text size
-	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_size ?ui_text_size)	
+	(?pref easytv:has_application_cs_ui_text_size ?ui_text_size)	
 	NE(?ui_text_size,  '23'^^http://www.w3.org/2001/XMLSchema#string)
 
- 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)
-
-	->	
-		(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_size '23'^^http://www.w3.org/2001/XMLSchema#integer)	
-	
-	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_size '23'^^http://www.w3.org/2001/XMLSchema#string)	
-	print('Suggest Image magnification ', ?scale)
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.8'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_application_cs_cc_subtitles_font_size '23'^^http://www.w3.org/2001/XMLSchema#integer)	
+	(?sugPref easytv:has_application_cs_ui_text_size '23'^^http://www.w3.org/2001/XMLSchema#string)	
+	print('Suggest Image magnification ', ?scale, 'with confidence', 0.8)  
 ]	
 
 
 [Font_size_suggestion_rule_2:
- 	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)
- 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)
+ 	(?user rdf:type easytv:User)
+ 	(?user easytv:hasPreference ?pref)
  
-	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_enhancement_image_type 'image-magnification'^^http://www.w3.org/2001/XMLSchema#string)
-	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_magnification_scale ?scale)
+	(?pref easytv:has_application_cs_accessibility_enhancement_image_type 'image-magnification'^^http://www.w3.org/2001/XMLSchema#string)
+	(?pref easytv:has_application_cs_ui_text_magnification_scale ?scale)
 	GE(?scale, '2.0'^^http://www.w3.org/2001/XMLSchema#double)
 	LT(?scale, '3.0'^^http://www.w3.org/2001/XMLSchema#double)
 
-	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_size ?ui_text_size)	
+	(?pref easytv:has_application_cs_ui_text_size ?ui_text_size)	
 	NE(?ui_text_size,  '20'^^http://www.w3.org/2001/XMLSchema#string)
 
- 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)
-
-	->	
-	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_size '20'^^http://www.w3.org/2001/XMLSchema#integer)	
-	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_size '20'^^http://www.w3.org/2001/XMLSchema#string)	
-	print('Suggest Image magnification ', ?scale)
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.8'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_application_cs_cc_subtitles_font_size '20'^^http://www.w3.org/2001/XMLSchema#integer)	
+	(?sugPref easytv:has_application_cs_ui_text_size '20'^^http://www.w3.org/2001/XMLSchema#string)	
+	print('Suggest Image magnification ', ?scale, 'with confidence', 0.8)  
 ]	
 
 
 [Font_size_suggestion_rule_3:
- 	(?user rdf:type http://www.owl-ontologies.com/OntologyEasyTV.owl#User)
- 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasPreference ?pref)
+ 	(?user rdf:type easytv:User)
+ 	(?user easytv:hasPreference ?pref)
  	
-	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_accessibility_enhancement_image_type 'image-magnification'^^http://www.w3.org/2001/XMLSchema#string)
-	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_magnification_scale ?scale)
+	(?pref easytv:has_application_cs_accessibility_enhancement_image_type 'image-magnification'^^http://www.w3.org/2001/XMLSchema#string)
+	(?pref easytv:has_application_cs_ui_text_magnification_scale ?scale)
 	GE(?scale, '1.5'^^http://www.w3.org/2001/XMLSchema#double)
 	LT(?scale, '2.0'^^http://www.w3.org/2001/XMLSchema#double)
 		
-	(?pref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_size ?ui_text_size)	
+	(?pref easytv:has_application_cs_ui_text_size ?ui_text_size)	
 	NE(?ui_text_size,  '1.5'^^http://www.w3.org/2001/XMLSchema#double)
 
- 	(?user http://www.owl-ontologies.com/OntologyEasyTV.owl#hasSuggestedPreferences ?sugPref)
-
-	->	
-		(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_cc_subtitles_font_size '15'^^http://www.w3.org/2001/XMLSchema#integer)	
-	
-	(?sugPref http://www.owl-ontologies.com/OntologyEasyTV.owl#has_application_cs_ui_text_size '15'^^http://www.w3.org/2001/XMLSchema#string)	
-	print('Suggest Image magnification ', ?scale)
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.8'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_application_cs_cc_subtitles_font_size '15'^^http://www.w3.org/2001/XMLSchema#integer)	
+	(?sugPref easytv:has_application_cs_ui_text_size '15'^^http://www.w3.org/2001/XMLSchema#string)	
+	print('Suggest Image magnification ', ?scale, 'with confidence', 0.8)  
 ]	
 

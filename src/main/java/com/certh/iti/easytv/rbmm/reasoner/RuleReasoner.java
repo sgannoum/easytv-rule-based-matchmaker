@@ -110,7 +110,7 @@ public class RuleReasoner {
 		this.otherRules = loadRules(rulesFile);
 		
 		//load suggestions rules
-		this.suggestionRules = loadRules("/SuggestionsRules.txt");
+		this.suggestionRules = loadRules("SuggestionsRules.txt");
 		
 		List<Rule> allRules = new ArrayList<Rule>();
 		allRules.addAll(otherRules);
