@@ -4,18 +4,16 @@ FROM tomcat:latest
 WORKDIR /usr/local/tomcat
 
 # Copy War file 
-#RUN rm /usr/local/tomcat/conf/tomcat-users.xml
-
-# Copy War file 
 COPY ./target/EasyTV_RBMM_Restful_WS.war /usr/local/tomcat/webapps
 
-# Copy War file 
-#COPY ./tomcat-users.xml /usr/local/tomcat/conf
+#change tomcat default port
+RUN sed -i 's/port="8080"/port="8081"/' /usr/local/tomcat/conf/server.xml
 
-RUN cat /usr/local/tomcat/conf/tomcat-users.xml
+#print out tomacat server file content
+RUN cat /usr/local/tomcat/conf/server.xml
 
 # Expose tomcat port
-EXPOSE 8080
+EXPOSE 8081
 
 # Run tomcat
 CMD ["./bin/catalina.sh", "run"]
