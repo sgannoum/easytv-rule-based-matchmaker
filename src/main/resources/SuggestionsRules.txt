@@ -12,14 +12,16 @@
 [Avatar_suggestion_rule_1:
  	(?user rdf:type easytv:User)
  	(?user easytv:hasPreference ?pref)
- 	(?pref easytv:has_application_cs_accessibility_sign_language 'false'^^http://www.w3.org/2001/XMLSchema#boolean)
+ 	
+ 	(?pref easytv:has_common_language ?language)
+ 	
  	(?pref easytv:has_common_volume ?volume)
  	(?pref easytv:has_application_tts_audio_volume ?tts_volume)
  	(?pref easytv:has_application_cs_cc_audio_subtitle 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
  	(?pref easytv:has_application_cs_ui_audioAssistanceBasedOnTTS 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
   	(?pref easytv:has_application_cs_accessibility_audio_description 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
  
- 	GE(?volume, '75'^^http://www.w3.org/2001/XMLSchema#integer)
+ 	GE(?volume, '100'^^http://www.w3.org/2001/XMLSchema#integer)
  	GE(?tts_volume, '75'^^http://www.w3.org/2001/XMLSchema#integer) 	 
  	
  	(?user easytv:hasSuggestionSet ?sugSet) 
@@ -28,17 +30,18 @@
 	->  
     (?sugSet easytv:hasSuggestion ?ruleSug) 
     (?ruleSug rdf:type easytv:RuleSuggestion) 
-    (?ruleSug easytv:hasConfidence '0.8'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
     (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
     (?sugPref rdf:type easytv:SuggestedPreferences) 
-	(?sugPref easytv:has_application_cs_accessibility_sign_language 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
+	(?sugPref easytv:has_application_cs_accessibility_sign_language ?language)
 	print('Suggest sign language', 'with confidence', 0.8)  
 ]		
 
 [Avatar_suggestion_rule_2:
  	(?user rdf:type easytv:User)
  	(?user easytv:hasPreference ?pref)
- 	(?pref easytv:has_application_cs_accessibility_sign_language 'false'^^http://www.w3.org/2001/XMLSchema#boolean)
+ 	(?pref easytv:has_common_language ?language)
+ 	
  	(?pref easytv:has_common_volume ?volume)
  	(?pref easytv:has_application_tts_audio_volume ?tts_volume)
  	(?pref easytv:has_application_cs_cc_audio_subtitle 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
@@ -54,10 +57,10 @@
 	->  
     (?sugSet easytv:hasSuggestion ?ruleSug) 
     (?ruleSug rdf:type easytv:RuleSuggestion) 
-    (?ruleSug easytv:hasConfidence '0.8'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
     (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
     (?sugPref rdf:type easytv:SuggestedPreferences) 
-	(?sugPref easytv:has_application_cs_accessibility_sign_language 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
+	(?sugPref easytv:has_application_cs_accessibility_sign_language ?language)
 	print('Suggest sign language', 'with confidence', 0.8)  
 ]		
 
@@ -68,15 +71,15 @@
 //													//
 //**************************************************//
 
-[Face_detection_suggestion_rule:
+[Face_detection_suggestion_rule_1:
  	(?user rdf:type easytv:User)
  	(?user easytv:hasPreference ?pref) 	
- 	(?sugPref easytv:has_application_cs_accessibility_detection_face 'false'^^http://www.w3.org/2001/XMLSchema#string)
+ 	
  	(?pref easytv:has_application_cs_cc_subtitles_font_size ?sub_text_size)
  	(?pref easytv:has_common_display_screen_enhancement_cursor_Size ?cursor_size)
  	(?pref easytv:has_application_cs_ui_text_size ?ui_text_size)
 
-	GE(?sub_text_size, '5'^^http://www.w3.org/2001/XMLSchema#integer)
+	GE(?sub_text_size, '40'^^http://www.w3.org/2001/XMLSchema#integer)
 	EQ(?cursor_size, '2.0'^^http://www.w3.org/2001/XMLSchema#double)
 	EQ(?ui_text_size,  '23'^^http://www.w3.org/2001/XMLSchema#string)	
 	
@@ -86,7 +89,7 @@
 	->  
     (?sugSet easytv:hasSuggestion ?ruleSug) 
     (?ruleSug rdf:type easytv:RuleSuggestion) 
-    (?ruleSug easytv:hasConfidence '0.8'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
     (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
     (?sugPref rdf:type easytv:SuggestedPreferences) 
 	(?sugPref easytv:has_application_cs_accessibility_detection_face 'true'^^http://www.w3.org/2001/XMLSchema#string)
@@ -94,17 +97,17 @@
 ]	
 
 
-[Face_detection_suggestion_rule_1:
+[Face_detection_suggestion_rule_2:
  	(?user rdf:type easytv:User)
- 	(?user easytv:hasPreference ?pref)
- 	 	
+ 	(?user easytv:hasPreference ?pref) 	
+ 	
  	(?pref easytv:has_application_cs_cc_subtitles_font_size ?sub_text_size)
  	(?pref easytv:has_common_display_screen_enhancement_cursor_Size ?cursor_size)
  	(?pref easytv:has_application_cs_ui_text_size ?ui_text_size)
 
 	GE(?sub_text_size, '40'^^http://www.w3.org/2001/XMLSchema#integer)
 	EQ(?cursor_size, '2.0'^^http://www.w3.org/2001/XMLSchema#double)
-	EQ(?ui_text_size,  '23'^^http://www.w3.org/2001/XMLSchema#string)
+	EQ(?ui_text_size,  '23'^^http://www.w3.org/2001/XMLSchema#string)	
 	
  	(?user easytv:hasSuggestionSet ?sugSet) 
 	makeTemp(?ruleSug)  
@@ -112,12 +115,12 @@
 	->  
     (?sugSet easytv:hasSuggestion ?ruleSug) 
     (?ruleSug rdf:type easytv:RuleSuggestion) 
-    (?ruleSug easytv:hasConfidence '0.8'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
     (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
     (?sugPref rdf:type easytv:SuggestedPreferences) 
-	(?sugPref easytv:has_application_cs_accessibility_enhancement_image_type 'face-detection'^^http://www.w3.org/2001/XMLSchema#string)
+	(?sugPref easytv:has_application_cs_accessibility_detection_face 'true'^^http://www.w3.org/2001/XMLSchema#string)
 	print('Suggest face detection', 'with confidence', 0.8)  
-]	
+]
 
 //**************************************************//
 //													//
@@ -129,7 +132,6 @@
  	(?user rdf:type easytv:User)
  	(?user easytv:hasPreference ?pref)
  	
- 	(?pref easytv:has_application_cs_accessibility_detection_sound 'false'^^http://www.w3.org/2001/XMLSchema#boolean)
  	(?pref easytv:has_common_volume ?general_volume)
  	(?pref easytv:has_application_tts_audio_volume ?tts_volume)
  	(?pref easytv:has_application_cs_audio_volume ?cs_volume)	 
@@ -144,33 +146,7 @@
 	->  
     (?sugSet easytv:hasSuggestion ?ruleSug) 
     (?ruleSug rdf:type easytv:RuleSuggestion) 
-    (?ruleSug easytv:hasConfidence '0.8'^^http://www.w3.org/2001/XMLSchema#double) 
-    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
-    (?sugPref rdf:type easytv:SuggestedPreferences) 
-	(?sugPref easytv:has_application_cs_accessibility_detection_sound 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
-	print('Suggest sound detection', 'with confidence', 0.8)  
-]	
-
-
-[Sound_detection_suggestion_rule_1:
- 	(?user rdf:type easytv:User)
- 	(?user easytv:hasPreference ?pref)
- 	
- 	(?pref easytv:has_common_volume ?general_volume)
- 	(?pref easytv:has_application_tts_audio_volume ?tts_volume)
- 	(?pref easytv:has_application_cs_audio_volume ?cs_volume)	 
- 	 
- 	GE(?general_volume, '75'^^http://www.w3.org/2001/XMLSchema#int) 	
- 	GE(?tts_volume, '75'^^http://www.w3.org/2001/XMLSchema#int) 	
- 	GE(?cs_volume, '10'^^http://www.w3.org/2001/XMLSchema#int)  
- 	
- 	(?user easytv:hasSuggestionSet ?sugSet) 
-	makeTemp(?ruleSug)  
-	makeTemp(?sugPref)  
-	->  
-    (?sugSet easytv:hasSuggestion ?ruleSug) 
-    (?ruleSug rdf:type easytv:RuleSuggestion) 
-    (?ruleSug easytv:hasConfidence '0.8'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
     (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
     (?sugPref rdf:type easytv:SuggestedPreferences) 
 	(?sugPref easytv:has_application_cs_accessibility_detection_sound 'true'^^http://www.w3.org/2001/XMLSchema#boolean)
@@ -179,7 +155,7 @@
 
 //**************************************************//
 //													//
-//		    image detection suggestions				//
+//		    image magnification suggestions		    //
 //													//
 //**************************************************//
 
@@ -187,14 +163,15 @@
  	(?user rdf:type easytv:User)
  	(?user easytv:hasPreference ?pref)
  	
+ 	(?pref easytv:has_application_cs_accessibility_magnification 'true'^^http://www.w3.org/2001/XMLSchema#string)
+ 	
  	(?pref easytv:has_application_cs_cc_subtitles_font_size ?sub_text_size)
  	(?pref easytv:has_common_display_screen_enhancement_cursor_Size ?cursor_size)
  	(?pref easytv:has_application_cs_ui_text_size ?ui_text_size)
 
-	(?pref easytv:has_application_cs_accessibility_enhancement_image_type 'image-magnification'^^http://www.w3.org/2001/XMLSchema#string)
 	(?pref easytv:has_application_cs_ui_text_magnification_scale ?scale)
 	
-	GE(?sub_text_size, '75'^^http://www.w3.org/2001/XMLSchema#integer)
+	GE(?sub_text_size, '40'^^http://www.w3.org/2001/XMLSchema#integer)
 	EQ(?cursor_size, '2.0'^^http://www.w3.org/2001/XMLSchema#double)
 	EQ(?ui_text_size,  '23'^^http://www.w3.org/2001/XMLSchema#string)
 	
@@ -206,10 +183,9 @@
 	->  
     (?sugSet easytv:hasSuggestion ?ruleSug) 
     (?ruleSug rdf:type easytv:RuleSuggestion) 
-    (?ruleSug easytv:hasConfidence '0.8'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
     (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
     (?sugPref rdf:type easytv:SuggestedPreferences) 
-	(?sugPref easytv:has_application_cs_accessibility_enhancement_image_type 'image-magnification'^^http://www.w3.org/2001/XMLSchema#string)
 	(?sugPref easytv:has_application_cs_ui_text_magnification_scale '3.0'^^http://www.w3.org/2001/XMLSchema#double)
 	
 	print('Suggest Image magnification detection', 'with confidence', 0.8)  
@@ -226,8 +202,7 @@
  	(?user rdf:type easytv:User)
  	(?user easytv:hasPreference ?pref)
  	
- 	//if image magnification level is large 
-	(?pref easytv:has_application_cs_accessibility_enhancement_image_type 'image-magnification'^^http://www.w3.org/2001/XMLSchema#string)
+ 	//if magnification scale is large 
 	(?pref easytv:has_application_cs_ui_text_magnification_scale ?scale)
 	GE(?scale, '3.0'^^http://www.w3.org/2001/XMLSchema#double)
 	LE(?scale, '3.5'^^http://www.w3.org/2001/XMLSchema#double)
@@ -242,7 +217,7 @@
 	->  
     (?sugSet easytv:hasSuggestion ?ruleSug) 
     (?ruleSug rdf:type easytv:RuleSuggestion) 
-    (?ruleSug easytv:hasConfidence '0.8'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
     (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
     (?sugPref rdf:type easytv:SuggestedPreferences) 
 	(?sugPref easytv:has_application_cs_cc_subtitles_font_size '23'^^http://www.w3.org/2001/XMLSchema#integer)	
@@ -255,7 +230,7 @@
  	(?user rdf:type easytv:User)
  	(?user easytv:hasPreference ?pref)
  
-	(?pref easytv:has_application_cs_accessibility_enhancement_image_type 'image-magnification'^^http://www.w3.org/2001/XMLSchema#string)
+  	//if magnification scale is large 
 	(?pref easytv:has_application_cs_ui_text_magnification_scale ?scale)
 	GE(?scale, '2.0'^^http://www.w3.org/2001/XMLSchema#double)
 	LT(?scale, '3.0'^^http://www.w3.org/2001/XMLSchema#double)
@@ -269,7 +244,7 @@
 	->  
     (?sugSet easytv:hasSuggestion ?ruleSug) 
     (?ruleSug rdf:type easytv:RuleSuggestion) 
-    (?ruleSug easytv:hasConfidence '0.8'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
     (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
     (?sugPref rdf:type easytv:SuggestedPreferences) 
 	(?sugPref easytv:has_application_cs_cc_subtitles_font_size '20'^^http://www.w3.org/2001/XMLSchema#integer)	
@@ -282,7 +257,6 @@
  	(?user rdf:type easytv:User)
  	(?user easytv:hasPreference ?pref)
  	
-	(?pref easytv:has_application_cs_accessibility_enhancement_image_type 'image-magnification'^^http://www.w3.org/2001/XMLSchema#string)
 	(?pref easytv:has_application_cs_ui_text_magnification_scale ?scale)
 	GE(?scale, '1.5'^^http://www.w3.org/2001/XMLSchema#double)
 	LT(?scale, '2.0'^^http://www.w3.org/2001/XMLSchema#double)
@@ -296,7 +270,7 @@
 	->  
     (?sugSet easytv:hasSuggestion ?ruleSug) 
     (?ruleSug rdf:type easytv:RuleSuggestion) 
-    (?ruleSug easytv:hasConfidence '0.8'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
     (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
     (?sugPref rdf:type easytv:SuggestedPreferences) 
 	(?sugPref easytv:has_application_cs_cc_subtitles_font_size '15'^^http://www.w3.org/2001/XMLSchema#integer)	

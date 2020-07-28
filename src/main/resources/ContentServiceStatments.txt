@@ -2,6 +2,8 @@
 @prefix easytv: <http://www.owl-ontologies.com/OntologyEasyTV.owl#>
 
 
+#define substitution set, each substitution set specifies the 
+#service that can be used for substitution in addition to services that can be applied
 _:audioTrackSubSet rdf:type easytv:SubstitutionSet ;
 		  easytv:hasSubstitution easytv:AudioTrack .
 
@@ -10,7 +12,7 @@ _:signLanguageSubSet rdf:type easytv:SubstitutionSet ;
 
 _:subtitleAndAudioSubSet rdf:type easytv:SubstitutionSet ;
 		  easytv:hasSubstitution easytv:Subtitles ;
-		  easytv:applyAlso easytv:AudioSubtitles .	
+		  easytv:optionallyApply easytv:AudioSubtitles .	
 
 _:customMagnificationSubset rdf:type easytv:SubstitutionSet ;
 		  easytv:hasSubstitution easytv:CustomMagnification .
@@ -21,7 +23,8 @@ _:subtitleSubSet rdf:type easytv:SubstitutionSet ;
 _:faceDetectionSubset rdf:type easytv:SubstitutionSet ;
 		  easytv:hasSubstitution easytv:FaceDetection .	
 
-		  		
+
+#define service substitutions		
 easytv:Subtitles 
 			easytv:hasSubstitutionSet _:audioTrackSubSet, _:signLanguageSubSet ;
 			easytv:refereToPredicate easytv:has_application_cs_cc_subtitles_language .
@@ -31,7 +34,7 @@ easytv:AudioTrack
 			easytv:refereToPredicate easytv:has_application_cs_audio_track .
 
 easytv:FaceDetection 
-			easytv:hasSubstitutionSet _:customMagnificationSubset, _:subset6 ;
+			easytv:hasSubstitutionSet _:customMagnificationSubset ;
 			easytv:refereToPredicate easytv:has_application_cs_accessibility_detection_face .
 			
 easytv:SignLanguage 

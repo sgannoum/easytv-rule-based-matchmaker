@@ -51,15 +51,16 @@
 	(?content ?subPredicate ?value)
 	noValue(?contSug ?predicate)
 	->  
-	print(?predicate ?value '**** Substitution match *************' ?substitution ?value)
+	print(?predicate ?value '**** Substitution match ****' ?substitution ?value)
 	(?contSug ?subPredicate ?value)
 
-	//check for more applies
+	//check for more applies of predicates
 	[(?contSug ?subPredicate1 ?value1) <- 
-		(?subSet easyTV:applyAlso ?substitution1), 		
-		(?substitution1 easyTV:refereToPredicate ?subPredicate1), 		
+		(?subSet easyTV:optionallyApply ?substitution1), 	
+		(?substitution1 easyTV:refereToPredicate ?subPredicate1), 				
 		(?content ?subPredicate1 ?value1), 
-		noValue(?contSug ?subPredicate1) 
-		print('**** Apply also *************' ?substitution1 ?value1)
-	]  
+		noValue(?contSug ?subPredicate1), 
+		print('**** Optionally Apply substitution ****' ?substitution1 ?value1)
+	]
+  
 ]			

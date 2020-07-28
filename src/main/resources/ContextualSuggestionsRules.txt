@@ -1,0 +1,614 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix easytv: <http://www.owl-ontologies.com/OntologyEasyTV.owl#> .
+
+
+//**************************************************//
+//													//
+//			Ambient sound suggestions			   	//
+//													//
+//**************************************************//
+
+[Ambient_sound_park_suggestions:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_device_soundMeter ?ambientSound)  
+ 	EQ(?ambientSound, 'Park'^^http://www.w3.org/2001/XMLSchema#string)  
+ 	noValue(?pref easytv:has_common_volume '50'^^http://www.w3.org/2001/XMLSchema#integer)
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_common_volume '50'^^http://www.w3.org/2001/XMLSchema#integer)
+	print('Ambient sound', ?ambientSound, 'suggest volume level', 50, 'with confidence', 0.8)  
+]	
+
+[Ambient_sound_quiet_office_suggestions:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_device_soundMeter ?ambientSound)  
+ 	EQ(?ambientSound, 'Quiet office'^^http://www.w3.org/2001/XMLSchema#string)
+ 	noValue(?pref easytv:has_common_volume '50'^^http://www.w3.org/2001/XMLSchema#integer)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_common_volume '50'^^http://www.w3.org/2001/XMLSchema#integer)
+	print('Ambient sound', ?ambientSound, 'suggest volume level', 50, 'with confidence', 0.8)  
+]	
+
+[Ambient_sound_quiet_normal_conversation_suggestions:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_device_soundMeter ?ambientSound)  
+ 	EQ(?ambientSound, 'Normal conversation'^^http://www.w3.org/2001/XMLSchema#string) 
+  	noValue(?pref easytv:has_common_volume '60'^^http://www.w3.org/2001/XMLSchema#integer) 
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_common_volume '60'^^http://www.w3.org/2001/XMLSchema#integer)
+	print('Ambient sound', ?ambientSound, 'suggest volume level', 60, 'with confidence', 0.8)  
+]	
+
+[Ambient_sound_red_level_suggestions:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_device_soundMeter ?ambientSound)  
+ 	EQ(?ambientSound, 'Busy traffic'^^http://www.w3.org/2001/XMLSchema#string)   	 	
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '1.0'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+    
+    print('Ambient sound', ?ambientSound, 'with confidence', 1.0)  
+    
+    [(?sugPref easytv:has_common_volume '0'^^http://www.w3.org/2001/XMLSchema#integer) <-
+    	noValue(?pref easytv:has_common_volume '0'^^http://www.w3.org/2001/XMLSchema#integer)
+    	print('suggest volume level', 0)  
+    ]
+ 
+    [(?sugPref easytv:has_application_cs_cc_audio_subtitle 'false'^^http://www.w3.org/2001/XMLSchema#boolean) <-
+    	noValue(?pref easytv:has_application_cs_cc_audio_subtitle 'false'^^http://www.w3.org/2001/XMLSchema#boolean)
+    	print('suggest audio subtitles', 'false')  
+    ]
+
+    [(?sugPref easytv:has_application_cs_ui_audioAssistanceBasedOnTTS 'false'^^http://www.w3.org/2001/XMLSchema#boolean) <-
+    	noValue(?pref easytv:has_application_cs_ui_audioAssistanceBasedOnTTS 'false'^^http://www.w3.org/2001/XMLSchema#boolean)
+    	print('suggest audio assistance base on OTTS', 'false')  
+    ]        
+
+    [(?sugPref easytv:has_application_cs_audio_eq 'false'^^http://www.w3.org/2001/XMLSchema#boolean) <-
+    	noValue(?pref easytv:has_application_cs_audio_eq 'false'^^http://www.w3.org/2001/XMLSchema#boolean)
+    	print('suggest audio eq', 'false')  
+    ]   
+
+    [(?sugPref easytv:has_application_hbbtv_screen_reader 'false'^^http://www.w3.org/2001/XMLSchema#boolean) <-
+    	noValue(?pref easytv:has_application_hbbtv_screen_reader 'false'^^http://www.w3.org/2001/XMLSchema#boolean)
+    	print('suggest hbbtv screen reader', 'false')  
+    ]  
+	
+]	
+
+[Ambient_sound_red_level_suggestions:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_device_soundMeter ?ambientSound)  
+ 	EQ(?ambientSound, 'Red level'^^http://www.w3.org/2001/XMLSchema#string)   	
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    print('Ambient sound', ?ambientSound, 'with confidence', 1.0)  
+    
+    [(?sugPref easytv:has_common_volume '0'^^http://www.w3.org/2001/XMLSchema#integer) <-
+    	noValue(?pref easytv:has_common_volume '0'^^http://www.w3.org/2001/XMLSchema#integer)
+    	print('suggest volume level', 0)  
+    ]
+ 
+    [(?sugPref easytv:has_application_cs_cc_audio_subtitle 'false'^^http://www.w3.org/2001/XMLSchema#boolean) <-
+    	noValue(?pref easytv:has_application_cs_cc_audio_subtitle 'false'^^http://www.w3.org/2001/XMLSchema#boolean)
+    	print('suggest audio subtitles', 'false')  
+    ]
+
+    [(?sugPref easytv:has_application_cs_ui_audioAssistanceBasedOnTTS 'false'^^http://www.w3.org/2001/XMLSchema#boolean) <-
+    	noValue(?pref easytv:has_application_cs_ui_audioAssistanceBasedOnTTS 'false'^^http://www.w3.org/2001/XMLSchema#boolean)
+    	print('suggest audio assistance base on OTTS', 'false')  
+    ]        
+
+    [(?sugPref easytv:has_application_cs_audio_eq 'false'^^http://www.w3.org/2001/XMLSchema#boolean) <-
+    	noValue(?pref easytv:has_application_cs_audio_eq 'false'^^http://www.w3.org/2001/XMLSchema#boolean)
+    	print('suggest audio eq', 'false')  
+    ]   
+
+    [(?sugPref easytv:has_application_hbbtv_screen_reader 'false'^^http://www.w3.org/2001/XMLSchema#boolean) <-
+    	noValue(?pref easytv:has_application_hbbtv_screen_reader 'false'^^http://www.w3.org/2001/XMLSchema#boolean)
+    	print('suggest hbbtv screen reader', 'false')  
+    ]  
+]	
+
+
+//**************************************************//
+//													//
+//			Ambient light suggestions			   	//
+//													//
+//**************************************************//
+
+[Ambient_ligth_suggestions_1:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_light ?ambientLight)  
+  	noValue(?pref easytv:has_common_brightness '100'^^http://www.w3.org/2001/XMLSchema#integer)
+ 	EQ(?ambientLight, 'dark'^^http://www.w3.org/2001/XMLSchema#string)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_common_brightness '100'^^http://www.w3.org/2001/XMLSchema#integer)
+	print('Ambient ligth', ?ambientLight, 'suggest light level', 100, 'with confidence', 0.8)  
+]	
+
+
+[Ambient_ligth_suggestions_2:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_light ?ambientLight)
+  	noValue(?pref easytv:has_common_brightness '95'^^http://www.w3.org/2001/XMLSchema#integer)  
+ 	EQ(?ambientLight, 'dark surroundings'^^http://www.w3.org/2001/XMLSchema#string)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_common_brightness '95'^^http://www.w3.org/2001/XMLSchema#integer)
+	print('Ambient ligth', ?ambientLight, 'suggest light level', 95, 'with confidence', 0.8)  
+]	
+
+[Ambient_ligth_suggestions_3:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_light ?ambientLight) 
+  	noValue(?pref easytv:has_common_brightness '90'^^http://www.w3.org/2001/XMLSchema#integer) 
+ 	EQ(?ambientLight, 'living room'^^http://www.w3.org/2001/XMLSchema#string)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_common_brightness '90'^^http://www.w3.org/2001/XMLSchema#integer)
+	print('Ambient ligth', ?ambientLight, 'suggest light level', 90, 'with confidence', 0.8)  
+]	
+
+[Ambient_ligth_suggestions_3:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_light ?ambientLight) 
+  	noValue(?pref easytv:has_common_brightness '85'^^http://www.w3.org/2001/XMLSchema#integer) 
+ 	EQ(?ambientLight, 'hallway'^^http://www.w3.org/2001/XMLSchema#string)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_common_brightness '85'^^http://www.w3.org/2001/XMLSchema#integer)
+	print('Ambient ligth', ?ambientLight, 'suggest light level', 85, 'with confidence', 0.8)  
+]	
+
+[Ambient_ligth_suggestions_4:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_light ?ambientLight)
+  	noValue(?pref easytv:has_common_brightness '80'^^http://www.w3.org/2001/XMLSchema#integer)  
+ 	EQ(?ambientLight, 'overcast day'^^http://www.w3.org/2001/XMLSchema#string)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_common_brightness '80'^^http://www.w3.org/2001/XMLSchema#integer)
+	print('Ambient ligth', ?ambientLight, 'suggest light level', 80, 'with confidence', 0.8)  
+]	
+
+[Ambient_ligth_suggestions_5:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_light ?ambientLight) 
+  	noValue(?pref easytv:has_common_brightness '75'^^http://www.w3.org/2001/XMLSchema#integer) 
+ 	EQ(?ambientLight, 'home'^^http://www.w3.org/2001/XMLSchema#string)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_common_brightness '75'^^http://www.w3.org/2001/XMLSchema#integer)
+	print('Ambient ligth', ?ambientLight, 'suggest light level', 75, 'with confidence', 0.8)  
+]
+
+[Ambient_ligth_suggestions_6:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_light ?ambientLight)
+  	noValue(?pref easytv:has_common_brightness '70'^^http://www.w3.org/2001/XMLSchema#integer)  
+ 	EQ(?ambientLight, 'class'^^http://www.w3.org/2001/XMLSchema#string)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_common_brightness '70'^^http://www.w3.org/2001/XMLSchema#integer)
+	print('Ambient ligth', ?ambientLight, 'suggest light level', 70, 'with confidence', 0.8)  
+]
+
+[Ambient_ligth_suggestions_7:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_light ?ambientLight)
+  	noValue(?pref easytv:has_common_brightness '65'^^http://www.w3.org/2001/XMLSchema#integer)  
+ 	EQ(?ambientLight, 'workplace'^^http://www.w3.org/2001/XMLSchema#string)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_common_brightness '65'^^http://www.w3.org/2001/XMLSchema#integer)
+	print('Ambient ligth', ?ambientLight, 'suggest light level', 65, 'with confidence', 0.8)  
+]
+
+
+[Ambient_ligth_suggestions_7:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_light ?ambientLight) 
+  	noValue(?pref easytv:has_common_brightness '60'^^http://www.w3.org/2001/XMLSchema#integer) 
+ 	EQ(?ambientLight, 'sunrise'^^http://www.w3.org/2001/XMLSchema#string)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_common_brightness '60'^^http://www.w3.org/2001/XMLSchema#integer)
+	print('Ambient ligth', ?ambientLight, 'suggest light level', 60, 'with confidence', 0.8)  
+]
+
+[Ambient_ligth_suggestions_8:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_light ?ambientLight)
+  	noValue(?pref easytv:has_common_brightness '55'^^http://www.w3.org/2001/XMLSchema#integer)  
+ 	EQ(?ambientLight, 'grocery'^^http://www.w3.org/2001/XMLSchema#string)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_common_brightness '55'^^http://www.w3.org/2001/XMLSchema#integer)
+	print('Ambient ligth', ?ambientLight, 'suggest light level', 55, 'with confidence', 0.8)  
+]
+
+[Ambient_ligth_suggestions_9:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_light ?ambientLight)
+  	noValue(?pref easytv:has_common_brightness '50'^^http://www.w3.org/2001/XMLSchema#integer)  
+ 	EQ(?ambientLight, 'supermarket'^^http://www.w3.org/2001/XMLSchema#string)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_common_brightness '50'^^http://www.w3.org/2001/XMLSchema#integer)
+	print('Ambient ligth', ?ambientLight, 'suggest light level', 50, 'with confidence', 0.8)  
+]
+
+[Ambient_ligth_suggestions_10:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_light ?ambientLight)
+ 	noValue(?pref easytv:has_common_brightness '45'^^http://www.w3.org/2001/XMLSchema#integer)  
+ 	EQ(?ambientLight, 'theater'^^http://www.w3.org/2001/XMLSchema#string)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_common_brightness '45'^^http://www.w3.org/2001/XMLSchema#integer)
+	print('Ambient ligth', ?ambientLight, 'suggest light level', 45, 'with confidence', 0.8)  
+]
+
+[Ambient_ligth_suggestions_11:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_light ?ambientLight)
+  	noValue(?pref easytv:has_common_brightness '40'^^http://www.w3.org/2001/XMLSchema#integer)  
+ 	EQ(?ambientLight, 'detailed work'^^http://www.w3.org/2001/XMLSchema#string)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_common_brightness '40'^^http://www.w3.org/2001/XMLSchema#integer)
+	print('Ambient ligth', ?ambientLight, 'suggest light level', 40, 'with confidence', 0.8)  
+]
+
+[Ambient_ligth_suggestions_12:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_light ?ambientLight)
+  	noValue(?pref easytv:has_common_brightness '35'^^http://www.w3.org/2001/XMLSchema#integer)  
+ 	EQ(?ambientLight, 'visual task'^^http://www.w3.org/2001/XMLSchema#string)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_common_brightness '35'^^http://www.w3.org/2001/XMLSchema#integer)
+	print('Ambient ligth', ?ambientLight, 'suggest light level', 35, 'with confidence', 0.8)  
+]
+
+[Ambient_ligth_suggestions_13:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_light ?ambientLight)
+  	noValue(?pref easytv:has_common_brightness '30'^^http://www.w3.org/2001/XMLSchema#integer)  
+ 	EQ(?ambientLight, 'demanding visual task'^^http://www.w3.org/2001/XMLSchema#string)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_common_brightness '30'^^http://www.w3.org/2001/XMLSchema#integer)
+	print('Ambient ligth', ?ambientLight, 'suggest light level', 30, 'with confidence', 0.8)  
+]
+
+[Ambient_ligth_suggestions_13:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_light ?ambientLight)
+  	noValue(?pref easytv:has_common_brightness '25'^^http://www.w3.org/2001/XMLSchema#integer)  
+ 	EQ(?ambientLight, 'full daylight'^^http://www.w3.org/2001/XMLSchema#string)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_common_brightness '25'^^http://www.w3.org/2001/XMLSchema#integer)
+	print('Ambient ligth', ?ambientLight, 'suggest light level', 25, 'with confidence', 0.8)  
+]
+
+[Ambient_ligth_suggestions_13:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_light ?ambientLight)
+  	noValue(?pref easytv:has_common_brightness '20'^^http://www.w3.org/2001/XMLSchema#integer)  
+ 	EQ(?ambientLight, 'direct sun'^^http://www.w3.org/2001/XMLSchema#string)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_common_brightness '20'^^http://www.w3.org/2001/XMLSchema#integer)
+	print('Ambient ligth', ?ambientLight, 'suggest light level', 20, 'with confidence', 0.8)  
+]
+
+//**************************************************//
+//													//
+//			device type suggestions 			    //
+//													//
+//**************************************************//
+
+[Screen_size_dimension_mobile:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_device ?device)  
+ 	EQ(?device, 'mobile'^^http://www.w3.org/2001/XMLSchema#string)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_application_cs_ui_text_size '20'^^http://www.w3.org/2001/XMLSchema#string)
+
+	print('Device type', ?device,'suggest light level', 20, 'with confidence', 0.6)  
+]
+
+[Screen_size_dimension_pc:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_device ?device)  
+ 	EQ(?device, 'pc'^^http://www.w3.org/2001/XMLSchema#string)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_application_cs_ui_text_size '15'^^http://www.w3.org/2001/XMLSchema#string)
+	
+	print('Device type', ?device,'suggest light level', 20, 'with confidence', 0.6)  
+]
+
+[Screen_size_dimension_tablet:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_device ?device)  
+ 	EQ(?device, 'tablet'^^http://www.w3.org/2001/XMLSchema#string)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+	(?sugPref easytv:has_application_cs_ui_text_size '15'^^http://www.w3.org/2001/XMLSchema#string)
+	
+	print('Device type', ?device,'suggest light level', 20, 'with confidence', 0.6)  
+]
+
+
+//**************************************************//
+//													//
+//			Location suggestions					//
+//													//
+//**************************************************//
+
+[location_1:
+ 	(?user rdf:type easytv:User)  
+ 	(?user easytv:hasPreference ?pref)  
+	(?user easytv:hasContext ?cnxt)
+ 	(?cnxt easytv:has_context_location ?location)  
+ 	(?user easytv:hasSuggestionSet ?sugSet) 
+	makeTemp(?ruleSug)  
+	makeTemp(?sugPref)  
+	->  
+    (?sugSet easytv:hasSuggestion ?ruleSug) 
+    (?ruleSug rdf:type easytv:RuleSuggestion) 
+    (?ruleSug easytv:hasConfidence '0.6'^^http://www.w3.org/2001/XMLSchema#double) 
+    (?ruleSug easytv:hasSuggestedPreferences ?sugPref) 
+    (?sugPref rdf:type easytv:SuggestedPreferences) 
+    
+     print('Location', ?location)  
+    
+    
+    [(?sugPref easytv:has_application_cs_cc_subtitles_language ?location) <-
+    	noValue(?pref easytv:has_application_cs_cc_subtitles_language ?location)
+    	print('suggest subtitle languages', ?location, 'with confidence', 0.6)  
+    ]
+    
+    [(?sugPref easytv:has_application_cs_ui_language ?location) <-
+    	noValue(?pref easytv:has_application_cs_ui_language ?location)
+    	print('suggest ui languages', ?location, 'with confidence', 0.6)  
+    ]
+	
+	[(?sugPref easytv:has_application_tts_audio_language ?location) <-
+    	noValue(?pref easytv:has_application_tts_audio_language ?location)
+    	print('suggest audio languages', ?location, 'with confidence', 0.6)  
+    ]
+    
+    [(?sugPref easytv:has_application_tts_audio_language ?location) <-
+    	noValue(?pref easytv:has_application_cs_audio_track ?location)
+    	print('suggest audio track', ?location, 'with confidence', 0.6)  
+    ]
+]
