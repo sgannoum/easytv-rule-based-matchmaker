@@ -499,7 +499,7 @@ public class RuleReasoner {
 
 			if (result_node == null || has_node == null || !result_node.isLiteral())
 				continue;
-		
+			
 			updateJson(result_node.asLiteral(), json, has_node.toString());
 		}
 		
@@ -540,6 +540,9 @@ public class RuleReasoner {
 			if (result_node == null || has_node == null || !result_node.isLiteral())
 				continue;
 		
+			System.out.println(result_node.asLiteral());
+			System.out.println(has_node);
+
 			updateJson(result_node.asLiteral(), json, has_node.toString());
 		}
 		
@@ -560,6 +563,10 @@ public class RuleReasoner {
 			return json;
 		
 		String pref = OntPreference.getURI(propertyName);
+		
+		if(pref == null)
+			throw new IllegalArgumentException("Wrong prperty name "+ propertyName);
+
 		
 		if(json.has(pref)) return json;
 		

@@ -12,7 +12,7 @@ public class NotEquals extends ComparatorBuiltin {
 
 	@Override
 	public String getName() {
-		return "NENE";
+		return "NE";
 	}
 
 	@Override
